@@ -1,95 +1,123 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { createRoot } from "react-dom/client";
 import type { AuditResult } from "../api/audit/types";
-import { FullReportContainer, TeaserReportContainer } from "./PDFLayouts";
+import { FullReportLayout, TeaserReportLayout } from "./PDFLayouts";
 
 interface Props {
   result: AuditResult;
 }
 
-type DownloadState = "idle" | "loading-full" | "loading-teaser";
+type DownloadState = "idle" | "loading-full" | "loading-teaser" | "error";
 
-async function exportToPDF(element: HTMLElement, filename: string) {
-  const { default: jsPDF } = await import("jspdf");
-  const { default: html2canvas } = await import("html2canvas");
+async function renderAndExport(
+  Layout: React.ComponentType<{ result: AuditResult }>,
+  result: AuditResult,
+  filename: string
+) {
+  // 1. Mount layout into a fresh off-screen div
+  const container = document.createElement("div");
+  container.style.cssText =
+    "position:fixed;top:0;left:-9999px;width:794px;background:#fff;z-index:-1;";
+  document.body.appendChild(container);
 
-  const canvas = await html2canvas(element, {
-    scale: 2,
-    useCORS: true,
-    allowTaint: true,
-    backgroundColor: "#ffffff",
-    logging: false,
-  });
+  const root = createRoot(container);
+  root.render(<Layout result={result} />);
 
-  const imgData = canvas.toDataURL("image/jpeg", 0.92);
-  const pdf = new jsPDF({ unit: "px", format: "a4", orientation: "portrait" });
+  // 2. Give React a tick to paint, then wait for any images
+  await new Promise((r) => setTimeout(r, 600));
 
-  const pageWidth = pdf.internal.pageSize.getWidth();
-  const pageHeight = pdf.internal.pageSize.getHeight();
-  const imgWidth = pageWidth;
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  // Wait for all images inside the container to load
+  const imgs = Array.from(container.querySelectorAll("img"));
+  await Promise.all(
+    imgs.map(
+      (img) =>
+        img.complete
+          ? Promise.resolve()
+          : new Promise((r) => {
+              img.onload = r;
+              img.onerror = r;
+            })
+    )
+  );
 
-  let heightLeft = imgHeight;
-  let position = 0;
+  try {
+    // 3. Capture
+    const { default: html2canvas } = await import("html2canvas");
+    const canvas = await html2canvas(container, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: "#ffffff",
+      logging: false,
+      width: 794,
+      windowWidth: 794,
+    });
 
-  pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-  heightLeft -= pageHeight;
+    // 4. Build PDF (A4 in mm)
+    const { jsPDF } = await import("jspdf");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pageW = 210;
+    const pageH = 297;
+    const imgData = canvas.toDataURL("image/jpeg", 0.92);
+    const imgH = (canvas.height * pageW) / canvas.width;
 
-  while (heightLeft > 0) {
-    position -= pageHeight;
-    pdf.addPage();
-    pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+    let remaining = imgH;
+    let yOffset = 0;
+
+    pdf.addImage(imgData, "JPEG", 0, yOffset, pageW, imgH);
+    remaining -= pageH;
+
+    while (remaining > 0) {
+      yOffset -= pageH;
+      pdf.addPage();
+      pdf.addImage(imgData, "JPEG", 0, yOffset, pageW, imgH);
+      remaining -= pageH;
+    }
+
+    pdf.save(filename);
+  } finally {
+    root.unmount();
+    document.body.removeChild(container);
   }
-
-  pdf.save(filename);
 }
 
 export default function DownloadButtons({ result }: Props) {
-  const fullRef = useRef<HTMLDivElement>(null);
-  const teaserRef = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<DownloadState>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+  const slug = result.practice_name.replace(/\s+/g, "-").toLowerCase();
 
-  const practiceName = result.practice_name.replace(/\s+/g, "-").toLowerCase();
-
-  async function downloadFull() {
-    if (!fullRef.current) return;
-    setState("loading-full");
+  async function handleDownload(type: "full" | "teaser") {
+    setState(type === "full" ? "loading-full" : "loading-teaser");
+    setErrorMsg("");
     try {
-      await exportToPDF(fullRef.current, `audit-full-${practiceName}.pdf`);
-    } finally {
+      if (type === "full") {
+        await renderAndExport(FullReportLayout, result, `audit-full-${slug}.pdf`);
+      } else {
+        await renderAndExport(TeaserReportLayout, result, `audit-preview-${slug}.pdf`);
+      }
       setState("idle");
-    }
-  }
-
-  async function downloadTeaser() {
-    if (!teaserRef.current) return;
-    setState("loading-teaser");
-    try {
-      await exportToPDF(teaserRef.current, `audit-preview-${practiceName}.pdf`);
-    } finally {
-      setState("idle");
+    } catch (err) {
+      console.error("PDF export failed:", err);
+      setErrorMsg(err instanceof Error ? err.message : "PDF generation failed.");
+      setState("error");
     }
   }
 
   return (
-    <>
-      {/* Hidden PDF layouts — rendered off-screen for capture */}
-      <FullReportContainer result={result} containerRef={fullRef} />
-      <TeaserReportContainer result={result} containerRef={teaserRef} />
-
-      {/* Buttons */}
+    <div className="space-y-2">
       <div className="flex flex-col sm:flex-row gap-3">
+        {/* Full report */}
         <button
-          onClick={downloadFull}
-          disabled={state !== "idle"}
+          onClick={() => handleDownload("full")}
+          disabled={state !== "idle" && state !== "error"}
           className="flex items-center justify-center gap-2 px-5 py-2.5 bg-tio-navy text-white text-sm font-semibold rounded-xl hover:bg-tio-navy/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {state === "loading-full" ? (
             <>
               <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              Generating...
+              Generating full report...
             </>
           ) : (
             <>
@@ -101,15 +129,16 @@ export default function DownloadButtons({ result }: Props) {
           )}
         </button>
 
+        {/* Teaser */}
         <button
-          onClick={downloadTeaser}
-          disabled={state !== "idle"}
+          onClick={() => handleDownload("teaser")}
+          disabled={state !== "idle" && state !== "error"}
           className="flex items-center justify-center gap-2 px-5 py-2.5 bg-tio-blue border-2 border-tio-blue-dark text-tio-navy text-sm font-semibold rounded-xl hover:bg-tio-blue/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {state === "loading-teaser" ? (
             <>
               <span className="w-4 h-4 border-2 border-tio-navy border-t-transparent rounded-full animate-spin" />
-              Generating...
+              Generating teaser...
             </>
           ) : (
             <>
@@ -121,6 +150,10 @@ export default function DownloadButtons({ result }: Props) {
           )}
         </button>
       </div>
-    </>
+
+      {state === "error" && errorMsg && (
+        <p className="text-xs text-red-600">{errorMsg}</p>
+      )}
+    </div>
   );
 }

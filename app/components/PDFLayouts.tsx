@@ -312,26 +312,4 @@ export function TeaserReportLayout({ result }: Props) {
   );
 }
 
-// ─── REF CONTAINERS ──────────────────────────────────────────────────────────
 
-export function FullReportContainer({ result, containerRef }: Props & { containerRef: React.RefObject<HTMLDivElement | null> }) {
-  return (
-    <div
-      ref={containerRef}
-      style={{ position: "absolute", left: -9999, top: 0, zIndex: -1, pointerEvents: "none" }}
-    >
-      <FullReportLayout result={result} />
-    </div>
-  );
-}
-
-export function TeaserReportContainer({ result, containerRef }: Props & { containerRef: React.RefObject<HTMLDivElement | null> }) {
-  return (
-    <div
-      ref={containerRef}
-      style={{ position: "absolute", left: -9999, top: 0, zIndex: -1, pointerEvents: "none" }}
-    >
-      <TeaserReportLayout result={result} />
-    </div>
-  );
-}
