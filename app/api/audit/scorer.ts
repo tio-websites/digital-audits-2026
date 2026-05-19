@@ -18,7 +18,7 @@ function scoreContent(data: CrawlData): CategoryResult {
   else if (data.hasTreatmentPages) a1 = 16;
   else if (data.text.includes("invisalign") || data.text.includes("braces")) a1 = 8;
 
-  // A2: Before/After Gallery (15 pts — reduced from 20 to accommodate A4 increase)
+  // A2: Before/After Gallery (15 pts - reduced from 20 to accommodate A4 increase)
   let a2 = 0;
   if (data.hasGallery && data.galleryCount >= 10) a2 = clamp(12 + Math.floor(data.galleryCount / 5), 12, 15);
   else if (data.hasGallery && data.galleryCount >= 3) a2 = 8;
@@ -43,7 +43,7 @@ function scoreContent(data: CrawlData): CategoryResult {
     a3 = 4;
   }
 
-  // A4: Booking / Webform (20 pts — increased from 15)
+  // A4: Booking / Webform (20 pts - increased from 15)
   let a4 = 0;
   if (data.hasBookingForm) {
     const isEasyToFind = data.ctaCount >= 3;
@@ -103,7 +103,7 @@ function scoreContent(data: CrawlData): CategoryResult {
           ? `Online booking or appointment form found${data.bookingUrl ? ` at ${data.bookingUrl}` : " on the site"}.`
           : "No online booking system or appointment request form found. Contact is limited to phone or email.",
         recommendation:
-          "Add a short appointment request form (name, phone, treatment interest, preferred time) accessible directly from the homepage and all treatment pages. Third-party booking tools should open inline or in a simple modal — avoid redirecting patients to external booking portals without context.",
+          "Add a short appointment request form (name, phone, treatment interest, preferred time) accessible directly from the homepage and all treatment pages. Third-party booking tools should open inline or in a simple modal - avoid redirecting patients to external booking portals without context.",
       },
       {
         name: "Doctor Credentials",
@@ -134,7 +134,7 @@ function buildContentDescription(data: CrawlData, s: Record<string, number>): st
   lines.push(
     `Content Quality assesses whether this website gives patients enough information to understand treatments, feel confident about costs, and take the next step. The site scored ${s.total}/100.`
   );
-  if (s.a1 < 15) lines.push("Treatment information is sparse — patients have to work hard to understand what's on offer.");
+  if (s.a1 < 15) lines.push("Treatment information is sparse - patients have to work hard to understand what's on offer.");
   else if (s.a1 >= 24) lines.push("Treatment pages are a strength, with dedicated content for individual treatment types.");
   if (!data.hasBookingForm) lines.push("There is no online booking or appointment request form, which is a significant conversion barrier.");
   if (!data.hasPricingPage) lines.push("The absence of a pricing or finance page means prospective patients have no way to gauge affordability before calling.");
@@ -143,20 +143,20 @@ function buildContentDescription(data: CrawlData, s: Record<string, number>): st
 
 function buildContentTalkingPoints(data: CrawlData, s: Record<string, number>): string {
   const points: string[] = [];
-  if (!data.hasBookingForm) points.push("No online booking — every interested patient has to pick up the phone, which loses the 40%+ who prefer digital booking.");
-  if (!data.hasPricingPage) points.push("No finance page — cost is the #1 reason patients don't book. A finance page removes that barrier.");
-  if (s.a1 < 15) points.push("Thin treatment pages — when patients Google a specific treatment, there's nothing to land on.");
+  if (!data.hasBookingForm) points.push("No online booking - every interested patient has to pick up the phone, which loses the 40%+ who prefer digital booking.");
+  if (!data.hasPricingPage) points.push("No finance page - cost is the #1 reason patients don't book. A finance page removes that barrier.");
+  if (s.a1 < 15) points.push("Thin treatment pages - when patients Google a specific treatment, there's nothing to land on.");
   return points.length ? points.join("\n") : "Content is generally solid; conversation can focus on refinements.";
 }
 
 function scoreUX(data: CrawlData): CategoryResult {
-  // B1: CTA Placement & Clarity (45 pts — increased from 40)
+  // B1: CTA Placement & Clarity (45 pts - increased from 40)
   let b1 = 0;
   if (data.ctaCount >= 5) b1 = 36 + clamp(data.ctaCount - 5, 0, 9);
   else if (data.ctaCount >= 3) b1 = 22;
   else if (data.ctaCount >= 1) b1 = 12;
 
-  // B2: Value Proposition / USPs (45 pts — increased from 40)
+  // B2: Value Proposition / USPs (45 pts - increased from 40)
   let b2 = 0;
   if (data.hasWhyChooseUs) {
     const hasSpecifics =
@@ -171,7 +171,7 @@ function scoreUX(data: CrawlData): CategoryResult {
     b2 = data.text.includes("caring") || data.text.includes("modern") ? 10 : 5;
   }
 
-  // B3: Social Proof & Trust Signals (10 pts — reduced from 20)
+  // B3: Social Proof & Trust Signals (10 pts - reduced from 20)
   let b3 = 0;
   const { facebook, instagram, tiktok } = data.socialLinks;
   if (facebook && instagram) b3 += 5;
@@ -224,7 +224,7 @@ function scoreUX(data: CrawlData): CategoryResult {
           tiktok ? "TikTok linked." : "TikTok not linked.",
         ].join(" "),
         recommendation:
-          "Link to Facebook and Instagram as a minimum. More important than linking is maintaining an active presence — consider displaying an embedded Instagram feed. Invisalign provider tier badges and professional membership logos placed near CTAs significantly increase conversion.",
+          "Link to Facebook and Instagram as a minimum. More important than linking is maintaining an active presence - consider displaying an embedded Instagram feed. Invisalign provider tier badges and professional membership logos placed near CTAs significantly increase conversion.",
       },
     ],
   };
@@ -234,15 +234,15 @@ function buildUXDescription(data: CrawlData, s: Record<string, number>): string 
   const lines: string[] = [
     `UX & Conversion measures how effectively the site drives patients to take action. The site scored ${s.total}/100.`,
   ];
-  if (s.b2 < 18) lines.push("The homepage lacks a compelling value proposition — there is no clear reason why a patient should choose this practice over a competitor.");
+  if (s.b2 < 18) lines.push("The homepage lacks a compelling value proposition - there is no clear reason why a patient should choose this practice over a competitor.");
   if (s.b1 < 22) lines.push("Calls-to-action are weak or infrequent, leaving patients without a clear next step.");
   return lines.join(" ");
 }
 
 function buildUXTalkingPoints(data: CrawlData, s: Record<string, number>): string {
   const points: string[] = [];
-  if (!data.hasWhyChooseUs) points.push("No USP section — practices with a strong 'Why Choose Us' block convert at 2-3x the rate of those without.");
-  if (s.b1 < 22) points.push("Weak CTAs — a patient who can't immediately see how to book will leave.");
+  if (!data.hasWhyChooseUs) points.push("No USP section - practices with a strong 'Why Choose Us' block convert at 2-3x the rate of those without.");
+  if (s.b1 < 22) points.push("Weak CTAs - a patient who can't immediately see how to book will leave.");
   return points.length ? points.join("\n") : "UX fundamentals are in place; conversation can focus on CTA optimisation.";
 }
 
@@ -261,12 +261,12 @@ function scoreDesign(data: CrawlData): CategoryResult {
     data.html.includes("table") ||
     data.html.includes("marquee");
 
-  // C1: Visual Modernity (60 pts) — estimated from signals
+  // C1: Visual Modernity (60 pts) - estimated from signals
   let c1 = 36;
   if (hasModernFramework && !hasDatedSignals) c1 = 48;
   if (hasDatedSignals) c1 = 22;
 
-  // C2: Photography Quality (25 pts) — sharpened to authentic vs stock
+  // C2: Photography Quality (25 pts) - sharpened to authentic vs stock
   // We can't visually verify without a screenshot, so we score conservatively
   // and flag for manual review
   let c2 = 12; // Default: unable to verify without screenshot
@@ -299,7 +299,7 @@ function scoreDesign(data: CrawlData): CategoryResult {
           ? "The site shows dated design signals (jQuery effects, table layouts, or older styling patterns) that may undermine patient trust."
           : hasModernFramework
           ? "The site uses a modern development framework, suggesting a contemporary build."
-          : "Design signals are mixed — the site appears functional but may lack a distinctive brand identity.",
+          : "Design signals are mixed - the site appears functional but may lack a distinctive brand identity.",
         recommendation:
           "A modern homepage should make an immediate impact: strong hero image or video, bold typography, clear brand colours, and smooth interactions. If the last redesign was more than 4 years ago, a refresh is likely overdue.",
       },
@@ -311,7 +311,7 @@ function scoreDesign(data: CrawlData): CategoryResult {
           ? "Team or practice imagery appears to be present, which is a positive signal."
           : "It was not possible to confirm whether real practice photography is in use without a visual review.",
         recommendation:
-          "Authentic practice photography — real team headshots, actual treatment rooms, genuine patient journey images (with consent) — creates a far stronger connection than stock imagery. Stock photos are often recognisable and create a disconnect between the website and the in-practice experience. A professional photography session typically pays for itself within one new patient.",
+          "Authentic practice photography - real team headshots, actual treatment rooms, genuine patient journey images (with consent) - creates a far stronger connection than stock imagery. Stock photos are often recognisable and create a disconnect between the website and the in-practice experience. A professional photography session typically pays for itself within one new patient.",
       },
       {
         name: "Whitespace & Readability",
@@ -319,7 +319,7 @@ function scoreDesign(data: CrawlData): CategoryResult {
         max: 15,
         finding: data.hasViewportMeta
           ? "Viewport meta tag is present. Framework signals suggest reasonable spacing and readability."
-          : "Viewport meta tag missing — a basic mobile readability requirement.",
+          : "Viewport meta tag missing - a basic mobile readability requirement.",
         recommendation:
           "Ensure body text is 16px or larger, paragraphs are short (3-5 sentences), and sections have clear visual breaks. Dense walls of text on treatment pages drive patients away.",
       },
@@ -329,16 +329,16 @@ function scoreDesign(data: CrawlData): CategoryResult {
 
 function buildDesignDescription(data: CrawlData, s: Record<string, number>): string {
   return [
-    `Design Quality assesses first impressions — the visual experience that determines whether a patient stays or leaves within the first few seconds. The site scored ${s.total}/100.`,
+    `Design Quality assesses first impressions - the visual experience that determines whether a patient stays or leaves within the first few seconds. The site scored ${s.total}/100.`,
     s.c1 < 36
       ? "The design shows dated signals that are likely to undermine confidence at first glance."
       : "The design appears broadly modern, though a full visual review is recommended before the sales conversation.",
-    "Note: photography scoring is based on HTML signals only — a visual review of the site is recommended to fully assess photo quality and authenticity.",
+    "Note: photography scoring is based on HTML signals only - a visual review of the site is recommended to fully assess photo quality and authenticity.",
   ].join(" ");
 }
 
 function buildDesignTalkingPoints(hasDatedSignals: boolean, c1: number): string {
-  if (c1 < 36) return "Dated design — patients browsing 3-4 competitor sites will notice this immediately. A redesign conversation is warranted.";
+  if (c1 < 36) return "Dated design - patients browsing 3-4 competitor sites will notice this immediately. A redesign conversation is warranted.";
   return "Design is functional; talk about photography and brand consistency as refinement opportunities.";
 }
 
@@ -352,7 +352,7 @@ function scoreTechnical(data: CrawlData): CategoryResult {
   if (!data.isHttps) d1 = Math.max(0, d1 - 4);
   d1 = clamp(d1, 0, 20);
 
-  // D2: Page Speed (20 pts) — estimated from signals
+  // D2: Page Speed (20 pts) - estimated from signals
   let d2 = 12;
   if (data.hasLazyLoading && data.hasWebpImages) d2 = 16;
   if (!data.hasLazyLoading && !data.hasWebpImages) d2 = 8;
@@ -392,7 +392,7 @@ function scoreTechnical(data: CrawlData): CategoryResult {
         max: 20,
         finding: data.hasViewportMeta
           ? `Viewport meta tag present. ${data.hasLazyLoading ? "Lazy loading detected." : "No lazy loading detected."}`
-          : "Viewport meta tag missing — a basic mobile responsiveness requirement.",
+          : "Viewport meta tag missing - a basic mobile responsiveness requirement.",
         recommendation:
           "Over 70% of orthodontic website traffic is on mobile. Run a Google Mobile-Friendly Test to confirm the layout renders correctly at 375px width. Ensure tap targets are at least 44x44px and forms work without zooming.",
       },
@@ -435,7 +435,7 @@ function scoreTechnical(data: CrawlData): CategoryResult {
         score: d5,
         max: 20,
         finding: data.hasBlogOrResources
-          ? "Blog or resources section detected — good foundation for content SEO."
+          ? "Blog or resources section detected - good foundation for content SEO."
           : "No blog or resources section found. The site has limited content for search engine indexing.",
         recommendation:
           "Create a blog targeting patient questions ('How long does Invisalign take?', 'Braces vs aligners for adults'). 10-15 targeted blog posts can significantly increase organic search traffic within 6 months.",
@@ -448,16 +448,16 @@ function buildTechnicalDescription(data: CrawlData, s: Record<string, number>): 
   return [
     `Technical & SEO assesses how well the site is built and optimised for search engine visibility. The site scored ${s.total}/100.`,
     s.d3 < 10 ? "Basic technical SEO elements (title tags, meta descriptions, sitemap) are missing or incomplete." : "",
-    s.d4 < 10 ? "Local SEO signals are weak — the practice is likely underperforming in location-based searches." : "",
+    s.d4 < 10 ? "Local SEO signals are weak - the practice is likely underperforming in location-based searches." : "",
     !data.hasBlogOrResources ? "The absence of blog or educational content limits long-term organic search growth." : "",
   ].filter(Boolean).join(" ");
 }
 
 function buildTechnicalTalkingPoints(data: CrawlData, s: Record<string, number>): string {
   const points: string[] = [];
-  if (!data.hasLocalSchema) points.push("No LocalBusiness schema — Google doesn't have structured data to confirm the practice's location and services.");
-  if (!data.hasBlogOrResources) points.push("No blog — competitors publishing patient-focused content will overtake them in search rankings within 12 months.");
-  if (s.d3 < 12) points.push("Meta tags incomplete — a quick win that most practices can implement in a day.");
+  if (!data.hasLocalSchema) points.push("No LocalBusiness schema - Google doesn't have structured data to confirm the practice's location and services.");
+  if (!data.hasBlogOrResources) points.push("No blog - competitors publishing patient-focused content will overtake them in search rankings within 12 months.");
+  if (s.d3 < 12) points.push("Meta tags incomplete - a quick win that most practices can implement in a day.");
   return points.length ? points.join("\n") : "Technical foundations are largely in place; conversation should focus on local SEO and content strategy.";
 }
 
@@ -474,8 +474,8 @@ function scoreAI(data: CrawlData): CategoryResult {
   if (hasPatientAnswers) e1 += 10;
   e1 = clamp(e1, 0, 35);
 
-  // E2: Entity Clarity (30 pts) — note: AI citation check is directional only
-  let e2 = 15; // Default mid-range — actual Perplexity check not run in this version
+  // E2: Entity Clarity (30 pts) - note: AI citation check is directional only
+  let e2 = 15; // Default mid-range - actual Perplexity check not run in this version
   const hasEntityInfo =
     data.title.length > 10 &&
     data.text.includes("orthodontist") &&
@@ -513,9 +513,9 @@ function scoreAI(data: CrawlData): CategoryResult {
         name: "Entity Clarity",
         score: e2,
         max: 30,
-        finding: `Practice name, location, and service information ${hasEntityInfo ? "appear clearly stated" : "are not consistently surfaced"} in the site content. Note: AI citation data is a directional snapshot based on HTML analysis — a live Perplexity check is recommended for a full picture.`,
+        finding: `Practice name, location, and service information ${hasEntityInfo ? "appear clearly stated" : "are not consistently surfaced"} in the site content. Note: AI citation data is a directional snapshot based on HTML analysis - a live Perplexity check is recommended for a full picture.`,
         recommendation:
-          "AI tools need to quickly extract: practice name, specialist name, location, and core services. Ensure this information is clearly stated in natural language on the homepage and about page — not just in schema markup.",
+          "AI tools need to quickly extract: practice name, specialist name, location, and core services. Ensure this information is clearly stated in natural language on the homepage and about page - not just in schema markup.",
       },
       {
         name: "Topical Depth",
@@ -527,7 +527,7 @@ function scoreAI(data: CrawlData): CategoryResult {
             : "No blog or educational resource section detected."
         }`,
         recommendation:
-          "AI tools favour sources with genuine depth. A site with 5 pages will not be cited as an authority. Building 20+ pages of quality, specific orthodontic content — especially treatment guides, FAQs, and local resources — positions the practice as an expert source.",
+          "AI tools favour sources with genuine depth. A site with 5 pages will not be cited as an authority. Building 20+ pages of quality, specific orthodontic content - especially treatment guides, FAQs, and local resources - positions the practice as an expert source.",
       },
     ],
   };
@@ -536,15 +536,15 @@ function scoreAI(data: CrawlData): CategoryResult {
 function buildAIDescription(data: CrawlData, s: Record<string, number>): string {
   return [
     `AI Search Readiness measures how likely this site is to be cited by AI tools like ChatGPT, Perplexity, and Google AI Overviews. The site scored ${s.total}/100.`,
-    "Most orthodontic practices have not yet optimised for AI search — this is an emerging and significant opportunity.",
+    "Most orthodontic practices have not yet optimised for AI search - this is an emerging and significant opportunity.",
     s.e1 < 16 ? "The absence of FAQ and question-based content means AI tools have little to cite when patients ask about this practice's treatments." : "",
-    "Note: AI citation scores in this report are based on website content analysis. A live AI citation check (using Perplexity or similar) is recommended as a complement — treat this as a directional snapshot rather than a definitive AI visibility audit.",
+    "Note: AI citation scores in this report are based on website content analysis. A live AI citation check (using Perplexity or similar) is recommended as a complement - treat this as a directional snapshot rather than a definitive AI visibility audit.",
   ].filter(Boolean).join(" ");
 }
 
 function buildAITalkingPoints(data: CrawlData, s: Record<string, number>): string {
   return [
-    "AI search is where the next wave of patients will come from — most practices haven't even started thinking about this.",
+    "AI search is where the next wave of patients will come from - most practices haven't even started thinking about this.",
     !data.hasFaqPage ? "No FAQ content means nothing to cite when a patient asks ChatGPT about orthodontists in this area." : "",
     !data.hasBlogOrResources ? "No blog means no topical authority in AI tools' knowledge base." : "",
     "Important: AI citation data in this report is indicative. For a definitive picture, run a live Perplexity check on the call.",
@@ -568,14 +568,14 @@ export function scoreAudit(data: CrawlData): AuditResult {
 
   const allOpportunities: { label: string; impact: number }[] = [];
 
-  if (!data.hasBookingForm) allOpportunities.push({ label: "Add an online booking or appointment request form — the single highest-impact conversion change for most orthodontic sites.", impact: 10 });
+  if (!data.hasBookingForm) allOpportunities.push({ label: "Add an online booking or appointment request form - the single highest-impact conversion change for most orthodontic sites.", impact: 10 });
   if (!data.hasPricingPage) allOpportunities.push({ label: "Create a dedicated pricing and finance page explaining payment options, what's included, and how to get a quote.", impact: 9 });
   if (!data.hasWhyChooseUs) allOpportunities.push({ label: "Add a compelling 'Why Choose Us' section to the homepage with 4+ specific, credible differentiators.", impact: 9 });
-  if (!data.hasBlogOrResources) allOpportunities.push({ label: "Launch a patient-focused blog targeting common questions — builds SEO, content depth, and AI search visibility simultaneously.", impact: 8 });
+  if (!data.hasBlogOrResources) allOpportunities.push({ label: "Launch a patient-focused blog targeting common questions - builds SEO, content depth, and AI search visibility simultaneously.", impact: 8 });
   if (!data.hasLocalSchema) allOpportunities.push({ label: "Implement LocalBusiness JSON-LD schema with full address, phone, hours, and geo coordinates.", impact: 7 });
   if (!data.hasGallery) allOpportunities.push({ label: "Build a before/after gallery with 10+ real patient cases to build social proof at the critical decision stage.", impact: 7 });
   if (!data.hasTreatmentPages) allOpportunities.push({ label: "Create dedicated pages for each treatment type (Invisalign, braces, teen treatment) with full patient-facing copy.", impact: 7 });
-  if (!data.hasFaqPage) allOpportunities.push({ label: "Add FAQ sections to treatment pages answering: cost, duration, candidacy, and process — critical for AI search visibility.", impact: 6 });
+  if (!data.hasFaqPage) allOpportunities.push({ label: "Add FAQ sections to treatment pages answering: cost, duration, candidacy, and process - critical for AI search visibility.", impact: 6 });
 
   allOpportunities.sort((a, b) => b.impact - a.impact);
   const top_opportunities = allOpportunities.slice(0, 5).map((o) => o.label);

@@ -5,6 +5,7 @@ import Image from "next/image";
 import type { AuditResult } from "../api/audit/types";
 import ScoreRing from "./ScoreRing";
 import CategoryCard from "./CategoryCard";
+import DownloadButtons from "./DownloadButtons";
 
 interface AuditResultsProps {
   result: AuditResult;
@@ -23,23 +24,6 @@ function scoreLabel(score: number): { label: string; colour: string; bg: string 
   if (score >= 70) return { label: "Good", colour: "text-green-700", bg: "bg-green-100" };
   if (score >= 50) return { label: "Needs Work", colour: "text-amber-700", bg: "bg-amber-100" };
   return { label: "Weak", colour: "text-red-700", bg: "bg-red-100" };
-}
-
-function downloadJSON(result: AuditResult) {
-  const exportData = {
-    ...result,
-    screenshots: {
-      desktop: result.screenshots.desktop ? "[base64 — stripped for export]" : null,
-      mobile: result.screenshots.mobile ? "[base64 — stripped for export]" : null,
-    },
-  };
-  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `audit_${result.practice_name.replace(/\s+/g, "_").toLowerCase()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
 }
 
 function psiColour(score: number): string {
@@ -66,23 +50,12 @@ export default function AuditResults({ result, onReset }: AuditResultsProps) {
           height={50}
           className="brightness-0 invert"
         />
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => downloadJSON(result)}
-            className="flex items-center gap-2 text-xs font-medium text-white/70 hover:text-white transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            Export JSON
-          </button>
-          <button
-            onClick={onReset}
-            className="flex items-center gap-2 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg transition-colors"
-          >
-            + New audit
-          </button>
-        </div>
+        <button
+          onClick={onReset}
+          className="flex items-center gap-2 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg transition-colors"
+        >
+          + New audit
+        </button>
       </header>
 
       <div className="max-w-4xl mx-auto w-full px-4 py-8 space-y-8">
@@ -117,6 +90,9 @@ export default function AuditResults({ result, onReset }: AuditResultsProps) {
             ))}
           </div>
         </div>
+
+        {/* Download buttons */}
+        <DownloadButtons result={result} />
 
         {/* Screenshots */}
         {hasScreenshots && (

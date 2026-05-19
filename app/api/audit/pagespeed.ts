@@ -36,7 +36,7 @@ function getScore(data: Record<string, unknown>, path: string[]): number {
 function getDisplayValue(data: Record<string, unknown>, auditId: string): string {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const audits = (data as any)?.lighthouseResult?.audits;
-  return audits?.[auditId]?.displayValue ?? "—";
+  return audits?.[auditId]?.displayValue ?? "-";
 }
 
 export async function getPageSpeed(url: string): Promise<PageSpeedResult> {
@@ -46,7 +46,7 @@ export async function getPageSpeed(url: string): Promise<PageSpeedResult> {
   ]);
 
   if (!mobile && !desktop) {
-    return { performanceMobile: 0, performanceDesktop: 0, lcp: "—", cls: "—", tbt: "—", seoScore: 0, available: false };
+    return { performanceMobile: 0, performanceDesktop: 0, lcp: "-", cls: "-", tbt: "-", seoScore: 0, available: false };
   }
 
   const source = mobile ?? desktop!;
