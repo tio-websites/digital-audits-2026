@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "TIO Digital Audit Tool",
+  title: "Digital Audit Tool · the invisible orthodontist",
   description: "Score orthodontic practice websites across content, conversion, design, SEO, and AI search readiness.",
 };
 

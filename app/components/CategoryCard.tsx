@@ -60,7 +60,7 @@ export default function CategoryCard({ title, icon, result, weight }: CategoryCa
       {/* Subcategories toggle */}
       <button
         onClick={() => setOpen(!open)}
-        className="w-full px-6 py-3 border-t border-gray-100 text-sm font-medium text-tio-navy flex items-center justify-between hover:bg-gray-50 transition-colors"
+        className="w-full px-6 py-3 border-t border-gray-100 text-sm font-medium text-tio-navy flex items-center justify-between hover:bg-tio-light transition-colors"
       >
         <span>View subcategory breakdown</span>
         <svg
@@ -96,7 +96,7 @@ export default function CategoryCard({ title, icon, result, weight }: CategoryCa
                 {sub.finding}
               </p>
               <p className="text-xs text-gray-600">
-                <span className="font-medium text-tio-teal">Recommendation: </span>
+                <span className="font-medium text-tio-navy">Recommendation: </span>
                 {sub.recommendation}
               </p>
             </div>

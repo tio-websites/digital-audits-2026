@@ -3,10 +3,11 @@
 @theme inline {
   --font-sans: var(--font-inter);
 
-  /* TIO brand colours — update these once branding assets are provided */
-  --color-tio-navy: #1b2b5e;
-  --color-tio-teal: #00a99d;
-  --color-tio-light: #f0f4ff;
+  /* The Invisible Orthodontist brand */
+  --color-tio-navy: #192845;
+  --color-tio-blue: #bce1eb;
+  --color-tio-blue-dark: #7fbfce;   /* darkened for contrast on white */
+  --color-tio-light: #f0f8fb;
 }
 
 * {
