@@ -3,7 +3,7 @@ import { Play, Clock, MapPin, Lock } from "lucide-react";
 const videos = [
   {
     type: "Show & Tell",
-    title: "In-house manufacturing walkthrough — Cardiff practice",
+    title: "In-house manufacturing walkthrough: Cardiff practice",
     description: "A full tour of a practice that has built a complete in-house aligner production system from scratch, including printer setup, QC workflow, and team protocols.",
     duration: "42 min",
     presenter: "DrAlignWales",
@@ -12,7 +12,7 @@ const videos = [
   },
   {
     type: "Factory Visit",
-    title: "Behind the scenes — Scheu aligner production",
+    title: "Behind the scenes: Scheu aligner production",
     description: "An exclusive visit to one of Europe's leading aligner manufacturers, covering material science, production tolerances, and what this means for clinical prescriptions.",
     duration: "1h 08m",
     presenter: "Finn & Okklusion Team",
@@ -21,7 +21,7 @@ const videos = [
   },
   {
     type: "Show & Tell",
-    title: "DM dashboard live — monitoring 300 active patients",
+    title: "DM dashboard live: monitoring 300 active patients",
     description: "A live demonstration of how one practice manages 300 active DM patients, including triage protocols, alert handling, and team responsibilities.",
     duration: "35 min",
     presenter: "DrSmith_Ortho",
@@ -30,8 +30,8 @@ const videos = [
   },
   {
     type: "Factory Visit",
-    title: "3D printing lab tour — SprintRay facility",
-    description: "Inside SprintRay's production and R&D facility — understanding the engineering behind print accuracy and what clinical implications this carries.",
+    title: "3D printing lab tour: SprintRay facility",
+    description: "Inside SprintRay's production and R&D facility. Understanding the engineering behind print accuracy and what clinical implications this carries.",
     duration: "55 min",
     presenter: "Okklusion Team",
     date: "Mar 2026",
@@ -39,7 +39,7 @@ const videos = [
   },
   {
     type: "Show & Tell",
-    title: "Case review session — complex Class III with crowding",
+    title: "Case review session: complex Class III with crowding",
     description: "Finn walks through the full treatment journey for a challenging Class III case, including staging decisions, mid-treatment adjustments, and outcome review.",
     duration: "1h 15m",
     presenter: "Finn",
@@ -48,7 +48,7 @@ const videos = [
   },
   {
     type: "Show & Tell",
-    title: "New practice setup — digital from day one",
+    title: "New practice setup: digital from day one",
     description: "A practice owner who opened 12 months ago shares the decisions they made to build a fully digital-native setup from the first day, and what they'd do differently.",
     duration: "48 min",
     presenter: "PracticeOwner_London",

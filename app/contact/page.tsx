@@ -27,7 +27,7 @@ export default function ContactPage() {
                 We'd love to hear from you
               </h2>
               <p style={{ fontSize: "15px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.75, marginBottom: "40px" }}>
-                Whether you have a question about membership, want to explore a DSO licence, or are interested in contributing content — reach out.
+                Whether you have a question about membership, want to explore a DSO licence, or are interested in contributing content, we'd love to hear from you.
               </p>
 
               <div className="flex flex-col gap-6">

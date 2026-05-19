@@ -6,7 +6,7 @@ const posts = [
   {
     pinned: true,
     category: "Workflow",
-    title: "Welcome thread — introduce yourself and your practice",
+    title: "Welcome thread: introduce yourself and your practice",
     preview: "We'd love to know where you're based, what stage you're at in your digital journey, and what you're hoping to get from the community.",
     author: "Okklusion Team",
     replies: 47,
@@ -26,7 +26,7 @@ const posts = [
   {
     pinned: false,
     category: "Software",
-    title: "DM remote monitoring — my 6-month review",
+    title: "DM remote monitoring: my 6-month review",
     preview: "I've been running full DM integration for 6 months now. Here's what's worked, what hasn't, and what I wish I'd known on day one.",
     author: "AlignPro_Cardiff",
     replies: 31,
@@ -36,8 +36,8 @@ const posts = [
   {
     pinned: false,
     category: "Equipment",
-    title: "Printers comparison — Form 4 vs SprintRay for aligner production",
-    preview: "Pulled data from 3 months of production runs across both machines. Accuracy, throughput, material cost — all in.",
+    title: "Printers comparison: Form 4 vs SprintRay for aligner production",
+    preview: "Pulled data from 3 months of production runs across both machines. Accuracy, throughput, material cost. All in.",
     author: "DigitalDental_Leeds",
     replies: 22,
     likes: 54,
@@ -46,8 +46,8 @@ const posts = [
   {
     pinned: false,
     category: "Workflow",
-    title: "Staff certification pathway — anyone gone through it?",
-    preview: "Our treatment coordinator is keen to get formally certified. Looking at the York pathway — any experiences, timelines, or tips?",
+    title: "Staff certification pathway: anyone gone through it?",
+    preview: "Our treatment coordinator is keen to get formally certified. Looking at the York pathway. Any experiences, timelines, or tips?",
     author: "PracticeOwner_London",
     replies: 9,
     likes: 18,
@@ -56,7 +56,7 @@ const posts = [
   {
     pinned: false,
     category: "Cases",
-    title: "Unexpected root resorption mid-treatment — peer review?",
+    title: "Unexpected root resorption mid-treatment: peer review?",
     preview: "Happy to share CBCT and staging files. Looking for a second opinion before I make the call on whether to continue or pause.",
     author: "DrPatel_Orthodontics",
     replies: 6,

@@ -15,7 +15,7 @@ export default function CPDPage() {
             <span style={{ fontSize: "11px", letterSpacing: "0.12em", color: "var(--accent)", fontFamily: "var(--font-sans)", textTransform: "uppercase" as const }}>Accreditation</span>
           </div>
           <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(44px, 6vw, 72px)", fontWeight: 300, color: "var(--white)", letterSpacing: "-0.02em", lineHeight: 1.05, marginBottom: "24px", maxWidth: "700px" }}>
-            CPD that counts — accredited with the University of York
+            CPD that counts, accredited with the University of York
           </h1>
           <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.55)", fontFamily: "var(--font-sans)", fontWeight: 300, maxWidth: "520px", lineHeight: 1.7 }}>
             Every learning hour on Okklusion is formally recognised. Build your development record while you build better systems.
@@ -43,7 +43,7 @@ export default function CPDPage() {
 
               <div className="flex flex-col gap-4">
                 {[
-                  { icon: <BookOpen size={16} />, title: "Tracked automatically", desc: "Hours are logged as you complete modules — no manual record-keeping required." },
+                  { icon: <BookOpen size={16} />, title: "Tracked automatically", desc: "Hours are logged as you complete modules. No manual record-keeping required." },
                   { icon: <Award size={16} />, title: "Certificates on completion", desc: "Each module issues a CPD certificate, accredited through the University of York." },
                   { icon: <FileText size={16} />, title: "Annual CPD record", desc: "Your dashboard shows a live view of hours earned across all categories." },
                   { icon: <Users size={16} />, title: "Staff pathways", desc: "Dedicated certification routes for dental nurses and orthodontic assistants." },

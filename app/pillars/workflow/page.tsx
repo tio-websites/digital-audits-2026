@@ -4,9 +4,9 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 const modules = [
-  { title: "From Zero to Manufacturing Aligners — 12 Week Programme", duration: "12h 30m", level: "Foundational" },
+  { title: "From Zero to Manufacturing Aligners: 12 Week Programme", duration: "12h 30m", level: "Foundational" },
   { title: "ISO Process Documentation & QC Systems", duration: "4h 20m", level: "Intermediate" },
-  { title: "Aligner Printing — Protocols & Machine Optimisation", duration: "4h 50m", level: "Intermediate" },
+  { title: "Aligner Printing: Protocols and Machine Optimisation", duration: "4h 50m", level: "Intermediate" },
   { title: "Material Science for Aligner Fabrication", duration: "2h 40m", level: "Advanced" },
   { title: "Production Throughput & Workflow Scaling", duration: "3h 00m", level: "Advanced" },
 ];
@@ -29,7 +29,7 @@ export default function WorkflowPillarPage() {
             Digital Workflow<br />&amp; Manufacturing
           </h1>
           <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.55)", fontFamily: "var(--font-sans)", fontWeight: 300, maxWidth: "520px", lineHeight: 1.7 }}>
-            ISO process modules, aligner printing protocols, and quality control systems — built for practices ready to scale in-house production.
+            ISO process modules, aligner printing protocols, and quality control systems, built for practices ready to scale in-house production.
           </p>
         </div>
       </section>
@@ -48,9 +48,10 @@ export default function WorkflowPillarPage() {
 
               <div className="flex flex-col gap-px" style={{ backgroundColor: "var(--border)" }}>
                 {modules.map((mod) => (
-                  <div
+                  <Link
                     key={mod.title}
-                    style={{ backgroundColor: "var(--bg)", padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px", cursor: "pointer" }}
+                    href="/platform/courses"
+                    style={{ backgroundColor: "var(--bg)", padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px" }}
                     className="hover:bg-[var(--surface)] transition-colors"
                   >
                     <div>
@@ -58,7 +59,7 @@ export default function WorkflowPillarPage() {
                       <p style={{ fontSize: "12px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{mod.level} · {mod.duration}</p>
                     </div>
                     <ArrowRight size={16} style={{ color: "var(--text-muted)", flexShrink: 0 }} />
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

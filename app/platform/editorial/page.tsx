@@ -6,7 +6,7 @@ const articles = [
   {
     tag: "Opinion",
     title: "Digital orthodontics has outgrown its ecosystem",
-    excerpt: "The tools exist. The workflows are proven. What's missing is the infrastructure to teach them properly — and the community to hold each other accountable.",
+    excerpt: "The tools exist. The workflows are proven. What's missing is the infrastructure to teach them properly, and the community to hold each other accountable.",
     author: "Finn",
     date: "12 May 2026",
     readTime: "6 min",
@@ -14,7 +14,7 @@ const articles = [
   },
   {
     tag: "News",
-    title: "University of York CPD accreditation — what it means for your practice",
+    title: "University of York CPD accreditation: what it means for your practice",
     excerpt: "Formal recognition for digital workflow education is arriving. Here's what the accreditation pathway looks like, and how it affects your continuing education obligations.",
     author: "Okklusion Editorial",
     date: "8 May 2026",
@@ -24,7 +24,7 @@ const articles = [
   {
     tag: "Case Study",
     title: "From zero to in-house aligner manufacturing in 12 weeks",
-    excerpt: "A step-by-step account of one practice's transition from outsourced to fully autonomous production — the decisions, the challenges, and the results.",
+    excerpt: "A step-by-step account of one practice's transition from outsourced to fully autonomous production: the decisions, the challenges, and the results.",
     author: "Finn",
     date: "1 May 2026",
     readTime: "10 min",
@@ -33,7 +33,7 @@ const articles = [
   {
     tag: "Analysis",
     title: "What MasterClass got right that dental education gets wrong",
-    excerpt: "Production quality, pacing, personality — the entertainment-first model of learning has lessons for every professional education platform.",
+    excerpt: "Production quality, pacing, personality. The entertainment-first model of learning has lessons for every professional education platform.",
     author: "Okklusion Editorial",
     date: "24 Apr 2026",
     readTime: "7 min",

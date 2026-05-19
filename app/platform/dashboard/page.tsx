@@ -2,14 +2,14 @@ import Link from "next/link";
 import { BookOpen, FileText, Users, Video, Award, ArrowRight, Clock } from "lucide-react";
 
 const recentCourses = [
-  { title: "ISO Process Module — Aligner QC", progress: 65, pillar: "Digital Workflow", duration: "4h 20m" },
+  { title: "ISO Process Module: Aligner QC", progress: 65, pillar: "Digital Workflow", duration: "4h 20m" },
   { title: "DM Protocol: Remote Monitoring Setup", progress: 30, pillar: "Software & AI", duration: "2h 45m" },
   { title: "Case Planning for Complex Class II", progress: 100, pillar: "Clinical", duration: "3h 10m" },
 ];
 
 const recentEditorial = [
   { tag: "Opinion", title: "Digital orthodontics has outgrown its ecosystem", date: "12 May 2026" },
-  { tag: "News", title: "York CPD accreditation — everything you need to know", date: "8 May 2026" },
+  { tag: "News", title: "York CPD accreditation: everything you need to know", date: "8 May 2026" },
   { tag: "Case Study", title: "Zero to in-house manufacturing in 12 weeks", date: "1 May 2026" },
 ];
 
@@ -36,7 +36,7 @@ export default function DashboardPage() {
       {/* CPD Progress */}
       <div style={{ backgroundColor: "var(--accent-dark)", borderRadius: "3px", padding: "28px 32px", marginBottom: "40px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "24px", flexWrap: "wrap" as const }}>
         <div>
-          <p style={{ fontSize: "11px", letterSpacing: "0.08em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", marginBottom: "6px" }}>CPD Progress — 2026</p>
+          <p style={{ fontSize: "11px", letterSpacing: "0.08em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", marginBottom: "6px" }}>CPD Progress 2026</p>
           <p style={{ fontFamily: "var(--font-serif)", fontSize: "36px", fontWeight: 300, color: "var(--white)", lineHeight: 1 }}>
             12 <span style={{ fontSize: "18px", color: "rgba(255,255,255,0.45)", fontFamily: "var(--font-sans)", fontWeight: 300 }}>/ 30 hours</span>
           </p>

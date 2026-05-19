@@ -14,7 +14,7 @@ const tiers = [
       "Core training module library",
       "Industry editorial & newsflow",
       "Opinion pieces & analysis",
-      "Community feed — read access",
+      "Community feed (read access)",
       "Monthly CPD content",
       "Member newsletter",
     ],
@@ -39,7 +39,7 @@ const tiers = [
       "Show & Tell video library",
       "Factory visit recordings",
       "Priority CPD certification pathway",
-      "Community — post & contribute",
+      "Community: post and contribute",
       "Select event access included",
       "ISO process module library",
       "DM protocol deep-dives",
@@ -59,7 +59,7 @@ const tiers = [
       "Everything in Premium",
       "Unlimited 1-to-1 mentoring",
       "Treatment planning services included",
-      "Full event access — all events",
+      "Full event access",
       "Direct KOL network access",
       "Early access to all new content",
       "Team & DSO licence options",
@@ -76,7 +76,7 @@ const tiers = [
 const faqs = [
   {
     q: "Can I change my membership tier?",
-    a: "Yes — upgrade or downgrade at any time. Changes take effect from the next billing cycle.",
+    a: "Yes. Upgrade or downgrade at any time. Changes take effect from the next billing cycle.",
   },
   {
     q: "Is there a free trial?",
@@ -92,7 +92,7 @@ const faqs = [
   },
   {
     q: "Are there team or DSO licences?",
-    a: "Yes — Super Premium includes options for multi-seat licences. Contact us to discuss DSO pricing.",
+    a: "Yes. Super Premium includes options for multi-seat licences. Contact us to discuss DSO pricing.",
   },
   {
     q: "How does CPD accreditation work?",
@@ -247,7 +247,7 @@ export default function PricingPage() {
             Not sure which tier?
           </h2>
           <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.55)", fontFamily: "var(--font-sans)", lineHeight: 1.7, marginBottom: "36px" }}>
-            Start with Basic — free for one month. Upgrade any time.
+            Start with Basic, free for one month. Upgrade any time.
           </p>
           <Link
             href="/signup"

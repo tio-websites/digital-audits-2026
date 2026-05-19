@@ -14,7 +14,7 @@ const articles = [
   },
   {
     tag: "News",
-    title: "University of York CPD accreditation — what it means for your practice",
+    title: "University of York CPD accreditation: what it means for your practice",
     excerpt: "Formal recognition for digital workflow education is arriving. Here's the pathway.",
     author: "Okklusion Editorial",
     date: "8 May 2026",
@@ -33,7 +33,7 @@ const articles = [
   {
     tag: "Analysis",
     title: "What MasterClass got right that dental education gets wrong",
-    excerpt: "Production quality, pacing, personality — the entertainment-first learning model has lessons for every professional platform.",
+    excerpt: "Production quality, pacing, personality. The entertainment-first learning model has lessons for every professional platform.",
     author: "Okklusion Editorial",
     date: "24 Apr 2026",
     readTime: "7 min",

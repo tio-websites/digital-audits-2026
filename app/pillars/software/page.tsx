@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 const modules = [
-  { title: "Dental Monitoring — Remote Protocol Setup & Mastery", duration: "6h 45m", level: "Foundational" },
+  { title: "Dental Monitoring: Remote Protocol Setup and Mastery", duration: "6h 45m", level: "Foundational" },
   { title: "AI-Assisted Triage: Clinical Workflow Integration", duration: "3h 15m", level: "Intermediate" },
   { title: "Treatment Planning Software Deep-Dive", duration: "4h 00m", level: "Intermediate" },
   { title: "Automated Business Intelligence for Ortho Practices", duration: "2h 30m", level: "Advanced" },
@@ -48,9 +48,10 @@ export default function SoftwarePillarPage() {
 
               <div className="flex flex-col gap-px" style={{ backgroundColor: "var(--border)" }}>
                 {modules.map((mod) => (
-                  <div
+                  <Link
                     key={mod.title}
-                    style={{ backgroundColor: "var(--bg)", padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px", cursor: "pointer" }}
+                    href="/platform/courses"
+                    style={{ backgroundColor: "var(--bg)", padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px" }}
                     className="hover:bg-[var(--surface)] transition-colors"
                   >
                     <div>
@@ -58,7 +59,7 @@ export default function SoftwarePillarPage() {
                       <p style={{ fontSize: "12px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{mod.level} · {mod.duration}</p>
                     </div>
                     <ArrowRight size={16} style={{ color: "var(--text-muted)", flexShrink: 0 }} />
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

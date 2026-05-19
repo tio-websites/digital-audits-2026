@@ -46,7 +46,7 @@ const tiers = [
       "Community feed access",
       "Monthly CPD content",
     ],
-    addons: ["Treatment planning services — add-on", "1-to-1 mentoring — add-on"],
+    addons: ["Treatment planning services (add-on)", "1-to-1 mentoring (add-on)"],
     cta: "Get Started",
     href: "/signup?tier=basic",
     highlight: false,
@@ -64,7 +64,7 @@ const tiers = [
       "Priority CPD certification",
       "Event access (select)",
     ],
-    addons: ["1-to-1 mentoring — add-on"],
+    addons: ["1-to-1 mentoring (add-on)"],
     cta: "Join Premium",
     href: "/signup?tier=premium",
     highlight: true,
@@ -99,7 +99,7 @@ const editorialItems = [
   },
   {
     tag: "News",
-    title: "University of York CPD accreditation — what it means for your practice",
+    title: "University of York CPD accreditation: what it means for your practice",
     excerpt:
       "Formal recognition for digital workflow education is arriving. Here's what the accreditation pathway looks like.",
   },
@@ -200,7 +200,7 @@ export default function HomePage() {
               }}
             >
               Okklusion brings together the education, community, and tools that
-              digital-native practices need — in one premium, CPD-accredited
+              digital-native practices need, in one premium, CPD-accredited
               platform.
             </p>
 
@@ -264,7 +264,7 @@ export default function HomePage() {
         >
           {[
             ["4", "Content Pillars"],
-            ["CPD", "Accredited — Uni of York"],
+            ["CPD", "Accredited, Uni of York"],
             ["3", "Membership Tiers"],
             ["Global", "Community of Clinicians"],
           ].map(([value, label]) => (
@@ -456,11 +456,11 @@ export default function HomePage() {
 
             <div className="flex flex-col gap-4">
               {[
-                ["Training Courses", "ISO modules, aligner printing, DM protocols — structured 12-week progressions."],
+                ["Training Courses", "ISO modules, aligner printing and DM protocols. Structured 12-week progressions."],
                 ["Show & Tells", "Real practice walkthroughs, live demonstrations, and peer case reviews."],
                 ["Factory Visits", "Behind-the-scenes access to manufacturing workflows and digital labs."],
                 ["Editorial Layer", "Opinion, news, and analysis from the sharpest minds in digital orthodontics."],
-                ["CPD Certification", "University of York accredited — every learning hour counts towards your development."],
+                ["CPD Certification", "University of York accredited. Every learning hour counts towards your development."],
               ].map(([title, desc]) => (
                 <div
                   key={title}
@@ -535,7 +535,7 @@ export default function HomePage() {
                 <div style={{ borderTop: tier.highlight ? "1px solid rgba(255,255,255,0.1)" : "1px solid var(--border)", paddingTop: "24px", marginBottom: "24px" }}>
                   {tier.features.map((f) => (
                     <div key={f} style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
-                      <span style={{ color: "var(--accent)", fontSize: "14px", lineHeight: 1, marginTop: "2px", flexShrink: 0 }}>—</span>
+                      <span style={{ color: "var(--accent)", fontSize: "14px", lineHeight: 1, marginTop: "2px", flexShrink: 0 }}>·</span>
                       <span style={{ fontSize: "13px", color: tier.highlight ? "rgba(255,255,255,0.75)" : "var(--text-secondary)", fontFamily: "var(--font-sans)" }}>{f}</span>
                     </div>
                   ))}

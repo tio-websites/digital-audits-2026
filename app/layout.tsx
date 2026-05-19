@@ -16,9 +16,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Okklusion — Elite Digital Orthodontics Platform",
+  title: "Okklusion: Elite Digital Orthodontics Platform",
   description:
-    "The global learning platform for clinicians building elite digital orthodontic systems. Training, editorial, community and CPD — all in one place.",
+    "The global learning platform for clinicians building elite digital orthodontic systems. Training, editorial, community and CPD, all in one place.",
 };
 
 export default function RootLayout({

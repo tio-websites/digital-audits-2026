@@ -4,9 +4,9 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 const modules = [
-  { title: "Building a Digital-Native Practice — Staff & Systems", duration: "5h 30m", level: "Foundational" },
-  { title: "KOL Mentorship Series — Season One", duration: "7h 00m", level: "All levels" },
-  { title: "Practice Owner Roundtables — Recorded Sessions", duration: "6h 20m", level: "All levels" },
+  { title: "Building a Digital-Native Practice: Staff and Systems", duration: "5h 30m", level: "Foundational" },
+  { title: "KOL Mentorship Series: Season One", duration: "7h 00m", level: "All levels" },
+  { title: "Practice Owner Roundtables: Recorded Sessions", duration: "6h 20m", level: "All levels" },
   { title: "DSO & Multi-Site Implementation Strategies", duration: "3h 45m", level: "Advanced" },
   { title: "Building Your Personal Brand as a Clinician", duration: "2h 15m", level: "All levels" },
 ];
@@ -48,9 +48,10 @@ export default function CommunityPillarPage() {
 
               <div className="flex flex-col gap-px" style={{ backgroundColor: "var(--border)" }}>
                 {modules.map((mod) => (
-                  <div
+                  <Link
                     key={mod.title}
-                    style={{ backgroundColor: "var(--bg)", padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px", cursor: "pointer" }}
+                    href="/platform/courses"
+                    style={{ backgroundColor: "var(--bg)", padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px" }}
                     className="hover:bg-[var(--surface)] transition-colors"
                   >
                     <div>
@@ -58,7 +59,7 @@ export default function CommunityPillarPage() {
                       <p style={{ fontSize: "12px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{mod.level} · {mod.duration}</p>
                     </div>
                     <ArrowRight size={16} style={{ color: "var(--text-muted)", flexShrink: 0 }} />
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

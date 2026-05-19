@@ -7,7 +7,7 @@ const faqs = [
     section: "Membership",
     items: [
       { q: "What's included in each membership tier?", a: "Basic includes core training modules, editorial, and community access. Premium adds all four content pillars, Show & Tells, factory visits, and CPD certification. Super Premium adds unlimited mentoring, treatment planning, full events, and DSO licences. See the full comparison on our pricing page." },
-      { q: "Can I change tiers?", a: "Yes — upgrade or downgrade at any time. Changes take effect from the next billing cycle. No penalties." },
+      { q: "Can I change tiers?", a: "Yes. Upgrade or downgrade at any time. Changes take effect from the next billing cycle. No penalties." },
       { q: "Is there a free trial?", a: "We offer a one-month introductory period on Basic. No payment details required to start." },
       { q: "What are add-on services?", a: "Treatment planning and 1-to-1 mentoring sessions can be added to Basic and Premium tiers at an additional fee. Super Premium includes both in full." },
     ],
@@ -16,24 +16,24 @@ const faqs = [
     section: "Payment",
     items: [
       { q: "How is payment handled?", a: "All memberships are billed via GoCardless. You can pay monthly or annually. Annual billing saves the equivalent of two months." },
-      { q: "Can I cancel?", a: "Yes — cancel at any time from your account settings. Your access continues until the end of your paid period." },
-      { q: "Are there team or DSO licences?", a: "Yes. Super Premium includes team licence options. Contact us for DSO group pricing — we offer bespoke arrangements for larger organisations." },
+      { q: "Can I cancel?", a: "Yes. Cancel at any time from your account settings. Your access continues until the end of your paid period." },
+      { q: "Are there team or DSO licences?", a: "Yes. Super Premium includes team licence options. Contact us for DSO group pricing, we offer bespoke arrangements for larger organisations." },
     ],
   },
   {
     section: "CPD & Accreditation",
     items: [
       { q: "How does CPD accreditation work?", a: "Learning hours are tracked automatically as you complete modules. Certificates are issued per module on Premium and above, accredited through the University of York." },
-      { q: "Which membership tiers include CPD?", a: "All tiers include some CPD content. Full certification — certificates per module and your CPD record — is available on Premium and Super Premium." },
-      { q: "Is there a pathway for dental nurses and orthodontic assistants?", a: "Yes — we're developing dedicated staff certification pathways. These will be available via Super Premium team licences." },
+      { q: "Which membership tiers include CPD?", a: "All tiers include some CPD content. Full certification (certificates per module and your CPD record) is available on Premium and Super Premium." },
+      { q: "Is there a pathway for dental nurses and orthodontic assistants?", a: "Yes. We're developing dedicated staff certification pathways, available via Super Premium team licences." },
     ],
   },
   {
     section: "Platform & Content",
     items: [
-      { q: "Can I access the platform on mobile?", a: "Yes — Okklusion is fully responsive and accessible on any device." },
+      { q: "Can I access the platform on mobile?", a: "Yes. Okklusion is fully responsive and accessible on any device." },
       { q: "How often is new content added?", a: "New courses, articles, and Show & Tells are added continuously. Premium and Super Premium members get early access to new content." },
-      { q: "What is the community?", a: "A peer discussion space for Okklusion members — cases, workflow questions, equipment discussions, and career topics. Premium members can post and contribute; Basic members have read access." },
+      { q: "What is the community?", a: "A peer discussion space for Okklusion members covering cases, workflow questions, equipment discussions, and career topics. Premium members can post and contribute; Basic members have read access." },
     ],
   },
 ];

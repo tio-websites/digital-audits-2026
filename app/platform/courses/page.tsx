@@ -20,7 +20,7 @@ const courses = [
     locked: false,
   },
   {
-    title: "ISO Process Modules — Full Series",
+    title: "ISO Process Modules: Full Series",
     description: "Quality control, documentation, and process standardisation for aligner manufacturing.",
     pillar: "Digital Workflow",
     duration: "8h 15m",
@@ -50,7 +50,7 @@ const courses = [
     locked: false,
   },
   {
-    title: "Aligner Printing — Protocols & Optimisation",
+    title: "Aligner Printing: Protocols and Optimisation",
     description: "Printer calibration, material selection, QC checkpoints, and output validation.",
     pillar: "Digital Workflow",
     duration: "4h 50m",
@@ -80,7 +80,7 @@ const courses = [
     locked: true,
   },
   {
-    title: "KOL Mentorship Series — Season One",
+    title: "KOL Mentorship Series: Season One",
     description: "Eight sessions with leading clinicians exploring real practice implementation stories.",
     pillar: "Community",
     duration: "7h 00m",

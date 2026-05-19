@@ -38,7 +38,7 @@ export default function AboutPage() {
                 The tools exist. The workflows are proven. But there is no central home for the education, innovation, and peer connection that practitioners need to implement them properly.
               </p>
               <p style={{ fontSize: "15px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.75, marginBottom: "20px" }}>
-                Okklusion is that home. A global, premium ecosystem where clinicians, practices, labs, and innovators come together to build elite digital orthodontic systems — not just run aligner clinics.
+                Okklusion is that home. A global, premium ecosystem where clinicians, practices, labs, and innovators come together to build elite digital orthodontic systems, not just run aligner clinics.
               </p>
               <p style={{ fontSize: "15px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.75 }}>
                 Education that inspires and enables. Innovation driven by real workflows, not theory. Peer-led, practice-tested, and future-focused.
@@ -47,10 +47,10 @@ export default function AboutPage() {
 
             <div className="flex flex-col gap-6">
               {[
-                ["Totally Wired", "We're not an academy or an institute. Okklusion is something the engaged professional community loves — built for curious, ambitious practitioners who want to go further."],
+                ["Totally Wired", "We're not an academy or an institute. Okklusion is something the engaged professional community loves, built for curious, ambitious practitioners who want to go further."],
                 ["Practice-First", "Every piece of content is designed for implementation. We build for time-poor practice owners who need to act, not just learn."],
                 ["Peer-Led", "Our content is shaped by real workflows and tested by real practices. No theory without application."],
-                ["Globally Connected", "A network spanning the UK, Europe, North America, Australia and New Zealand — with a shared commitment to digital-native practice excellence."],
+                ["Globally Connected", "A network spanning the UK, Europe, North America, Australia and New Zealand, with a shared commitment to digital-native practice excellence."],
               ].map(([title, text]) => (
                 <div key={title} style={{ borderLeft: "2px solid var(--accent)", paddingLeft: "24px" }}>
                   <p style={{ fontFamily: "var(--font-serif)", fontSize: "20px", fontWeight: 400, color: "var(--text-primary)", marginBottom: "8px" }}>{title}</p>
@@ -88,7 +88,7 @@ export default function AboutPage() {
               {
                 name: "Dental Monitoring",
                 role: "Technology Partner",
-                description: "DM protocol content, platform support, events coordination, and deep-dive integration — bringing the technology layer to life inside the curriculum.",
+                description: "DM protocol content, platform support, events coordination, and deep-dive integration, bringing the technology layer to life inside the curriculum.",
               },
             ].map((partner) => (
               <div key={partner.name} style={{ backgroundColor: "var(--bg)", padding: "40px 36px" }}>

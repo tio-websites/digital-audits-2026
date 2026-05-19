@@ -3,9 +3,10 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+
 const modules = [
   { title: "Diagnosis & Treatment Planning Fundamentals", duration: "3h 20m", level: "Foundational" },
-  { title: "Advanced Case Planning — Complex Presentations", duration: "4h 45m", level: "Advanced" },
+  { title: "Advanced Case Planning: Complex Presentations", duration: "4h 45m", level: "Advanced" },
   { title: "Staging Strategies for Class II & III", duration: "3h 10m", level: "Intermediate" },
   { title: "Biomechanics in Digital Aligner Treatment", duration: "2h 50m", level: "Intermediate" },
   { title: "Finishing & Retention Protocols", duration: "2h 00m", level: "Foundational" },
@@ -29,7 +30,7 @@ export default function ClinicalPillarPage() {
             Clinical &<br />Treatment Planning
           </h1>
           <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.55)", fontFamily: "var(--font-sans)", fontWeight: 300, maxWidth: "520px", lineHeight: 1.7 }}>
-            Comprehensive case planning, diagnosis, and treatment sequencing for digital-native practices — from foundational principles to advanced case complexity.
+            Comprehensive case planning, diagnosis, and treatment sequencing for digital-native practices, from foundational principles to advanced case complexity.
           </p>
         </div>
       </section>
@@ -48,9 +49,10 @@ export default function ClinicalPillarPage() {
 
               <div className="flex flex-col gap-px" style={{ backgroundColor: "var(--border)" }}>
                 {modules.map((mod) => (
-                  <div
+                  <Link
                     key={mod.title}
-                    style={{ backgroundColor: "var(--bg)", padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px", cursor: "pointer" }}
+                    href="/platform/courses"
+                    style={{ backgroundColor: "var(--bg)", padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px" }}
                     className="hover:bg-[var(--surface)] transition-colors"
                   >
                     <div>
@@ -58,7 +60,7 @@ export default function ClinicalPillarPage() {
                       <p style={{ fontSize: "12px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{mod.level} · {mod.duration}</p>
                     </div>
                     <ArrowRight size={16} style={{ color: "var(--text-muted)", flexShrink: 0 }} />
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
