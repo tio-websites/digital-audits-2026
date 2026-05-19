@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { AuditResult } from "../api/audit/types";
 import ScoreRing from "./ScoreRing";
 import CategoryCard from "./CategoryCard";
@@ -24,7 +25,15 @@ function scoreLabel(score: number): { label: string; colour: string } {
 }
 
 function downloadJSON(result: AuditResult) {
-  const blob = new Blob([JSON.stringify(result, null, 2)], { type: "application/json" });
+  // Strip base64 screenshots from export to keep file manageable
+  const exportData = {
+    ...result,
+    screenshots: {
+      desktop: result.screenshots.desktop ? "[base64 screenshot — stripped for JSON export]" : null,
+      mobile: result.screenshots.mobile ? "[base64 screenshot — stripped for JSON export]" : null,
+    },
+  };
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -33,8 +42,18 @@ function downloadJSON(result: AuditResult) {
   URL.revokeObjectURL(url);
 }
 
+function psiColour(score: number): string {
+  if (score >= 90) return "text-green-600";
+  if (score >= 50) return "text-amber-600";
+  return "text-red-600";
+}
+
 export default function AuditResults({ result, onReset }: AuditResultsProps) {
+  const [screenshotView, setScreenshotView] = useState<"desktop" | "mobile">("desktop");
   const { label, colour } = scoreLabel(result.overall_score);
+  const hasScreenshots = result.screenshots.desktop || result.screenshots.mobile;
+  const hasPagespeed = result.pagespeed?.available;
+  const hasCitations = result.ai_citations?.available;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
@@ -91,6 +110,117 @@ export default function AuditResults({ result, onReset }: AuditResultsProps) {
         </div>
       </div>
 
+      {/* Screenshots */}
+      {hasScreenshots && (
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-gray-900 flex items-center gap-2">
+              <span>📸</span> Homepage Screenshots
+            </h2>
+            <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+              {(["desktop", "mobile"] as const).map((view) => (
+                <button
+                  key={view}
+                  onClick={() => setScreenshotView(view)}
+                  className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
+                    screenshotView === view
+                      ? "bg-white text-tio-navy shadow-sm"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  {view.charAt(0).toUpperCase() + view.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-xl overflow-hidden border border-gray-100 bg-gray-50">
+            {screenshotView === "desktop" && result.screenshots.desktop && (
+              <img
+                src={`data:image/png;base64,${result.screenshots.desktop}`}
+                alt="Desktop homepage screenshot"
+                className="w-full object-cover"
+              />
+            )}
+            {screenshotView === "mobile" && result.screenshots.mobile && (
+              <div className="flex justify-center py-4">
+                <img
+                  src={`data:image/png;base64,${result.screenshots.mobile}`}
+                  alt="Mobile homepage screenshot"
+                  className="w-[375px] rounded-lg shadow"
+                  style={{ maxHeight: 600, objectFit: "cover", objectPosition: "top" }}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* PageSpeed panel */}
+      {hasPagespeed && result.pagespeed && (
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <h2 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <span>⚡</span> Real PageSpeed Insights
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+            {[
+              { label: "Mobile speed", value: result.pagespeed.performanceMobile, isScore: true },
+              { label: "Desktop speed", value: result.pagespeed.performanceDesktop, isScore: true },
+              { label: "LCP", value: result.pagespeed.lcp, isScore: false },
+              { label: "CLS", value: result.pagespeed.cls, isScore: false },
+              { label: "TBT", value: result.pagespeed.tbt, isScore: false },
+            ].map((item) => (
+              <div key={item.label} className="bg-gray-50 rounded-xl p-3 text-center">
+                <div className="text-xs text-gray-500 mb-1">{item.label}</div>
+                <div
+                  className={`text-xl font-bold ${
+                    item.isScore && typeof item.value === "number"
+                      ? psiColour(item.value)
+                      : "text-gray-800"
+                  }`}
+                >
+                  {item.value}
+                  {item.isScore ? "/100" : ""}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* AI Citation results */}
+      {hasCitations && result.ai_citations && (
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <h2 className="font-semibold text-gray-900 mb-1 flex items-center gap-2">
+            <span>🤖</span> AI Citation Check
+            <span className="text-xs font-normal text-gray-400">via ChatGPT</span>
+          </h2>
+          <p className="text-xs text-gray-500 mb-4">
+            Mentioned in {result.ai_citations.mentionedCount} of {result.ai_citations.totalQueries} patient-style queries
+          </p>
+          <div className="space-y-3">
+            {result.ai_citations.queriesRun.map((q, i) => (
+              <div key={i} className="bg-gray-50 rounded-xl p-4">
+                <div className="flex items-start gap-3">
+                  <span
+                    className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
+                      q.mentioned
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-600"
+                    }`}
+                  >
+                    {q.mentioned ? "✓" : "✗"}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium text-gray-700 mb-1 italic">"{q.query}"</p>
+                    <p className="text-xs text-gray-500 leading-relaxed line-clamp-3">{q.excerpt}…</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Site structure snapshot */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
         <h2 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
@@ -107,13 +237,14 @@ export default function AuditResults({ result, onReset }: AuditResultsProps) {
             },
             {
               label: "Social links",
-              value: [
-                result.site_structure.social_links.facebook && "FB",
-                result.site_structure.social_links.instagram && "IG",
-                result.site_structure.social_links.tiktok && "TikTok",
-              ]
-                .filter(Boolean)
-                .join(", ") || "None found",
+              value:
+                [
+                  result.site_structure.social_links.facebook && "FB",
+                  result.site_structure.social_links.instagram && "IG",
+                  result.site_structure.social_links.tiktok && "TikTok",
+                ]
+                  .filter(Boolean)
+                  .join(", ") || "None found",
             },
           ].map((item) => (
             <div key={item.label} className="bg-gray-50 rounded-xl p-3">

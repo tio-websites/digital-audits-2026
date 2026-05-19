@@ -618,9 +618,12 @@ export function scoreAudit(data: CrawlData): AuditResult {
       missing_pages: data.hasMissingPages,
     },
     categories: { content, ux, design, technical, ai },
+    screenshots: { desktop: null, mobile: null },
+    pagespeed: null,
+    ai_citations: null,
     lighthouse_note:
-      "Page speed scores in this report are estimated from HTML signals. For accurate Lighthouse scores, run PageSpeed Insights or the Lighthouse CLI directly.",
+      "Page speed scores in this report are estimated from HTML signals. Run with GOOGLE_PAGESPEED_API_KEY set to get real Lighthouse data.",
     ai_citation_note:
-      "AI citation data is a directional snapshot based on website content analysis. It is not a full AI visibility audit. For a live check, search Perplexity for '[practice name] [suburb]' and '[treatment] in [suburb]' during the sales call.",
+      "AI citation check requires OPENAI_API_KEY to be set. This report uses content-based scoring only.",
   };
 }

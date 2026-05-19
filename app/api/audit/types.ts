@@ -13,6 +13,25 @@ export interface CategoryResult {
   subcategories: SubcategoryScore[];
 }
 
+export interface PageSpeedData {
+  performanceMobile: number;
+  performanceDesktop: number;
+  lcp: string;
+  cls: string;
+  tbt: string;
+  seoScore: number;
+  available: boolean;
+}
+
+export interface AICitationData {
+  mentionedCount: number;
+  citedCount: number;
+  totalQueries: number;
+  queriesRun: { query: string; mentioned: boolean; excerpt: string }[];
+  suggestedScoreRange: { min: number; max: number };
+  available: boolean;
+}
+
 export interface AuditResult {
   practice_name: string;
   url: string;
@@ -39,6 +58,12 @@ export interface AuditResult {
     };
     missing_pages: string[];
   };
+  screenshots: {
+    desktop: string | null;
+    mobile: string | null;
+  };
+  pagespeed: PageSpeedData | null;
+  ai_citations: AICitationData | null;
   categories: {
     content: CategoryResult;
     ux: CategoryResult;
