@@ -1,11 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { crawlSite } from "./crawler";
 import { scoreAudit } from "./scorer";
-import { takeScreenshots } from "./screenshot";
 import { getPageSpeed } from "./pagespeed";
 import { checkAICitations } from "./aicitation";
 
 export const maxDuration = 60;
+
+async function tryScreenshots(url: string) {
+  try {
+    // Dynamic import so a missing/incompatible chromium binary doesn't crash the route
+    const { takeScreenshots } = await import("./screenshot");
+    return await takeScreenshots(url);
+  } catch {
+    return null;
+  }
+}
 
 export async function POST(request: NextRequest) {
   let url: string;
@@ -43,7 +52,7 @@ export async function POST(request: NextRequest) {
     // Run screenshots, pagespeed, and AI citations in parallel with scoring
     const [result, screenshotData, pagespeedData, citationData] = await Promise.allSettled([
       Promise.resolve(scoreAudit(crawlData)),
-      takeScreenshots(url).catch(() => null),
+      tryScreenshots(url),
       getPageSpeed(url),
       checkAICitations(practiceName, crawlData.locationMentioned || "the area", new URL(url).hostname),
     ]);

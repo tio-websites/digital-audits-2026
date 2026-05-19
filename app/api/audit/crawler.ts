@@ -170,13 +170,13 @@ export async function crawlSite(inputUrl: string): Promise<CrawlData> {
     }
   });
 
-  // Sample up to 15 linked pages for deeper analysis
-  const pagesToCrawl = Array.from(level1Links).slice(0, 15);
+  // Sample up to 10 linked pages for deeper analysis (keep total crawl under ~20s)
+  const pagesToCrawl = Array.from(level1Links).slice(0, 10);
   const crawledPages: { url: string; html: string; text: string }[] = [];
 
   await Promise.allSettled(
     pagesToCrawl.map(async (url) => {
-      const html = await fetchWithTimeout(url, 6000);
+      const html = await fetchWithTimeout(url, 4000);
       if (html) {
         const p$ = cheerio.load(html);
         crawledPages.push({ url, html, text: p$("body").text().toLowerCase() });
