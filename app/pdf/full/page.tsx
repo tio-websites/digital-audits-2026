@@ -8,7 +8,7 @@ export default function FullPDFPage() {
   const [result, setResult] = useState<AuditResult | null>(null);
 
   useEffect(() => {
-    const raw = sessionStorage.getItem("pdf-audit-data");
+    const raw = localStorage.getItem("pdf-audit-data");
     if (raw) {
       try {
         setResult(JSON.parse(raw));

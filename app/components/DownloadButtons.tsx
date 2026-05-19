@@ -7,8 +7,11 @@ interface Props {
 }
 
 function openPDF(type: "full" | "teaser", result: AuditResult) {
-  sessionStorage.setItem("pdf-audit-data", JSON.stringify(result));
-  window.open(`/pdf/${type}`, "_blank");
+  localStorage.setItem("pdf-audit-data", JSON.stringify(result));
+  const win = window.open(`/pdf/${type}`, "_blank");
+  if (!win) {
+    alert("Please allow pop-ups for this site to download PDFs, then try again.");
+  }
 }
 
 export default function DownloadButtons({ result }: Props) {
