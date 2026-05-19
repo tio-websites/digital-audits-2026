@@ -18,3 +18,13 @@ body {
   font-family: var(--font-inter), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+
+/* PDF print mode — hides everything except the active PDF layout */
+@media print {
+  body > *:not(#pdf-print-root) { display: none !important; }
+  #pdf-print-root { display: block !important; }
+  @page { size: A4 portrait; margin: 0; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+
+#pdf-print-root { display: none; }
