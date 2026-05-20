@@ -19,12 +19,46 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* PDF print mode — hides everything except the active PDF layout */
-@media print {
-  body > *:not(#pdf-print-root) { display: none !important; }
-  #pdf-print-root { display: block !important; }
-  @page { size: A4 portrait; margin: 0; }
-  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+/* ── PDF report pages (/pdf/full, /pdf/teaser) ─────────────────────────────────────────
+   These classes are used by PDFLayouts.tsx. Defined here so they are always
+   available — nested layouts cannot reliably inject <style> into <head>.    */
+
+/* Each section forces a page break after it when printed */
+.pdf-section {
+  padding: 24px 40px;
 }
 
-#pdf-print-root { display: none; }
+/* Header pinned to top of every printed page */
+.pdf-header {
+  background: #192845;
+}
+
+/* Footer pinned to bottom of every printed page */
+.pdf-footer {
+  background: #192845;
+}
+
+@media print {
+  /* Reserve space at top/bottom of every page for the fixed header/footer */
+  @page { size: A4 portrait; margin: 62px 0 36px 0; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  .pdf-section {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .pdf-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    width: 210mm;
+  }
+
+  .pdf-footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 1000;
+    width: 210mm;
+  }
+}
