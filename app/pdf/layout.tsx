@@ -8,6 +8,16 @@ export default function PDFLayout({ children }: { children: React.ReactNode }) {
           * { box-sizing: border-box; margin: 0; padding: 0; }
           body { font-family: Inter, Arial, sans-serif; background: #fff; width: 210mm; }
 
+          /* Each major section forces a new page when printing */
+          .pdf-section {
+            padding: 24px 40px;
+            break-after: page;
+            page-break-after: always;
+          }
+          .pdf-section-last {
+            padding: 24px 40px;
+          }
+
           @media print {
             /* Reserve 62px top and 36px bottom on every page for the fixed header/footer */
             @page { size: A4 portrait; margin: 62px 0 36px 0; }
