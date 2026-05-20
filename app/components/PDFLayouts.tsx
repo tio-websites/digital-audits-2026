@@ -3,7 +3,8 @@
 import type { AuditResult } from "../api/audit/types";
 
 const CALENDAR_URL =
-  process.env.NEXT_PUBLIC_HUBSPOT_CALENDAR_URL || "https://meetings.hubspot.com/your-link";
+  process.env.NEXT_PUBLIC_HUBSPOT_CALENDAR_URL ||
+  "https://meetings.hubspot.com/your-link";
 
 const NAVY = "#192845";
 const BLUE = "#bce1eb";
@@ -31,10 +32,33 @@ function ScoreBar({ score, max }: { score: number; max: number }) {
   const colour = scoreColour(score, max);
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-      <div style={{ flex: 1, height: 7, background: "#e5e7eb", borderRadius: 4, overflow: "hidden" }}>
-        <div style={{ width: `${pct}%`, height: "100%", background: colour, borderRadius: 4 }} />
+      <div
+        style={{
+          flex: 1,
+          height: 7,
+          background: "#e5e7eb",
+          borderRadius: 4,
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            width: `${pct}%`,
+            height: "100%",
+            background: colour,
+            borderRadius: 4,
+          }}
+        />
       </div>
-      <span style={{ fontSize: 11, fontWeight: 700, color: colour, minWidth: 36, textAlign: "right" }}>
+      <span
+        style={{
+          fontSize: 11,
+          fontWeight: 700,
+          color: colour,
+          minWidth: 36,
+          textAlign: "right",
+        }}
+      >
         {score}/{max}
       </span>
     </div>
@@ -43,101 +67,118 @@ function ScoreBar({ score, max }: { score: number; max: number }) {
 
 function TioLogoWhite() {
   return (
-    <svg width="130" height="38" viewBox="0 0 420 200" xmlns="http://www.w3.org/2000/svg">
-      <text x="0" y="52" fontFamily="Inter, Arial, sans-serif" fontWeight="600" fontSize="56" fill="#ffffff">the</text>
-      <text x="0" y="120" fontFamily="Inter, Arial, sans-serif" fontWeight="600" fontSize="56" fill="#ffffff">invisible</text>
-      <text x="0" y="188" fontFamily="Inter, Arial, sans-serif" fontWeight="600" fontSize="56" fill="#ffffff">orthodontist</text>
+    <svg
+      width="120"
+      height="36"
+      viewBox="0 0 420 200"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <text
+        x="0"
+        y="52"
+        fontFamily="Inter, Arial, sans-serif"
+        fontWeight="600"
+        fontSize="56"
+        fill="#ffffff"
+      >
+        the
+      </text>
+      <text
+        x="0"
+        y="120"
+        fontFamily="Inter, Arial, sans-serif"
+        fontWeight="600"
+        fontSize="56"
+        fill="#ffffff"
+      >
+        invisible
+      </text>
+      <text
+        x="0"
+        y="188"
+        fontFamily="Inter, Arial, sans-serif"
+        fontWeight="600"
+        fontSize="56"
+        fill="#ffffff"
+      >
+        orthodontist
+      </text>
     </svg>
   );
 }
 
-function PageShell({
-  children,
-  date,
-  url,
-  subtitle = "Digital Audit Report",
-}: {
-  children: React.ReactNode;
-  date: string;
-  url: string;
-  subtitle?: string;
-}) {
+function PdfHeader({ subtitle }: { subtitle: string }) {
   return (
     <div
+      className="pdf-header"
       style={{
-        width: "210mm",
-        minHeight: "297mm",
-        fontFamily: "Inter, Arial, sans-serif",
-        color: "#1a1a1a",
-        background: "#fff",
+        background: NAVY,
+        padding: "12px 40px",
         display: "flex",
-        flexDirection: "column",
-        pageBreakAfter: "always",
-        breakAfter: "page",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: "210mm",
       }}
     >
-      {/* Page header with logo */}
-      <div
+      <TioLogoWhite />
+      <span
         style={{
-          background: NAVY,
-          padding: "12px 40px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexShrink: 0,
+          color: BLUE,
+          fontSize: 10,
+          textTransform: "uppercase",
+          letterSpacing: 1,
         }}
       >
-        <TioLogoWhite />
-        <span
-          style={{
-            color: BLUE,
-            fontSize: 10,
-            textTransform: "uppercase",
-            letterSpacing: 1,
-          }}
-        >
-          {subtitle}
-        </span>
-      </div>
-
-      {/* Page content */}
-      <div style={{ flex: 1, padding: "24px 40px" }}>{children}</div>
-
-      {/* Page footer */}
-      <div
-        style={{
-          background: NAVY,
-          padding: "9px 40px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexShrink: 0,
-        }}
-      >
-        <span style={{ color: BLUE, fontSize: 9 }}>
-          the invisible orthodontist — Digital Audit Report
-        </span>
-        <span style={{ color: "#6b8ab0", fontSize: 9 }}>
-          {url} · {date} · Internal use only
-        </span>
-      </div>
+        {subtitle}
+      </span>
     </div>
   );
 }
 
-// ─── FULL REPORT ─────────────────────────────────────────────────────────────
+function PdfFooter({ url, date }: { url: string; date: string }) {
+  return (
+    <div
+      className="pdf-footer"
+      style={{
+        background: NAVY,
+        padding: "9px 40px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        width: "210mm",
+      }}
+    >
+      <span style={{ color: BLUE, fontSize: 9 }}>
+        the invisible orthodontist — Digital Audit Report
+      </span>
+      <span style={{ color: "#6b8ab0", fontSize: 9 }}>
+        {url} · {date} · Internal use only
+      </span>
+    </div>
+  );
+}
+
+const section: React.CSSProperties = {
+  padding: "24px 40px",
+  pageBreakAfter: "always",
+  breakAfter: "page",
+};
+
+const sectionLast: React.CSSProperties = {
+  padding: "24px 40px",
+};
 
 export function FullReportLayout({ result }: Props) {
   const overall = result.overall_score;
   const overallColour = scoreColour(overall);
-  const scoreLabel = overall >= 70 ? "Good" : overall >= 50 ? "Needs Work" : "Weak";
+  const scoreLabel =
+    overall >= 70 ? "Good" : overall >= 50 ? "Needs Work" : "Weak";
 
   return (
-    <div style={{ fontFamily: "Inter, Arial, sans-serif" }}>
+    <div style={{ fontFamily: "Inter, Arial, sans-serif", width: "210mm" }}>
+      <PdfHeader subtitle="Digital Audit Report" />
 
-      {/* ── PAGE 1: Practice overview + screenshot + category grid ── */}
-      <PageShell date={result.date} url={result.url}>
-        {/* Practice name + overall score */}
+      <div style={section}>
         <div
           style={{
             display: "flex",
@@ -202,12 +243,7 @@ export function FullReportLayout({ result }: Props) {
               Overall Score
             </div>
             <div
-              style={{
-                fontSize: 52,
-                fontWeight: 900,
-                color: overallColour,
-                lineHeight: 1,
-              }}
+              style={{ fontSize: 52, fontWeight: 900, color: overallColour, lineHeight: 1 }}
             >
               {overall}
             </div>
@@ -229,7 +265,6 @@ export function FullReportLayout({ result }: Props) {
           </div>
         </div>
 
-        {/* Homepage screenshot */}
         {result.screenshots?.desktop && (
           <div style={{ marginBottom: 22 }}>
             <div
@@ -257,7 +292,6 @@ export function FullReportLayout({ result }: Props) {
           </div>
         )}
 
-        {/* Category score overview */}
         <div>
           <div
             style={{
@@ -272,11 +306,7 @@ export function FullReportLayout({ result }: Props) {
             Category Scores
           </div>
           <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(5, 1fr)",
-              gap: 10,
-            }}
+            style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10 }}
           >
             {CATEGORIES.map((cat) => {
               const s = result.scores[cat.key];
@@ -292,11 +322,7 @@ export function FullReportLayout({ result }: Props) {
                     border: `1px solid ${BLUE}`,
                   }}
                 >
-                  <div
-                    style={{ fontSize: 24, fontWeight: 800, color: c }}
-                  >
-                    {s}
-                  </div>
+                  <div style={{ fontSize: 24, fontWeight: 800, color: c }}>{s}</div>
                   <div
                     style={{
                       fontSize: 9,
@@ -316,11 +342,9 @@ export function FullReportLayout({ result }: Props) {
             })}
           </div>
         </div>
-      </PageShell>
+      </div>
 
-      {/* ── PAGE 2: Site structure + top opportunities ── */}
-      <PageShell date={result.date} url={result.url}>
-        {/* Site structure */}
+      <div style={section}>
         <div style={{ marginBottom: 28 }}>
           <div
             style={{
@@ -338,21 +362,11 @@ export function FullReportLayout({ result }: Props) {
             style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}
           >
             {[
-              {
-                label: "Pages found",
-                value: String(result.site_structure.total_pages),
-                danger: false,
-              },
-              {
-                label: "Platform",
-                value: result.site_structure.platform,
-                danger: false,
-              },
+              { label: "Pages found", value: String(result.site_structure.total_pages), danger: false },
+              { label: "Platform", value: result.site_structure.platform, danger: false },
               {
                 label: "Online booking",
-                value: result.site_structure.has_booking
-                  ? "Found"
-                  : "Not detected",
+                value: result.site_structure.has_booking ? "Found" : "Not detected",
                 danger: !result.site_structure.has_booking,
               },
               {
@@ -370,31 +384,12 @@ export function FullReportLayout({ result }: Props) {
             ].map((item) => (
               <div
                 key={item.label}
-                style={{
-                  background: "#f9fafb",
-                  borderRadius: 8,
-                  padding: "12px 16px",
-                  border: "1px solid #e5e7eb",
-                }}
+                style={{ background: "#f9fafb", borderRadius: 8, padding: "12px 16px", border: "1px solid #e5e7eb" }}
               >
-                <div
-                  style={{
-                    fontSize: 10,
-                    color: "#9ca3af",
-                    marginBottom: 4,
-                    textTransform: "uppercase",
-                    letterSpacing: 0.5,
-                  }}
-                >
+                <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>
                   {item.label}
                 </div>
-                <div
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: item.danger ? "#dc2626" : NAVY,
-                  }}
-                >
+                <div style={{ fontSize: 14, fontWeight: 700, color: item.danger ? "#dc2626" : NAVY }}>
                   {item.value}
                 </div>
               </div>
@@ -402,7 +397,6 @@ export function FullReportLayout({ result }: Props) {
           </div>
         </div>
 
-        {/* Top opportunities */}
         <div>
           <div
             style={{
@@ -454,353 +448,118 @@ export function FullReportLayout({ result }: Props) {
                   border: `1px solid ${BLUE}`,
                 }}
               >
-                <p
-                  style={{
-                    margin: 0,
-                    fontSize: 12,
-                    color: "#374151",
-                    lineHeight: 1.6,
-                  }}
-                >
+                <p style={{ margin: 0, fontSize: 12, color: "#374151", lineHeight: 1.6 }}>
                   {opp}
                 </p>
               </div>
             </div>
           ))}
         </div>
-      </PageShell>
+      </div>
 
-      {/* ── PAGES 3-7: One page per category ── */}
       {CATEGORIES.map((cat) => {
         const category = result.categories[cat.key];
         const s = result.scores[cat.key];
         const c = scoreColour(s);
         return (
-          <PageShell key={cat.key} date={result.date} url={result.url}>
-            {/* Category title + score */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-end",
-                justifyContent: "space-between",
-                marginBottom: 6,
-              }}
-            >
-              <div style={{ fontSize: 20, fontWeight: 800, color: NAVY }}>
-                {cat.title}
-              </div>
+          <div key={cat.key} style={section}>
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 6 }}>
+              <div style={{ fontSize: 20, fontWeight: 800, color: NAVY }}>{cat.title}</div>
               <div style={{ textAlign: "right" }}>
-                <span
-                  style={{ fontSize: 34, fontWeight: 900, color: c, lineHeight: 1 }}
-                >
-                  {s}
-                </span>
+                <span style={{ fontSize: 34, fontWeight: 900, color: c, lineHeight: 1 }}>{s}</span>
                 <span style={{ fontSize: 13, color: "#9ca3af" }}>/100</span>
               </div>
             </div>
-            <div
-              style={{
-                height: 4,
-                background: BLUE,
-                borderRadius: 2,
-                marginBottom: 14,
-              }}
-            />
-            <p
-              style={{
-                margin: "0 0 20px",
-                fontSize: 12,
-                color: "#374151",
-                lineHeight: 1.7,
-              }}
-            >
+            <div style={{ height: 4, background: BLUE, borderRadius: 2, marginBottom: 14 }} />
+            <p style={{ margin: "0 0 18px", fontSize: 12, color: "#374151", lineHeight: 1.7 }}>
               {category.description}
             </p>
 
-            {/* Subcategories */}
             {category.subcategories.map((sub, idx) => (
               <div
                 key={sub.name}
                 style={{
-                  marginBottom: 16,
-                  paddingBottom: 16,
-                  borderBottom:
-                    idx < category.subcategories.length - 1
-                      ? "1px solid #f3f4f6"
-                      : "none",
+                  marginBottom: 14,
+                  paddingBottom: 14,
+                  borderBottom: idx < category.subcategories.length - 1 ? "1px solid #f3f4f6" : "none",
                   pageBreakInside: "avoid",
                   breakInside: "avoid",
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: 6,
-                  }}
-                >
-                  <span style={{ fontSize: 12, fontWeight: 700, color: NAVY }}>
-                    {sub.name}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 10,
-                      color: "#6b7280",
-                      background: "#f3f4f6",
-                      padding: "2px 8px",
-                      borderRadius: 99,
-                    }}
-                  >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: NAVY }}>{sub.name}</span>
+                  <span style={{ fontSize: 10, color: "#6b7280", background: "#f3f4f6", padding: "2px 8px", borderRadius: 99 }}>
                     {sub.score}/{sub.max}
                   </span>
                 </div>
                 <ScoreBar score={sub.score} max={sub.max} />
-                <div
-                  style={{
-                    marginTop: 10,
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: 8,
-                  }}
-                >
-                  <div
-                    style={{
-                      background: "#fffbeb",
-                      borderRadius: 6,
-                      padding: "8px 12px",
-                      border: "1px solid #fde68a",
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: 9,
-                        fontWeight: 700,
-                        color: "#92400e",
-                        textTransform: "uppercase",
-                        letterSpacing: 0.5,
-                        marginBottom: 4,
-                      }}
-                    >
-                      Finding
-                    </div>
-                    <p
-                      style={{
-                        margin: 0,
-                        fontSize: 11,
-                        color: "#78350f",
-                        lineHeight: 1.5,
-                      }}
-                    >
-                      {sub.finding}
-                    </p>
+                <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                  <div style={{ background: "#fffbeb", borderRadius: 6, padding: "8px 12px", border: "1px solid #fde68a" }}>
+                    <div style={{ fontSize: 9, fontWeight: 700, color: "#92400e", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Finding</div>
+                    <p style={{ margin: 0, fontSize: 11, color: "#78350f", lineHeight: 1.5 }}>{sub.finding}</p>
                   </div>
-                  <div
-                    style={{
-                      background: "#f0fdf4",
-                      borderRadius: 6,
-                      padding: "8px 12px",
-                      border: "1px solid #bbf7d0",
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: 9,
-                        fontWeight: 700,
-                        color: "#14532d",
-                        textTransform: "uppercase",
-                        letterSpacing: 0.5,
-                        marginBottom: 4,
-                      }}
-                    >
-                      Recommendation
-                    </div>
-                    <p
-                      style={{
-                        margin: 0,
-                        fontSize: 11,
-                        color: "#166534",
-                        lineHeight: 1.5,
-                      }}
-                    >
-                      {sub.recommendation}
-                    </p>
+                  <div style={{ background: "#f0fdf4", borderRadius: 6, padding: "8px 12px", border: "1px solid #bbf7d0" }}>
+                    <div style={{ fontSize: 9, fontWeight: 700, color: "#14532d", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Recommendation</div>
+                    <p style={{ margin: 0, fontSize: 11, color: "#166534", lineHeight: 1.5 }}>{sub.recommendation}</p>
                   </div>
                 </div>
               </div>
             ))}
-          </PageShell>
+          </div>
         );
       })}
 
-      {/* ── FINAL PAGE: PageSpeed + AI citations + methodology ── */}
-      <PageShell date={result.date} url={result.url}>
-        {/* PageSpeed */}
+      <div style={sectionLast}>
         {result.pagespeed?.available && (
           <div style={{ marginBottom: 28 }}>
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                color: NAVY,
-                marginBottom: 14,
-                textTransform: "uppercase",
-                letterSpacing: 0.5,
-              }}
-            >
-              PageSpeed Insights
-            </div>
-            <div
-              style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}
-            >
+            <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 14, textTransform: "uppercase", letterSpacing: 0.5 }}>PageSpeed Insights</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
               {[
                 { label: "Mobile Score", value: result.pagespeed.performanceMobile },
                 { label: "Desktop Score", value: result.pagespeed.performanceDesktop },
                 { label: "LCP", value: result.pagespeed.lcp },
                 { label: "SEO Score", value: result.pagespeed.seoScore },
               ].map((item) => (
-                <div
-                  key={item.label}
-                  style={{
-                    background: LIGHT,
-                    borderRadius: 10,
-                    padding: "14px 10px",
-                    textAlign: "center",
-                    border: `1px solid ${BLUE}`,
-                  }}
-                >
-                  <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 6 }}>
-                    {item.label}
-                  </div>
-                  <div
-                    style={{ fontSize: 22, fontWeight: 800, color: NAVY }}
-                  >
-                    {item.value ?? "-"}
-                  </div>
+                <div key={item.label} style={{ background: LIGHT, borderRadius: 10, padding: "14px 10px", textAlign: "center", border: `1px solid ${BLUE}` }}>
+                  <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 6 }}>{item.label}</div>
+                  <div style={{ fontSize: 22, fontWeight: 800, color: NAVY }}>{item.value ?? "-"}</div>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {/* AI citations */}
         {result.ai_citations?.available && (
           <div style={{ marginBottom: 28 }}>
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                color: NAVY,
-                marginBottom: 6,
-                textTransform: "uppercase",
-                letterSpacing: 0.5,
-              }}
-            >
-              AI Citation Check
-            </div>
-            <p
-              style={{ margin: "0 0 14px", fontSize: 11, color: "#6b7280", lineHeight: 1.5 }}
-            >
-              How often this practice appeared when patients asked AI assistants for
-              recommendations ({result.ai_citations.mentionedCount}/
-              {result.ai_citations.totalQueries} queries).
+            <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>AI Citation Check</div>
+            <p style={{ margin: "0 0 14px", fontSize: 11, color: "#6b7280", lineHeight: 1.5 }}>
+              How often this practice appeared when patients asked AI assistants for recommendations ({result.ai_citations.mentionedCount}/{result.ai_citations.totalQueries} queries).
             </p>
             {result.ai_citations.queriesRun.map((q, i) => (
-              <div
-                key={i}
-                style={{
-                  display: "flex",
-                  gap: 12,
-                  marginBottom: 10,
-                  alignItems: "flex-start",
-                  pageBreakInside: "avoid",
-                  breakInside: "avoid",
-                }}
-              >
-                <span
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: "50%",
-                    background: q.mentioned ? "#dcfce7" : "#fee2e2",
-                    color: q.mentioned ? "#16a34a" : "#dc2626",
-                    fontSize: 10,
-                    fontWeight: 700,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                    marginTop: 2,
-                  }}
-                >
+              <div key={i} style={{ display: "flex", gap: 12, marginBottom: 10, alignItems: "flex-start", pageBreakInside: "avoid", breakInside: "avoid" }}>
+                <span style={{ width: 20, height: 20, borderRadius: "50%", background: q.mentioned ? "#dcfce7" : "#fee2e2", color: q.mentioned ? "#16a34a" : "#dc2626", fontSize: 10, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
                   {q.mentioned ? "Y" : "N"}
                 </span>
-                <div
-                  style={{
-                    flex: 1,
-                    background: "#f9fafb",
-                    borderRadius: 6,
-                    padding: "8px 12px",
-                    border: "1px solid #e5e7eb",
-                  }}
-                >
-                  <p
-                    style={{
-                      margin: "0 0 4px",
-                      fontSize: 11,
-                      fontStyle: "italic",
-                      color: NAVY,
-                    }}
-                  >
-                    "{q.query}"
-                  </p>
-                  <p
-                    style={{ margin: 0, fontSize: 10, color: "#6b7280", lineHeight: 1.5 }}
-                  >
-                    {q.excerpt}
-                  </p>
+                <div style={{ flex: 1, background: "#f9fafb", borderRadius: 6, padding: "8px 12px", border: "1px solid #e5e7eb" }}>
+                  <p style={{ margin: "0 0 4px", fontSize: 11, fontStyle: "italic", color: NAVY }}>"{q.query}"</p>
+                  <p style={{ margin: 0, fontSize: 10, color: "#6b7280", lineHeight: 1.5 }}>{q.excerpt}</p>
                 </div>
               </div>
             ))}
           </div>
         )}
 
-        {/* Methodology */}
-        <div
-          style={{
-            background: LIGHT,
-            borderRadius: 8,
-            padding: 16,
-            border: `1px solid ${BLUE}`,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 10,
-              fontWeight: 700,
-              color: NAVY,
-              marginBottom: 8,
-              textTransform: "uppercase",
-              letterSpacing: 0.5,
-            }}
-          >
-            Methodology Notes
-          </div>
-          <p
-            style={{ margin: "0 0 6px", fontSize: 10, color: "#6b7280", lineHeight: 1.6 }}
-          >
-            {result.lighthouse_note}
-          </p>
-          <p style={{ margin: 0, fontSize: 10, color: "#6b7280", lineHeight: 1.6 }}>
-            {result.ai_citation_note}
-          </p>
+        <div style={{ background: LIGHT, borderRadius: 8, padding: 16, border: `1px solid ${BLUE}` }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: NAVY, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>Methodology Notes</div>
+          <p style={{ margin: "0 0 6px", fontSize: 10, color: "#6b7280", lineHeight: 1.6 }}>{result.lighthouse_note}</p>
+          <p style={{ margin: 0, fontSize: 10, color: "#6b7280", lineHeight: 1.6 }}>{result.ai_citation_note}</p>
         </div>
-      </PageShell>
+      </div>
+
+      <PdfFooter url={result.url} date={result.date} />
     </div>
   );
 }
-
-// ─── TEASER REPORT ───────────────────────────────────────────────────────────
 
 export function TeaserReportLayout({ result }: Props) {
   const overall = result.overall_score;
@@ -808,322 +567,90 @@ export function TeaserReportLayout({ result }: Props) {
   const scoreLabel = overall >= 70 ? "Good" : overall >= 50 ? "Needs Work" : "Weak";
 
   return (
-    <div style={{ fontFamily: "Inter, Arial, sans-serif" }}>
-      <PageShell date={result.date} url={result.url} subtitle="Digital Audit Report - Preview">
+    <div style={{ fontFamily: "Inter, Arial, sans-serif", width: "210mm" }}>
+      <PdfHeader subtitle="Digital Audit Report - Preview" />
 
-        {/* Practice + score */}
-        <div
-          style={{
-            display: "flex",
-            gap: 28,
-            alignItems: "center",
-            marginBottom: 22,
-            paddingBottom: 22,
-            borderBottom: `2px solid ${BLUE}`,
-          }}
-        >
+      <div style={{ padding: "24px 40px" }}>
+        <div style={{ display: "flex", gap: 28, alignItems: "center", marginBottom: 22, paddingBottom: 22, borderBottom: `2px solid ${BLUE}` }}>
           <div style={{ flex: 1 }}>
-            <div
-              style={{
-                fontSize: 10,
-                color: "#9ca3af",
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                marginBottom: 6,
-              }}
-            >
-              Website Audit for
-            </div>
-            <div
-              style={{ fontSize: 28, fontWeight: 800, color: NAVY, marginBottom: 4 }}
-            >
-              {result.practice_name}
-            </div>
-            <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 14 }}>
-              {result.url}
-            </div>
-            <p
-              style={{
-                margin: 0,
-                fontSize: 12,
-                color: "#374151",
-                lineHeight: 1.6,
-                maxWidth: 380,
-              }}
-            >
-              We audited your website across five key areas that directly impact how
-              many new patients find you, trust you, and book with you.
+            <div style={{ fontSize: 10, color: "#9ca3af", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Website Audit for</div>
+            <div style={{ fontSize: 28, fontWeight: 800, color: NAVY, marginBottom: 4 }}>{result.practice_name}</div>
+            <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 14 }}>{result.url}</div>
+            <p style={{ margin: 0, fontSize: 12, color: "#374151", lineHeight: 1.6, maxWidth: 380 }}>
+              We audited your website across five key areas that directly impact how many new patients find you, trust you, and book with you.
             </p>
           </div>
-          <div
-            style={{
-              textAlign: "center",
-              background: LIGHT,
-              borderRadius: 16,
-              padding: "22px 30px",
-              border: `2px solid ${BLUE}`,
-              flexShrink: 0,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                color: "#9ca3af",
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                marginBottom: 4,
-              }}
-            >
-              Overall Score
-            </div>
-            <div
-              style={{ fontSize: 60, fontWeight: 900, color: overallColour, lineHeight: 1 }}
-            >
-              {overall}
-            </div>
+          <div style={{ textAlign: "center", background: LIGHT, borderRadius: 16, padding: "20px 28px", border: `2px solid ${BLUE}`, flexShrink: 0 }}>
+            <div style={{ fontSize: 10, color: "#9ca3af", textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}>Overall Score</div>
+            <div style={{ fontSize: 56, fontWeight: 900, color: overallColour, lineHeight: 1 }}>{overall}</div>
             <div style={{ fontSize: 11, color: "#9ca3af" }}>out of 100</div>
-            <div
-              style={{
-                marginTop: 8,
-                background: overallColour,
-                color: "#fff",
-                fontSize: 11,
-                fontWeight: 700,
-                padding: "4px 14px",
-                borderRadius: 99,
-                display: "inline-block",
-              }}
-            >
-              {scoreLabel}
-            </div>
+            <div style={{ marginTop: 8, background: overallColour, color: "#fff", fontSize: 11, fontWeight: 700, padding: "4px 14px", borderRadius: 99, display: "inline-block" }}>{scoreLabel}</div>
           </div>
         </div>
 
-        {/* Screenshot */}
         {result.screenshots?.desktop && (
-          <div style={{ marginBottom: 20 }}>
-            <div
-              style={{ fontSize: 11, color: "#6b7280", marginBottom: 6, fontStyle: "italic" }}
-            >
-              Your current homepage
-            </div>
+          <div style={{ marginBottom: 18 }}>
+            <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 6, fontStyle: "italic" }}>Your current homepage</div>
             <img
               src={`data:image/png;base64,${result.screenshots.desktop}`}
               alt="Homepage screenshot"
-              style={{
-                width: "100%",
-                borderRadius: 8,
-                border: "1px solid #e5e7eb",
-                display: "block",
-                maxHeight: 180,
-                objectFit: "cover",
-                objectPosition: "top",
-              }}
+              style={{ width: "100%", borderRadius: 8, border: "1px solid #e5e7eb", display: "block", maxHeight: 160, objectFit: "cover", objectPosition: "top" }}
             />
           </div>
         )}
 
-        {/* Category score bars */}
-        <div style={{ marginBottom: 20 }}>
-          <div
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              color: NAVY,
-              marginBottom: 12,
-              textTransform: "uppercase",
-              letterSpacing: 0.5,
-            }}
-          >
-            How You Scored
-          </div>
+        <div style={{ marginBottom: 18 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: NAVY, marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>How You Scored</div>
           {CATEGORIES.map((cat) => {
             const s = result.scores[cat.key];
             return (
-              <div
-                key={cat.key}
-                style={{ display: "flex", alignItems: "center", marginBottom: 10, gap: 10 }}
-              >
-                <div
-                  style={{ width: 170, fontSize: 11, fontWeight: 600, color: NAVY, flexShrink: 0 }}
-                >
-                  {cat.title}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <ScoreBar score={s} max={100} />
-                </div>
-                <div
-                  style={{
-                    width: 34,
-                    fontSize: 10,
-                    color: "#9ca3af",
-                    textAlign: "right",
-                    flexShrink: 0,
-                  }}
-                >
-                  {cat.weight}
-                </div>
+              <div key={cat.key} style={{ display: "flex", alignItems: "center", marginBottom: 9, gap: 10 }}>
+                <div style={{ width: 168, fontSize: 11, fontWeight: 600, color: NAVY, flexShrink: 0 }}>{cat.title}</div>
+                <div style={{ flex: 1 }}><ScoreBar score={s} max={100} /></div>
+                <div style={{ width: 34, fontSize: 10, color: "#9ca3af", textAlign: "right", flexShrink: 0 }}>{cat.weight}</div>
               </div>
             );
           })}
         </div>
 
-        {/* Top opportunities - first 2 visible, rest locked */}
-        <div style={{ marginBottom: 22 }}>
-          <div
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              color: NAVY,
-              marginBottom: 4,
-              textTransform: "uppercase",
-              letterSpacing: 0.5,
-            }}
-          >
-            Your Top Website Gaps
-          </div>
-          <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 12px" }}>
-            We identified {result.top_opportunities.length} priority improvements. Here
-            are the first two:
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: NAVY, marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>Your Top Website Gaps</div>
+          <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 10px" }}>
+            We identified {result.top_opportunities.length} priority improvements. Here are the first two:
           </p>
 
           {result.top_opportunities.slice(0, 2).map((opp, i) => (
-            <div
-              key={i}
-              style={{
-                display: "flex",
-                gap: 12,
-                marginBottom: 10,
-                alignItems: "flex-start",
-              }}
-            >
-              <div
-                style={{
-                  minWidth: 24,
-                  height: 24,
-                  borderRadius: "50%",
-                  background: BLUE,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: NAVY,
-                  flexShrink: 0,
-                }}
-              >
-                {i + 1}
-              </div>
-              <p
-                style={{ margin: 0, fontSize: 12, color: "#374151", lineHeight: 1.6 }}
-              >
-                {opp}
-              </p>
+            <div key={i} style={{ display: "flex", gap: 12, marginBottom: 8, alignItems: "flex-start" }}>
+              <div style={{ minWidth: 24, height: 24, borderRadius: "50%", background: BLUE, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: NAVY, flexShrink: 0 }}>{i + 1}</div>
+              <p style={{ margin: 0, fontSize: 12, color: "#374151", lineHeight: 1.6 }}>{opp}</p>
             </div>
           ))}
 
           {result.top_opportunities.slice(2).map((_, i) => (
-            <div
-              key={i}
-              style={{
-                display: "flex",
-                gap: 12,
-                marginBottom: 10,
-                alignItems: "center",
-                opacity: 0.35,
-              }}
-            >
-              <div
-                style={{
-                  minWidth: 24,
-                  height: 24,
-                  borderRadius: "50%",
-                  background: NAVY,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: "#fff",
-                  flexShrink: 0,
-                }}
-              >
-                {i + 3}
-              </div>
-              <div
-                style={{ flex: 1, height: 10, background: "#d1d5db", borderRadius: 4 }}
-              />
-              <div style={{ fontSize: 10, color: "#9ca3af", whiteSpace: "nowrap" }}>
-                Full report only
-              </div>
+            <div key={i} style={{ display: "flex", gap: 12, marginBottom: 8, alignItems: "center", opacity: 0.35 }}>
+              <div style={{ minWidth: 24, height: 24, borderRadius: "50%", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: "#fff", flexShrink: 0 }}>{i + 3}</div>
+              <div style={{ flex: 1, height: 10, background: "#d1d5db", borderRadius: 4 }} />
+              <div style={{ fontSize: 10, color: "#9ca3af", whiteSpace: "nowrap" }}>Full report only</div>
             </div>
           ))}
         </div>
 
-        {/* CTA */}
-        <div
-          style={{
-            background: NAVY,
-            borderRadius: 12,
-            padding: "28px 32px",
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 10,
-              color: BLUE,
-              textTransform: "uppercase",
-              letterSpacing: 1,
-              marginBottom: 8,
-            }}
-          >
-            Want the full picture?
+        <div style={{ background: NAVY, borderRadius: 12, padding: "26px 32px", textAlign: "center" }}>
+          <div style={{ fontSize: 10, color: BLUE, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>Want the full picture?</div>
+          <div style={{ fontSize: 19, fontWeight: 800, color: "#fff", marginBottom: 10, lineHeight: 1.3 }}>
+            Book a free 30-minute call to review<br />your complete audit results
           </div>
-          <div
-            style={{
-              fontSize: 20,
-              fontWeight: 800,
-              color: "#fff",
-              marginBottom: 10,
-              lineHeight: 1.3,
-            }}
-          >
-            Book a free 30-minute call to review
-            <br />
-            your complete audit results
-          </div>
-          <p
-            style={{
-              fontSize: 11,
-              color: "#9db8d4",
-              margin: "0 0 20px",
-              lineHeight: 1.6,
-            }}
-          >
-            We'll walk through your detailed scores, identify your biggest opportunities,
-            and show you exactly what needs to change to attract more patients online.
+          <p style={{ fontSize: 11, color: "#9db8d4", margin: "0 0 18px", lineHeight: 1.6 }}>
+            We'll walk through your detailed scores, identify your biggest opportunities, and show you exactly what needs to change to attract more patients online.
           </p>
-          <a
-            href={CALENDAR_URL}
-            style={{
-              display: "inline-block",
-              background: BLUE,
-              color: NAVY,
-              fontSize: 13,
-              fontWeight: 700,
-              padding: "12px 28px",
-              borderRadius: 8,
-              textDecoration: "none",
-            }}
-          >
+          <a href={CALENDAR_URL} style={{ display: "inline-block", background: BLUE, color: NAVY, fontSize: 13, fontWeight: 700, padding: "12px 28px", borderRadius: 8, textDecoration: "none" }}>
             Book Your Review Call
           </a>
-          <div style={{ marginTop: 10, fontSize: 10, color: "#6b8ab0" }}>
-            {CALENDAR_URL}
-          </div>
+          <div style={{ marginTop: 10, fontSize: 10, color: "#6b8ab0" }}>{CALENDAR_URL}</div>
         </div>
-      </PageShell>
+      </div>
+
+      <PdfFooter url={result.url} date={result.date} />
     </div>
   );
 }
