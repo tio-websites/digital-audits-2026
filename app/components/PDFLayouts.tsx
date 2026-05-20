@@ -73,36 +73,9 @@ function TioLogoWhite() {
       viewBox="0 0 420 200"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <text
-        x="0"
-        y="52"
-        fontFamily="Inter, Arial, sans-serif"
-        fontWeight="600"
-        fontSize="56"
-        fill="#ffffff"
-      >
-        the
-      </text>
-      <text
-        x="0"
-        y="120"
-        fontFamily="Inter, Arial, sans-serif"
-        fontWeight="600"
-        fontSize="56"
-        fill="#ffffff"
-      >
-        invisible
-      </text>
-      <text
-        x="0"
-        y="188"
-        fontFamily="Inter, Arial, sans-serif"
-        fontWeight="600"
-        fontSize="56"
-        fill="#ffffff"
-      >
-        orthodontist
-      </text>
+      <text x="0" y="52" fontFamily="Inter, Arial, sans-serif" fontWeight="600" fontSize="56" fill="#ffffff">the</text>
+      <text x="0" y="120" fontFamily="Inter, Arial, sans-serif" fontWeight="600" fontSize="56" fill="#ffffff">invisible</text>
+      <text x="0" y="188" fontFamily="Inter, Arial, sans-serif" fontWeight="600" fontSize="56" fill="#ffffff">orthodontist</text>
     </svg>
   );
 }
@@ -121,21 +94,14 @@ function PdfHeader({ subtitle }: { subtitle: string }) {
       }}
     >
       <TioLogoWhite />
-      <span
-        style={{
-          color: BLUE,
-          fontSize: 10,
-          textTransform: "uppercase",
-          letterSpacing: 1,
-        }}
-      >
+      <span style={{ color: BLUE, fontSize: 10, textTransform: "uppercase", letterSpacing: 1 }}>
         {subtitle}
       </span>
     </div>
   );
 }
 
-function PdfFooter({ url, date }: { url: string; date: string }) {
+function PdfFooter() {
   return (
     <div
       className="pdf-footer"
@@ -143,16 +109,13 @@ function PdfFooter({ url, date }: { url: string; date: string }) {
         background: NAVY,
         padding: "9px 40px",
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
         width: "210mm",
       }}
     >
-      <span style={{ color: BLUE, fontSize: 9 }}>
-        the invisible orthodontist — Digital Audit Report
-      </span>
-      <span style={{ color: "#6b8ab0", fontSize: 9 }}>
-        {url} · {date} · Internal use only
+      <span style={{ color: BLUE, fontSize: 9, letterSpacing: 0.3 }}>
+        the invisible orthodontist - Digital Audit Report&nbsp;&nbsp;Internal use only
       </span>
     </div>
   );
@@ -171,172 +134,46 @@ const sectionLast: React.CSSProperties = {
 export function FullReportLayout({ result }: Props) {
   const overall = result.overall_score;
   const overallColour = scoreColour(overall);
-  const scoreLabel =
-    overall >= 70 ? "Good" : overall >= 50 ? "Needs Work" : "Weak";
+  const scoreLabel = overall >= 70 ? "Good" : overall >= 50 ? "Needs Work" : "Weak";
 
   return (
     <div style={{ fontFamily: "Inter, Arial, sans-serif", width: "210mm" }}>
       <PdfHeader subtitle="Digital Audit Report" />
 
       <div style={section}>
-        <div
-          style={{
-            display: "flex",
-            gap: 28,
-            alignItems: "flex-start",
-            marginBottom: 22,
-            paddingBottom: 22,
-            borderBottom: `2px solid ${BLUE}`,
-          }}
-        >
+        <div style={{ display: "flex", gap: 28, alignItems: "flex-start", marginBottom: 22, paddingBottom: 22, borderBottom: `2px solid ${BLUE}` }}>
           <div style={{ flex: 1 }}>
-            <div
-              style={{
-                fontSize: 10,
-                color: "#9ca3af",
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                marginBottom: 5,
-              }}
-            >
-              Website Audit
-            </div>
-            <div
-              style={{ fontSize: 26, fontWeight: 800, color: NAVY, marginBottom: 4 }}
-            >
-              {result.practice_name}
-            </div>
-            <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 12 }}>
-              {result.url}
-            </div>
-            <p
-              style={{
-                margin: 0,
-                fontSize: 12,
-                color: "#374151",
-                lineHeight: 1.7,
-                maxWidth: 390,
-              }}
-            >
-              {result.summary}
-            </p>
+            <div style={{ fontSize: 10, color: "#9ca3af", textTransform: "uppercase", letterSpacing: 1, marginBottom: 5 }}>Website Audit</div>
+            <div style={{ fontSize: 26, fontWeight: 800, color: NAVY, marginBottom: 4 }}>{result.practice_name}</div>
+            <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 12 }}>{result.url}</div>
+            <p style={{ margin: 0, fontSize: 12, color: "#374151", lineHeight: 1.7, maxWidth: 390 }}>{result.summary}</p>
           </div>
-          <div
-            style={{
-              textAlign: "center",
-              background: LIGHT,
-              borderRadius: 14,
-              padding: "18px 26px",
-              border: `2px solid ${BLUE}`,
-              flexShrink: 0,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                color: "#9ca3af",
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                marginBottom: 4,
-              }}
-            >
-              Overall Score
-            </div>
-            <div
-              style={{ fontSize: 52, fontWeight: 900, color: overallColour, lineHeight: 1 }}
-            >
-              {overall}
-            </div>
+          <div style={{ textAlign: "center", background: LIGHT, borderRadius: 14, padding: "18px 26px", border: `2px solid ${BLUE}`, flexShrink: 0 }}>
+            <div style={{ fontSize: 10, color: "#9ca3af", textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}>Overall Score</div>
+            <div style={{ fontSize: 52, fontWeight: 900, color: overallColour, lineHeight: 1 }}>{overall}</div>
             <div style={{ fontSize: 11, color: "#9ca3af" }}>out of 100</div>
-            <div
-              style={{
-                marginTop: 8,
-                background: overallColour,
-                color: "#fff",
-                fontSize: 11,
-                fontWeight: 700,
-                padding: "4px 14px",
-                borderRadius: 99,
-                display: "inline-block",
-              }}
-            >
-              {scoreLabel}
-            </div>
+            <div style={{ marginTop: 8, background: overallColour, color: "#fff", fontSize: 11, fontWeight: 700, padding: "4px 14px", borderRadius: 99, display: "inline-block" }}>{scoreLabel}</div>
           </div>
         </div>
 
         {result.screenshots?.desktop && (
           <div style={{ marginBottom: 22 }}>
-            <div
-              style={{
-                fontSize: 10,
-                fontWeight: 700,
-                color: NAVY,
-                marginBottom: 8,
-                textTransform: "uppercase",
-                letterSpacing: 0.5,
-              }}
-            >
-              Homepage Screenshot
-            </div>
-            <img
-              src={`data:image/png;base64,${result.screenshots.desktop}`}
-              alt="Homepage screenshot"
-              style={{
-                width: "100%",
-                borderRadius: 8,
-                border: "1px solid #e5e7eb",
-                display: "block",
-              }}
-            />
+            <div style={{ fontSize: 10, fontWeight: 700, color: NAVY, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>Homepage Screenshot</div>
+            <img src={`data:image/png;base64,${result.screenshots.desktop}`} alt="Homepage screenshot" style={{ width: "100%", borderRadius: 8, border: "1px solid #e5e7eb", display: "block" }} />
           </div>
         )}
 
         <div>
-          <div
-            style={{
-              fontSize: 10,
-              fontWeight: 700,
-              color: NAVY,
-              marginBottom: 10,
-              textTransform: "uppercase",
-              letterSpacing: 0.5,
-            }}
-          >
-            Category Scores
-          </div>
-          <div
-            style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10 }}
-          >
+          <div style={{ fontSize: 10, fontWeight: 700, color: NAVY, marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>Category Scores</div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10 }}>
             {CATEGORIES.map((cat) => {
               const s = result.scores[cat.key];
               const c = scoreColour(s);
               return (
-                <div
-                  key={cat.key}
-                  style={{
-                    background: LIGHT,
-                    borderRadius: 10,
-                    padding: "12px 8px",
-                    textAlign: "center",
-                    border: `1px solid ${BLUE}`,
-                  }}
-                >
+                <div key={cat.key} style={{ background: LIGHT, borderRadius: 10, padding: "12px 8px", textAlign: "center", border: `1px solid ${BLUE}` }}>
                   <div style={{ fontSize: 24, fontWeight: 800, color: c }}>{s}</div>
-                  <div
-                    style={{
-                      fontSize: 9,
-                      color: NAVY,
-                      fontWeight: 600,
-                      marginTop: 3,
-                      lineHeight: 1.3,
-                    }}
-                  >
-                    {cat.title}
-                  </div>
-                  <div style={{ fontSize: 9, color: "#9ca3af", marginTop: 2 }}>
-                    {cat.weight}
-                  </div>
+                  <div style={{ fontSize: 9, color: NAVY, fontWeight: 600, marginTop: 3, lineHeight: 1.3 }}>{cat.title}</div>
+                  <div style={{ fontSize: 9, color: "#9ca3af", marginTop: 2 }}>{cat.weight}</div>
                 </div>
               );
             })}
@@ -346,111 +183,29 @@ export function FullReportLayout({ result }: Props) {
 
       <div style={section}>
         <div style={{ marginBottom: 28 }}>
-          <div
-            style={{
-              fontSize: 13,
-              fontWeight: 700,
-              color: NAVY,
-              marginBottom: 14,
-              textTransform: "uppercase",
-              letterSpacing: 0.5,
-            }}
-          >
-            Site Structure
-          </div>
-          <div
-            style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}
-          >
+          <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 14, textTransform: "uppercase", letterSpacing: 0.5 }}>Site Structure</div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
             {[
               { label: "Pages found", value: String(result.site_structure.total_pages), danger: false },
               { label: "Platform", value: result.site_structure.platform, danger: false },
-              {
-                label: "Online booking",
-                value: result.site_structure.has_booking ? "Found" : "Not detected",
-                danger: !result.site_structure.has_booking,
-              },
-              {
-                label: "Social presence",
-                value:
-                  [
-                    result.site_structure.social_links.facebook && "Facebook",
-                    result.site_structure.social_links.instagram && "Instagram",
-                    result.site_structure.social_links.tiktok && "TikTok",
-                  ]
-                    .filter(Boolean)
-                    .join(", ") || "None detected",
-                danger: false,
-              },
+              { label: "Online booking", value: result.site_structure.has_booking ? "Found" : "Not detected", danger: !result.site_structure.has_booking },
+              { label: "Social presence", value: [result.site_structure.social_links.facebook && "Facebook", result.site_structure.social_links.instagram && "Instagram", result.site_structure.social_links.tiktok && "TikTok"].filter(Boolean).join(", ") || "None detected", danger: false },
             ].map((item) => (
-              <div
-                key={item.label}
-                style={{ background: "#f9fafb", borderRadius: 8, padding: "12px 16px", border: "1px solid #e5e7eb" }}
-              >
-                <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>
-                  {item.label}
-                </div>
-                <div style={{ fontSize: 14, fontWeight: 700, color: item.danger ? "#dc2626" : NAVY }}>
-                  {item.value}
-                </div>
+              <div key={item.label} style={{ background: "#f9fafb", borderRadius: 8, padding: "12px 16px", border: "1px solid #e5e7eb" }}>
+                <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>{item.label}</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: item.danger ? "#dc2626" : NAVY }}>{item.value}</div>
               </div>
             ))}
           </div>
         </div>
 
         <div>
-          <div
-            style={{
-              fontSize: 13,
-              fontWeight: 700,
-              color: NAVY,
-              marginBottom: 14,
-              textTransform: "uppercase",
-              letterSpacing: 0.5,
-            }}
-          >
-            Top Opportunities
-          </div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 14, textTransform: "uppercase", letterSpacing: 0.5 }}>Top Opportunities</div>
           {result.top_opportunities.map((opp, i) => (
-            <div
-              key={i}
-              style={{
-                display: "flex",
-                gap: 14,
-                marginBottom: 12,
-                alignItems: "flex-start",
-                pageBreakInside: "avoid",
-                breakInside: "avoid",
-              }}
-            >
-              <div
-                style={{
-                  minWidth: 26,
-                  height: 26,
-                  borderRadius: "50%",
-                  background: NAVY,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: "#fff",
-                  flexShrink: 0,
-                }}
-              >
-                {i + 1}
-              </div>
-              <div
-                style={{
-                  flex: 1,
-                  background: LIGHT,
-                  borderRadius: 8,
-                  padding: "10px 14px",
-                  border: `1px solid ${BLUE}`,
-                }}
-              >
-                <p style={{ margin: 0, fontSize: 12, color: "#374151", lineHeight: 1.6 }}>
-                  {opp}
-                </p>
+            <div key={i} style={{ display: "flex", gap: 14, marginBottom: 12, alignItems: "flex-start", pageBreakInside: "avoid", breakInside: "avoid" }}>
+              <div style={{ minWidth: 26, height: 26, borderRadius: "50%", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: "#fff", flexShrink: 0 }}>{i + 1}</div>
+              <div style={{ flex: 1, background: LIGHT, borderRadius: 8, padding: "10px 14px", border: `1px solid ${BLUE}` }}>
+                <p style={{ margin: 0, fontSize: 12, color: "#374151", lineHeight: 1.6 }}>{opp}</p>
               </div>
             </div>
           ))}
@@ -471,26 +226,13 @@ export function FullReportLayout({ result }: Props) {
               </div>
             </div>
             <div style={{ height: 4, background: BLUE, borderRadius: 2, marginBottom: 14 }} />
-            <p style={{ margin: "0 0 18px", fontSize: 12, color: "#374151", lineHeight: 1.7 }}>
-              {category.description}
-            </p>
+            <p style={{ margin: "0 0 18px", fontSize: 12, color: "#374151", lineHeight: 1.7 }}>{category.description}</p>
 
             {category.subcategories.map((sub, idx) => (
-              <div
-                key={sub.name}
-                style={{
-                  marginBottom: 14,
-                  paddingBottom: 14,
-                  borderBottom: idx < category.subcategories.length - 1 ? "1px solid #f3f4f6" : "none",
-                  pageBreakInside: "avoid",
-                  breakInside: "avoid",
-                }}
-              >
+              <div key={sub.name} style={{ marginBottom: 14, paddingBottom: 14, borderBottom: idx < category.subcategories.length - 1 ? "1px solid #f3f4f6" : "none", pageBreakInside: "avoid", breakInside: "avoid" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                   <span style={{ fontSize: 12, fontWeight: 700, color: NAVY }}>{sub.name}</span>
-                  <span style={{ fontSize: 10, color: "#6b7280", background: "#f3f4f6", padding: "2px 8px", borderRadius: 99 }}>
-                    {sub.score}/{sub.max}
-                  </span>
+                  <span style={{ fontSize: 10, color: "#6b7280", background: "#f3f4f6", padding: "2px 8px", borderRadius: 99 }}>{sub.score}/{sub.max}</span>
                 </div>
                 <ScoreBar score={sub.score} max={sub.max} />
                 <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
@@ -537,9 +279,7 @@ export function FullReportLayout({ result }: Props) {
             </p>
             {result.ai_citations.queriesRun.map((q, i) => (
               <div key={i} style={{ display: "flex", gap: 12, marginBottom: 10, alignItems: "flex-start", pageBreakInside: "avoid", breakInside: "avoid" }}>
-                <span style={{ width: 20, height: 20, borderRadius: "50%", background: q.mentioned ? "#dcfce7" : "#fee2e2", color: q.mentioned ? "#16a34a" : "#dc2626", fontSize: 10, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
-                  {q.mentioned ? "Y" : "N"}
-                </span>
+                <span style={{ width: 20, height: 20, borderRadius: "50%", background: q.mentioned ? "#dcfce7" : "#fee2e2", color: q.mentioned ? "#16a34a" : "#dc2626", fontSize: 10, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>{q.mentioned ? "Y" : "N"}</span>
                 <div style={{ flex: 1, background: "#f9fafb", borderRadius: 6, padding: "8px 12px", border: "1px solid #e5e7eb" }}>
                   <p style={{ margin: "0 0 4px", fontSize: 11, fontStyle: "italic", color: NAVY }}>"{q.query}"</p>
                   <p style={{ margin: 0, fontSize: 10, color: "#6b7280", lineHeight: 1.5 }}>{q.excerpt}</p>
@@ -556,7 +296,7 @@ export function FullReportLayout({ result }: Props) {
         </div>
       </div>
 
-      <PdfFooter url={result.url} date={result.date} />
+      <PdfFooter />
     </div>
   );
 }
@@ -576,9 +316,7 @@ export function TeaserReportLayout({ result }: Props) {
             <div style={{ fontSize: 10, color: "#9ca3af", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>Website Audit for</div>
             <div style={{ fontSize: 28, fontWeight: 800, color: NAVY, marginBottom: 4 }}>{result.practice_name}</div>
             <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 14 }}>{result.url}</div>
-            <p style={{ margin: 0, fontSize: 12, color: "#374151", lineHeight: 1.6, maxWidth: 380 }}>
-              We audited your website across five key areas that directly impact how many new patients find you, trust you, and book with you.
-            </p>
+            <p style={{ margin: 0, fontSize: 12, color: "#374151", lineHeight: 1.6, maxWidth: 380 }}>We audited your website across five key areas that directly impact how many new patients find you, trust you, and book with you.</p>
           </div>
           <div style={{ textAlign: "center", background: LIGHT, borderRadius: 16, padding: "20px 28px", border: `2px solid ${BLUE}`, flexShrink: 0 }}>
             <div style={{ fontSize: 10, color: "#9ca3af", textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}>Overall Score</div>
@@ -591,11 +329,7 @@ export function TeaserReportLayout({ result }: Props) {
         {result.screenshots?.desktop && (
           <div style={{ marginBottom: 18 }}>
             <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 6, fontStyle: "italic" }}>Your current homepage</div>
-            <img
-              src={`data:image/png;base64,${result.screenshots.desktop}`}
-              alt="Homepage screenshot"
-              style={{ width: "100%", borderRadius: 8, border: "1px solid #e5e7eb", display: "block", maxHeight: 160, objectFit: "cover", objectPosition: "top" }}
-            />
+            <img src={`data:image/png;base64,${result.screenshots.desktop}`} alt="Homepage screenshot" style={{ width: "100%", borderRadius: 8, border: "1px solid #e5e7eb", display: "block", maxHeight: 160, objectFit: "cover", objectPosition: "top" }} />
           </div>
         )}
 
@@ -615,9 +349,7 @@ export function TeaserReportLayout({ result }: Props) {
 
         <div style={{ marginBottom: 20 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: NAVY, marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>Your Top Website Gaps</div>
-          <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 10px" }}>
-            We identified {result.top_opportunities.length} priority improvements. Here are the first two:
-          </p>
+          <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 10px" }}>We identified {result.top_opportunities.length} priority improvements. Here are the first two:</p>
 
           {result.top_opportunities.slice(0, 2).map((opp, i) => (
             <div key={i} style={{ display: "flex", gap: 12, marginBottom: 8, alignItems: "flex-start" }}>
@@ -637,20 +369,14 @@ export function TeaserReportLayout({ result }: Props) {
 
         <div style={{ background: NAVY, borderRadius: 12, padding: "26px 32px", textAlign: "center" }}>
           <div style={{ fontSize: 10, color: BLUE, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>Want the full picture?</div>
-          <div style={{ fontSize: 19, fontWeight: 800, color: "#fff", marginBottom: 10, lineHeight: 1.3 }}>
-            Book a free 30-minute call to review<br />your complete audit results
-          </div>
-          <p style={{ fontSize: 11, color: "#9db8d4", margin: "0 0 18px", lineHeight: 1.6 }}>
-            We'll walk through your detailed scores, identify your biggest opportunities, and show you exactly what needs to change to attract more patients online.
-          </p>
-          <a href={CALENDAR_URL} style={{ display: "inline-block", background: BLUE, color: NAVY, fontSize: 13, fontWeight: 700, padding: "12px 28px", borderRadius: 8, textDecoration: "none" }}>
-            Book Your Review Call
-          </a>
+          <div style={{ fontSize: 19, fontWeight: 800, color: "#fff", marginBottom: 10, lineHeight: 1.3 }}>Book a free 30-minute call to review<br />your complete audit results</div>
+          <p style={{ fontSize: 11, color: "#9db8d4", margin: "0 0 18px", lineHeight: 1.6 }}>We'll walk through your detailed scores, identify your biggest opportunities, and show you exactly what needs to change to attract more patients online.</p>
+          <a href={CALENDAR_URL} style={{ display: "inline-block", background: BLUE, color: NAVY, fontSize: 13, fontWeight: 700, padding: "12px 28px", borderRadius: 8, textDecoration: "none" }}>Book Your Review Call</a>
           <div style={{ marginTop: 10, fontSize: 10, color: "#6b8ab0" }}>{CALENDAR_URL}</div>
         </div>
       </div>
 
-      <PdfFooter url={result.url} date={result.date} />
+      <PdfFooter />
     </div>
   );
 }
