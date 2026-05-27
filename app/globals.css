@@ -20,51 +20,44 @@ body {
 }
 
 /* ── PDF report pages (/pdf/full, /pdf/teaser) ─────────────────────────────
-   These classes are used by PDFLayouts.tsx. Defined here so they are always
-   available — nested layouts cannot reliably inject <style> into <head>.    */
+   Each .pdf-page is one self-contained A4 page: header → content → footer.
+   Header and footer live in normal document flow inside the page div, so
+   they appear on every page without relying on position:fixed.             */
 
-/* Each section forces a page break after it when printed */
-.pdf-section {
-  padding: 24px 40px;
+.pdf-page {
+  width: 210mm;
+  min-height: 297mm;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Last section — same padding but no forced break after */
-.pdf-section-last {
-  padding: 24px 40px;
+/* Last page — same layout but no forced break (avoids blank trailing page) */
+.pdf-page-last {
+  width: 210mm;
+  min-height: 297mm;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Header pinned to top of every printed page */
 .pdf-header {
   background: #192845;
+  flex-shrink: 0;
 }
 
-/* Footer pinned to bottom of every printed page */
 .pdf-footer {
   background: #192845;
+  flex-shrink: 0;
 }
 
 @media print {
-  /* Reserve space at top/bottom of every page for the fixed header/footer.
-     Top = header height (~16mm) + 2mm buffer; bottom = footer height (~8mm) + 2mm buffer */
-  @page { size: A4 portrait; margin: 20mm 0 12mm 0; }
+  @page { size: A4 portrait; margin: 0; }
+
+  html, body { margin: 0; padding: 0; }
+
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
-  .pdf-section {
+  .pdf-page {
     break-after: page;
     page-break-after: always;
-  }
-
-  .pdf-header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1000;
-    width: 210mm;
-  }
-
-  .pdf-footer {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    z-index: 1000;
-    width: 210mm;
   }
 }
