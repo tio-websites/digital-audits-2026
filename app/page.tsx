@@ -30,57 +30,50 @@ const editorial = [
   },
 ];
 
+// ─── Photo seeds → consistent picsum images ───────────────────────────────────
+// picsum.photos/seed/[seed]/[w]/[h] always returns the same image for a given seed.
+const PHOTOS: Record<string, string> = {
+  cover:        "https://picsum.photos/seed/okk-cover/900/1100",
+  portrait:     "https://picsum.photos/seed/okk-finn/700/875",
+  pillar01:     "https://picsum.photos/seed/okk-clinical/600/600",
+  pillar02:     "https://picsum.photos/seed/okk-lab/600/600",
+  pillar03:     "https://picsum.photos/seed/okk-software/600/600",
+  pillar04:     "https://picsum.photos/seed/okk-community/600/600",
+  decision:     "https://picsum.photos/seed/okk-decision/700/900",
+  editFeature:  "https://picsum.photos/seed/okk-feature/900/560",
+  editThumb1:   "https://picsum.photos/seed/okk-thumb1/240/240",
+  editThumb2:   "https://picsum.photos/seed/okk-thumb2/240/240",
+  cpd:          "https://picsum.photos/seed/okk-practice/900/400",
+};
+
 // ─── Reusable image placeholder ──────────────────────────────────────────────
-function ImgPlaceholder({
-  label,
+function Img({
+  src,
+  alt,
   aspectRatio,
   height,
-  dark = false,
   caption,
+  dark = false,
 }: {
-  label: string;
+  src: string;
+  alt: string;
   aspectRatio?: string;
   height?: string | number;
-  dark?: boolean;
   caption?: string;
+  dark?: boolean;
 }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column" as const }}>
-      <div
-        style={{
-          aspectRatio: aspectRatio,
-          height: height,
-          backgroundColor: dark ? "rgba(255,255,255,0.04)" : "var(--surface-raised)",
-          border: dark ? "1px dashed rgba(255,255,255,0.12)" : "1px dashed var(--border-strong)",
-          display: "flex",
-          flexDirection: "column" as const,
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "8px",
-          padding: "20px",
-        }}
-      >
-        <span style={{
-          fontSize: "9px",
-          letterSpacing: "0.14em",
-          textTransform: "uppercase" as const,
-          fontFamily: "var(--font-sans)",
-          color: dark ? "rgba(255,255,255,0.2)" : "var(--border-strong)",
-          textAlign: "center" as const,
-          lineHeight: 1.6,
-        }}>
-          {label}
-        </span>
+    <div style={{ display: "flex", flexDirection: "column" as const, height: height === "100%" ? "100%" : undefined }}>
+      <div style={{ aspectRatio, height, overflow: "hidden", position: "relative" as const, flexGrow: height === "100%" ? 1 : undefined }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={alt}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: dark ? "brightness(0.55)" : "none" }}
+        />
       </div>
       {caption && (
-        <p style={{
-          fontSize: "10px",
-          color: dark ? "rgba(255,255,255,0.25)" : "var(--text-muted)",
-          fontFamily: "var(--font-sans)",
-          marginTop: "8px",
-          lineHeight: 1.5,
-          fontStyle: "italic",
-        }}>
+        <p style={{ fontSize: "10px", color: dark ? "rgba(255,255,255,0.25)" : "var(--text-muted)", fontFamily: "var(--font-sans)", marginTop: "8px", lineHeight: 1.5, fontStyle: "italic" }}>
           {caption}
         </p>
       )}
@@ -114,11 +107,7 @@ export default function HomePage() {
 
             {/* Left: cover photo */}
             <div style={{ position: "relative" as const, borderRight: "1px solid rgba(255,255,255,0.07)" }}>
-              <ImgPlaceholder
-                label={"Cover photograph\nPortrait — Finn in clinical environment\nFull-bleed, editorial quality"}
-                height="100%"
-                dark
-              />
+              <Img src={PHOTOS.cover} alt="Cover — clinician portrait" height="100%" dark />
               {/* Cover caption */}
               <div style={{ position: "absolute" as const, bottom: "32px", left: "32px", right: "32px" }}>
                 <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-sans)", letterSpacing: "0.06em" }}>
@@ -199,11 +188,7 @@ export default function HomePage() {
 
             {/* Portrait */}
             <div style={{ borderRight: "1px solid var(--border)" }}>
-              <ImgPlaceholder
-                label={"Portrait photograph\nFinn — headshot or 3/4\nWarm, natural light\nEditorial style"}
-                aspectRatio="4/5"
-                caption="Finn, Principal Clinician and founder of Okklusion"
-              />
+              <Img src={PHOTOS.portrait} alt="Finn, Principal Clinician" aspectRatio="4/5" caption="Finn, Principal Clinician and founder of Okklusion" />
             </div>
 
             {/* Pull quote */}
@@ -247,10 +232,7 @@ export default function HomePage() {
 
             {/* Pillar 01: Clinical — image left */}
             <div style={{ backgroundColor: "var(--bg)", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0" }}>
-              <ImgPlaceholder
-                label={"Clinical environment\nClose-up or patient interaction\nOrthodontic chair or scan"}
-                aspectRatio="1/1"
-              />
+              <Img src={PHOTOS.pillar01} alt="Clinical environment" aspectRatio="1/1" />
               <div style={{ padding: "32px 28px", display: "flex", flexDirection: "column" as const, justifyContent: "center" }}>
                 <span style={{ fontFamily: "var(--font-serif)", fontSize: "40px", fontWeight: 300, color: "var(--border-strong)", lineHeight: 1, display: "block", marginBottom: "16px" }}>01</span>
                 <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "22px", fontWeight: 400, color: "var(--text-primary)", marginBottom: "10px" }}>Clinical</h3>
@@ -267,18 +249,12 @@ export default function HomePage() {
                 <p style={{ fontSize: "12px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.65, marginBottom: "16px" }}>In-house aligner manufacturing, ISO documentation, printing and QC systems.</p>
                 <span style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>18 modules</span>
               </div>
-              <ImgPlaceholder
-                label={"Lab / manufacturing environment\nFDM printer, aligner production\nClean, technical aesthetic"}
-                aspectRatio="1/1"
-              />
+              <Img src={PHOTOS.pillar02} alt="Lab and manufacturing environment" aspectRatio="1/1" />
             </div>
 
             {/* Pillar 03: Software & AI — image left */}
             <div style={{ backgroundColor: "var(--surface)", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0" }}>
-              <ImgPlaceholder
-                label={"Software / screen environment\nDental Monitoring dashboard\nor treatment planning screen"}
-                aspectRatio="1/1"
-              />
+              <Img src={PHOTOS.pillar03} alt="Software and AI environment" aspectRatio="1/1" />
               <div style={{ padding: "32px 28px", display: "flex", flexDirection: "column" as const, justifyContent: "center" }}>
                 <span style={{ fontFamily: "var(--font-serif)", fontSize: "40px", fontWeight: 300, color: "var(--border-strong)", lineHeight: 1, display: "block", marginBottom: "16px" }}>03</span>
                 <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "22px", fontWeight: 400, color: "var(--text-primary)", marginBottom: "10px" }}>Software & AI</h3>
@@ -295,10 +271,7 @@ export default function HomePage() {
                 <p style={{ fontSize: "12px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.65, marginBottom: "16px" }}>KOL mentorship, practice owner roundtables and peer implementation support.</p>
                 <span style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>7 modules</span>
               </div>
-              <ImgPlaceholder
-                label={"Group / community photo\nClinicians in discussion or\nconference / roundtable setting"}
-                aspectRatio="1/1"
-              />
+              <Img src={PHOTOS.pillar04} alt="Community and mentorship" aspectRatio="1/1" />
             </div>
           </div>
         </div>
@@ -347,11 +320,7 @@ export default function HomePage() {
             </div>
 
             {/* Full-height clinical image */}
-            <ImgPlaceholder
-              label={"Full-height clinical photo\nOrthodontist reviewing scan / case\nModern practice interior\nAspect: portrait or square crop"}
-              height="100%"
-              caption="Clinical environment — in-practice photography"
-            />
+            <Img src={PHOTOS.decision} alt="Orthodontist reviewing a clinical case" height="100%" caption="Clinical environment — in-practice photography" />
           </div>
         </div>
       </section>
@@ -378,11 +347,7 @@ export default function HomePage() {
 
           {/* Featured story — large with photo */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1px", backgroundColor: "var(--border)", marginBottom: "1px" }}>
-            <ImgPlaceholder
-              label={"Feature article photo\nEditorial portrait — Finn\nor practice wide-angle shot\nLandscape crop preferred"}
-              aspectRatio="16/10"
-              caption="Photography: Finn at his practice, Berlin"
-            />
+            <Img src={PHOTOS.editFeature} alt="Editorial feature photograph" aspectRatio="16/10" caption="Photography: Finn at his practice, Berlin" />
             <div style={{ backgroundColor: "var(--bg)", padding: "48px 44px", display: "flex", flexDirection: "column" as const, justifyContent: "flex-end" }}>
               <span style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 600, color: "var(--accent)", display: "block", marginBottom: "16px" }}>
                 Editor's Note · Issue 4
@@ -404,16 +369,13 @@ export default function HomePage() {
 
           {/* Two smaller stories */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1px", backgroundColor: "var(--border)" }}>
-            {editorial.slice(1).map((item) => (
+            {editorial.slice(1).map((item, i) => (
               <div
                 key={item.title}
                 style={{ backgroundColor: "var(--surface)", padding: "0", display: "grid", gridTemplateColumns: "120px 1fr", gap: "0", cursor: "pointer" }}
                 className="hover:bg-[var(--surface-raised)] transition-colors"
               >
-                <ImgPlaceholder
-                  label={`${item.dept}\nThumbnail photo\n1:1 crop`}
-                  aspectRatio="1/1"
-                />
+                <Img src={i === 0 ? PHOTOS.editThumb1 : PHOTOS.editThumb2} alt={item.dept} aspectRatio="1/1" />
                 <div style={{ padding: "24px 24px" }}>
                   <span style={{ fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 600, color: item.accentColour, display: "block", marginBottom: "8px" }}>
                     {item.dept}
@@ -504,12 +466,7 @@ export default function HomePage() {
                 Join Okklusion <ArrowRight size={12} />
               </Link>
             </div>
-            <ImgPlaceholder
-              label={"Practice / environment photo\nModern orthodontic practice interior\nor technology-forward clinical setting\nFull-bleed dark tone preferred"}
-              height="360px"
-              dark
-              caption="Practice photography — natural or architectural"
-            />
+            <Img src={PHOTOS.cpd} alt="Modern orthodontic practice interior" height="360px" dark caption="Practice photography — natural or architectural" />
           </div>
         </div>
       </section>
