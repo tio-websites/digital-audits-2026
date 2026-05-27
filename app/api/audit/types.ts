@@ -73,6 +73,13 @@ export interface AuditResult {
   };
   lighthouse_note: string;
   ai_citation_note: string;
+  revenue_impact?: {
+    missed_patients: number;
+    missed_revenue: number;
+    current_cvr_pct: number;
+    benchmark_cvr_pct: number;
+    monthly_traffic: number;
+  };
 }
 
 export interface CrawlData {

@@ -3,6 +3,8 @@ import { crawlSite } from "./crawler";
 import { scoreAudit } from "./scorer";
 import { getPageSpeed } from "./pagespeed";
 import { checkAICitations } from "./aicitation";
+import { isRateLimited, getClientIp } from "../../../lib/rate-limit";
+import { isBlockedUrl } from "../../../lib/ssrf";
 
 export const maxDuration = 60;
 
@@ -37,6 +39,20 @@ export async function POST(request: NextRequest) {
     new URL(url);
   } catch {
     return NextResponse.json({ error: "Invalid URL format." }, { status: 400 });
+  }
+
+  // SSRF protection
+  if (isBlockedUrl(url)) {
+    return NextResponse.json({ error: "That URL is not allowed." }, { status: 400 });
+  }
+
+  // Rate limiting
+  const clientIp = getClientIp(request.headers);
+  if (isRateLimited(clientIp)) {
+    return NextResponse.json(
+      { error: "Too many audits — please wait an hour and try again." },
+      { status: 429 }
+    );
   }
 
   try {

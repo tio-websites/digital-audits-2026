@@ -4,11 +4,15 @@ import type { AuditResult } from "../api/audit/types";
 
 interface Props {
   result: AuditResult;
+  auditId?: string | null;
 }
 
-export default function DownloadButtons({ result }: Props) {
+export default function DownloadButtons({ result, auditId }: Props) {
   function handleDownload(type: "full" | "teaser") {
     localStorage.setItem("pdf-audit-data", JSON.stringify(result));
+    if (auditId) {
+      localStorage.setItem("pdf-audit-id", auditId);
+    }
     window.open(`/pdf/${type}`, "_blank");
   }
 

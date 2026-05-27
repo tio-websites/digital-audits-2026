@@ -6,9 +6,18 @@ import type { AuditResult } from "../api/audit/types";
 import ScoreRing from "./ScoreRing";
 import CategoryCard from "./CategoryCard";
 import DownloadButtons from "./DownloadButtons";
+import RevenueImpactCard from "./RevenueImpactCard";
 
 interface AuditResultsProps {
   result: AuditResult;
+  auditId?: string | null;
+  revenueImpact?: {
+    missed_patients: number;
+    missed_revenue: number;
+    current_cvr_pct: number;
+    benchmark_cvr_pct: number;
+    monthly_traffic: number;
+  } | null;
   onReset: () => void;
 }
 
@@ -32,7 +41,7 @@ function psiColour(score: number): string {
   return "text-red-600";
 }
 
-export default function AuditResults({ result, onReset }: AuditResultsProps) {
+export default function AuditResults({ result, auditId, revenueImpact, onReset }: AuditResultsProps) {
   const [screenshotView, setScreenshotView] = useState<"desktop" | "mobile">("desktop");
   const { label, colour, bg } = scoreLabel(result.overall_score);
   const hasScreenshots = result.screenshots.desktop || result.screenshots.mobile;
@@ -92,7 +101,10 @@ export default function AuditResults({ result, onReset }: AuditResultsProps) {
         </div>
 
         {/* Download buttons */}
-        <DownloadButtons result={result} />
+        <DownloadButtons result={result} auditId={auditId ?? null} />
+
+        {/* Revenue impact */}
+        {revenueImpact && <RevenueImpactCard revenueImpact={revenueImpact} />}
 
         {/* Screenshots */}
         {hasScreenshots && (

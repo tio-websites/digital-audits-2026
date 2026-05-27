@@ -1,39 +1,114 @@
 "use client";
 
 import Image from "next/image";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import type { AuditResult } from "../api/audit/types";
 import AuditResults from "./AuditResults";
+import { supabaseBrowser } from "../../lib/supabase-browser";
+
+interface RevenueImpact {
+  missed_patients: number;
+  missed_revenue: number;
+  current_cvr_pct: number;
+  benchmark_cvr_pct: number;
+  monthly_traffic: number;
+}
 
 type State =
   | { status: "idle" }
-  | { status: "loading"; url: string }
-  | { status: "done"; result: AuditResult }
+  | { status: "streaming"; url: string; step: string; pct: number; message: string }
+  | { status: "done"; result: AuditResult; revenueImpact: RevenueImpact; auditId: string | null }
   | { status: "error"; message: string };
+
+const STEPS: { key: string; label: string }[] = [
+  { key: "crawl", label: "Crawling website" },
+  { key: "score", label: "Calculating scores" },
+  { key: "screenshots", label: "Running PageSpeed, screenshots & AI checks" },
+  { key: "pagespeed", label: "Running PageSpeed, screenshots & AI checks" },
+  { key: "ai_check", label: "Running PageSpeed, screenshots & AI checks" },
+  { key: "patch", label: "Finalising scores" },
+];
+
+const STEP_ORDER = ["crawl", "score", "screenshots", "pagespeed", "ai_check", "patch"];
+
+function getStepLabel(step: string): string {
+  return STEPS.find((s) => s.key === step)?.label ?? "Processing…";
+}
+
+function getStepIndex(step: string): number {
+  const idx = STEP_ORDER.indexOf(step);
+  return idx === -1 ? 0 : idx;
+}
 
 export default function AuditForm() {
   const [url, setUrl] = useState("");
   const [state, setState] = useState<State>({ status: "idle" });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    supabaseBrowser.auth.getUser().then(({ data }) => {
+      setIsLoggedIn(!!data.user);
+    });
+  }, []);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const trimmed = url.trim();
     if (!trimmed) return;
-    setState({ status: "loading", url: trimmed });
-    try {
-      const res = await fetch("/api/audit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: trimmed }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setState({ status: "error", message: data.error ?? "Audit failed." });
-        return;
+    setState({ status: "streaming", url: trimmed, step: "crawl", pct: 5, message: "Starting audit…" });
+
+    const res = await fetch("/api/audit/stream", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: trimmed }),
+    });
+
+    if (!res.ok || !res.body) {
+      const data = await res.json().catch(() => ({}));
+      setState({ status: "error", message: data.error ?? "Audit failed." });
+      return;
+    }
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop() ?? "";
+      for (const line of lines) {
+        if (!line.startsWith("data: ")) continue;
+        try {
+          const data = JSON.parse(line.slice(6));
+          if (data.step === "error") {
+            setState({ status: "error", message: data.message });
+            return;
+          }
+          if (data.step === "complete") {
+            // Store in localStorage for PDF pages
+            localStorage.setItem("pdf-audit-data", JSON.stringify(data.result));
+            if (data.auditId) {
+              localStorage.setItem("pdf-audit-id", data.auditId);
+            }
+            setState({
+              status: "done",
+              result: data.result,
+              revenueImpact: data.revenueImpact,
+              auditId: data.auditId ?? null,
+            });
+            return;
+          }
+          // Progress update
+          setState((prev) =>
+            prev.status === "streaming"
+              ? { ...prev, step: data.step, pct: data.pct, message: data.message }
+              : prev
+          );
+        } catch {}
       }
-      setState({ status: "done", result: data });
-    } catch {
-      setState({ status: "error", message: "Network error. Please try again." });
     }
   }
 
@@ -41,9 +116,36 @@ export default function AuditForm() {
     return (
       <AuditResults
         result={state.result}
+        revenueImpact={state.revenueImpact}
+        auditId={state.auditId}
         onReset={() => setState({ status: "idle" })}
       />
     );
+  }
+
+  const currentStepIndex =
+    state.status === "streaming" ? getStepIndex(state.step) : -1;
+
+  // Deduplicated checklist steps (collapse the three parallel steps into one)
+  const checklistSteps = [
+    { key: "crawl", label: "Crawling website" },
+    { key: "score", label: "Calculating scores" },
+    { key: "pagespeed", label: "Running PageSpeed, screenshots & AI checks" },
+    { key: "patch", label: "Finalising scores" },
+  ];
+
+  function checklistStatus(key: string): "done" | "active" | "pending" {
+    if (state.status !== "streaming") return "pending";
+    const checklistOrder = ["crawl", "score", "pagespeed", "patch"];
+    const currentNormalized =
+      state.step === "screenshots" || state.step === "ai_check"
+        ? "pagespeed"
+        : state.step;
+    const myIdx = checklistOrder.indexOf(key);
+    const currentIdx = checklistOrder.indexOf(currentNormalized);
+    if (myIdx < currentIdx) return "done";
+    if (myIdx === currentIdx) return "active";
+    return "pending";
   }
 
   return (
@@ -111,31 +213,83 @@ export default function AuditForm() {
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="e.g. smileorthodontics.com.au"
-                disabled={state.status === "loading"}
+                disabled={state.status === "streaming"}
                 className="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-tio-navy/30 focus:border-tio-navy text-sm disabled:opacity-50 transition-colors"
               />
-              <button
-                type="submit"
-                disabled={state.status === "loading" || !url.trim()}
-                className="px-6 py-3 bg-tio-navy text-white font-semibold rounded-xl shadow-sm hover:bg-tio-navy/90 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm whitespace-nowrap"
-              >
-                {state.status === "loading" ? "Auditing…" : "Run Audit"}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="submit"
+                  disabled={state.status === "streaming" || !url.trim()}
+                  className="px-6 py-3 bg-tio-navy text-white font-semibold rounded-xl shadow-sm hover:bg-tio-navy/90 transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm whitespace-nowrap"
+                >
+                  {state.status === "streaming" ? "Auditing…" : "Run Audit"}
+                </button>
+                {isLoggedIn && (
+                  <a
+                    href="/dashboard"
+                    className="text-xs font-medium text-tio-blue-dark hover:text-tio-navy whitespace-nowrap transition-colors"
+                  >
+                    View in dashboard →
+                  </a>
+                )}
+              </div>
             </div>
           </form>
 
-          {/* Loading */}
-          {state.status === "loading" && (
-            <div className="bg-tio-light border border-tio-blue rounded-2xl p-6 max-w-sm mx-auto">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-5 h-5 border-2 border-tio-navy border-t-transparent rounded-full animate-spin" />
-                <span className="text-sm font-medium text-tio-navy">Auditing site…</span>
+          {/* Streaming progress */}
+          {state.status === "streaming" && (
+            <div className="bg-tio-light border border-tio-blue rounded-2xl p-6 max-w-sm mx-auto text-left">
+              {/* URL being audited */}
+              <p className="text-xs text-gray-400 font-mono truncate mb-4">{state.url}</p>
+
+              {/* Progress bar */}
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xs font-medium text-tio-navy">{state.message}</span>
+                  <span className="text-xs font-semibold text-tio-navy tabular-nums">{state.pct}%</span>
+                </div>
+                <div className="w-full bg-white rounded-full h-2 overflow-hidden border border-tio-blue">
+                  <div
+                    className="h-full bg-tio-navy rounded-full transition-all duration-500 ease-out"
+                    style={{ width: `${state.pct}%` }}
+                  />
+                </div>
               </div>
-              <p className="text-xs text-gray-500 leading-relaxed">
-                Crawling pages, checking content, analysing SEO signals, and scoring
-                across all five categories. This typically takes 15–30 seconds.
-              </p>
-              <div className="mt-3 text-xs text-gray-400 font-mono truncate">{state.url}</div>
+
+              {/* Step checklist */}
+              <ol className="space-y-2">
+                {checklistSteps.map((s) => {
+                  const status = checklistStatus(s.key);
+                  return (
+                    <li key={s.key} className="flex items-center gap-2.5">
+                      {status === "done" && (
+                        <span className="flex-shrink-0 w-4 h-4 rounded-full bg-green-500 flex items-center justify-center">
+                          <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </span>
+                      )}
+                      {status === "active" && (
+                        <span className="flex-shrink-0 w-4 h-4 rounded-full border-2 border-tio-navy border-t-transparent animate-spin" />
+                      )}
+                      {status === "pending" && (
+                        <span className="flex-shrink-0 w-4 h-4 rounded-full border-2 border-gray-300" />
+                      )}
+                      <span
+                        className={`text-xs ${
+                          status === "active"
+                            ? "text-tio-navy font-semibold"
+                            : status === "done"
+                            ? "text-gray-400 line-through"
+                            : "text-gray-400"
+                        }`}
+                      >
+                        {s.label}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ol>
             </div>
           )}
 
