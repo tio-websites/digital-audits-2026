@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 const PROTECTED = ["/dashboard"];
 const AUTH_PAGES = ["/login"];
 
-export async function proxy(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   // Only run auth checks on protected + auth pages
