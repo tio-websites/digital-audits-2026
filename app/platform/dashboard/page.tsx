@@ -1,144 +1,225 @@
 import Link from "next/link";
-import { BookOpen, FileText, Users, Video, Award, ArrowRight, Clock } from "lucide-react";
+import { Search, ArrowRight, Clock, RotateCcw, BookOpen, Zap } from "lucide-react";
 
-const recentCourses = [
-  { title: "ISO Process Module: Aligner QC", progress: 65, pillar: "Digital Workflow", duration: "4h 20m" },
-  { title: "DM Protocol: Remote Monitoring Setup", progress: 30, pillar: "Software & AI", duration: "2h 45m" },
-  { title: "Case Planning for Complex Class II", progress: 100, pillar: "Clinical", duration: "3h 10m" },
+const learningPath = [
+  { step: 1, title: "ISO Process Documentation and QC Systems", type: "Clinical Module", duration: "4h 20m", status: "in-progress", progress: 65 },
+  { step: 2, title: "Aligner Printing: Protocols and Machine Optimisation", type: "Interactive Decision", duration: "2h 50m", status: "up-next", progress: 0 },
+  { step: 3, title: "DM Protocol: Remote Monitoring Setup", type: "Video Lecture", duration: "1h 30m", status: "locked", progress: 0 },
 ];
 
-const recentEditorial = [
-  { tag: "Opinion", title: "Digital orthodontics has outgrown its ecosystem", date: "12 May 2026" },
-  { tag: "News", title: "York CPD accreditation: everything you need to know", date: "8 May 2026" },
-  { tag: "Case Study", title: "Zero to in-house manufacturing in 12 weeks", date: "1 May 2026" },
+const dueForReview = [
+  { title: "Staging strategies for Class II correction", due: "Today", type: "Evidence Review" },
+  { title: "Printer calibration checkpoints", due: "Tomorrow", type: "Question Bank" },
 ];
 
-const quickLinks = [
-  { href: "/platform/courses", icon: <BookOpen size={18} />, label: "All Courses", sub: "Browse the full library" },
-  { href: "/platform/editorial", icon: <FileText size={18} />, label: "Editorial", sub: "Articles & opinion" },
-  { href: "/platform/experiential", icon: <Video size={18} />, label: "Show & Tells", sub: "Video walkthroughs" },
-  { href: "/platform/community", icon: <Users size={18} />, label: "Community", sub: "Peer discussion" },
+const thisWeek = [
+  { dept: "Editor's Note", title: "Why the best practices are building systems, not just using tools", author: "Finn", readTime: "4 min" },
+  { dept: "Case of the Week", title: "A Class III with severe crowding — the staging decisions that mattered", author: "Finn", readTime: "8 min" },
+  { dept: "Lab Note", title: "Resin selection in high-throughput environments: what the data shows", author: "Okklusion Editorial", readTime: "5 min" },
+  { dept: "Software Note", title: "DM 4.2 update: what changed in the monitoring algorithm", author: "Okklusion Editorial", readTime: "3 min" },
 ];
+
+const deptColours: Record<string, string> = {
+  "Editor's Note": "var(--accent)",
+  "Case of the Week": "var(--text-primary)",
+  "Lab Note": "var(--text-secondary)",
+  "Software Note": "var(--text-muted)",
+};
+
+const typeIcons: Record<string, React.ReactNode> = {
+  "Clinical Module": <BookOpen size={11} />,
+  "Interactive Decision": <Zap size={11} />,
+  "Video Lecture": <Clock size={11} />,
+  "Evidence Review": <BookOpen size={11} />,
+  "Question Bank": <Zap size={11} />,
+};
 
 export default function DashboardPage() {
   return (
-    <div style={{ padding: "40px 48px", maxWidth: "1100px" }}>
-      {/* Header */}
-      <div style={{ marginBottom: "48px" }}>
-        <p style={{ fontSize: "12px", letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "var(--text-muted)", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>
-          Welcome back
-        </p>
-        <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "40px", fontWeight: 300, color: "var(--text-primary)", letterSpacing: "-0.01em", lineHeight: 1.1 }}>
-          Your dashboard
-        </h1>
-      </div>
+    <div style={{ padding: "0", maxWidth: "1100px" }}>
 
-      {/* CPD Progress */}
-      <div style={{ backgroundColor: "var(--accent-dark)", borderRadius: "3px", padding: "28px 32px", marginBottom: "40px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "24px", flexWrap: "wrap" as const }}>
-        <div>
-          <p style={{ fontSize: "11px", letterSpacing: "0.08em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", marginBottom: "6px" }}>CPD Progress 2026</p>
-          <p style={{ fontFamily: "var(--font-serif)", fontSize: "36px", fontWeight: 300, color: "var(--white)", lineHeight: 1 }}>
-            12 <span style={{ fontSize: "18px", color: "rgba(255,255,255,0.45)", fontFamily: "var(--font-sans)", fontWeight: 300 }}>/ 30 hours</span>
-          </p>
-        </div>
-        <div style={{ flex: 1, minWidth: "200px" }}>
-          <div style={{ height: "4px", backgroundColor: "rgba(255,255,255,0.1)", borderRadius: "2px", overflow: "hidden" }}>
-            <div style={{ height: "100%", width: "40%", backgroundColor: "var(--accent)", borderRadius: "2px" }} />
-          </div>
-          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.35)", fontFamily: "var(--font-sans)", marginTop: "8px" }}>40% of annual target</p>
-        </div>
-        <Link
-          href="/cpd"
-          style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", color: "var(--accent)", fontWeight: 500, flexShrink: 0 }}
-          className="hover:opacity-80 transition-opacity"
+      {/* AI Search bar */}
+      <div style={{ padding: "36px 48px 0", marginBottom: "40px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            backgroundColor: "var(--white)",
+            border: "1px solid var(--border)",
+            borderRadius: "3px",
+            padding: "14px 20px",
+            boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+          }}
         >
-          View records <ArrowRight size={11} />
-        </Link>
-      </div>
-
-      {/* Quick links */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ backgroundColor: "var(--border)", marginBottom: "40px" }}>
-        {quickLinks.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            style={{ backgroundColor: "var(--surface)", padding: "24px 20px", display: "block" }}
-            className="hover:bg-[var(--surface-raised)] transition-colors"
+          <Search size={16} style={{ color: "var(--text-muted)", flexShrink: 0 }} />
+          <input
+            type="text"
+            placeholder="Ask Okklusion anything — search cases, protocols, evidence, or ask a clinical question"
+            style={{
+              flex: 1,
+              border: "none",
+              outline: "none",
+              fontSize: "14px",
+              fontFamily: "var(--font-sans)",
+              color: "var(--text-primary)",
+              backgroundColor: "transparent",
+            }}
+          />
+          <span
+            style={{
+              fontSize: "10px",
+              letterSpacing: "0.08em",
+              color: "var(--text-muted)",
+              fontFamily: "var(--font-sans)",
+              backgroundColor: "var(--surface)",
+              padding: "3px 8px",
+              borderRadius: "2px",
+              textTransform: "uppercase" as const,
+              flexShrink: 0,
+            }}
           >
-            <div style={{ color: "var(--accent)", marginBottom: "12px" }}>{link.icon}</div>
-            <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--text-primary)", fontFamily: "var(--font-sans)", marginBottom: "4px" }}>{link.label}</p>
-            <p style={{ fontSize: "12px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{link.sub}</p>
-          </Link>
-        ))}
+            AI
+          </span>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Continue learning */}
-        <div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "24px", fontWeight: 400, color: "var(--text-primary)" }}>Continue learning</h2>
+      <div style={{ padding: "0 48px 48px" }}>
+
+        {/* CPD + Due row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+          {/* CPD Progress */}
+          <div
+            style={{
+              backgroundColor: "var(--accent-dark)",
+              borderRadius: "3px",
+              padding: "24px 28px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "20px",
+              flexWrap: "wrap" as const,
+            }}
+          >
+            <div>
+              <p style={{ fontSize: "10px", letterSpacing: "0.1em", color: "rgba(255,255,255,0.35)", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", marginBottom: "6px" }}>CPD Progress 2026</p>
+              <p style={{ fontFamily: "var(--font-serif)", fontSize: "32px", fontWeight: 300, color: "var(--white)", lineHeight: 1 }}>
+                12 <span style={{ fontSize: "16px", color: "rgba(255,255,255,0.4)", fontFamily: "var(--font-sans)", fontWeight: 300 }}>/ 30 hrs</span>
+              </p>
+            </div>
+            <div style={{ flex: 1, minWidth: "120px" }}>
+              <div style={{ height: "3px", backgroundColor: "rgba(255,255,255,0.1)", borderRadius: "2px", overflow: "hidden", marginBottom: "8px" }}>
+                <div style={{ height: "100%", width: "40%", backgroundColor: "var(--accent)", borderRadius: "2px" }} />
+              </div>
+              <Link href="/cpd" style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "var(--font-sans)", display: "flex", alignItems: "center", gap: "4px" }} className="hover:text-white/60 transition-colors">
+                View record <ArrowRight size={10} />
+              </Link>
+            </div>
+          </div>
+
+          {/* Due for review */}
+          <div style={{ backgroundColor: "var(--surface)", border: "1px solid var(--border)", borderRadius: "3px", padding: "24px 28px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
+              <RotateCcw size={13} style={{ color: "var(--accent)" }} />
+              <p style={{ fontSize: "10px", letterSpacing: "0.1em", color: "var(--text-muted)", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 500 }}>Due for Review</p>
+            </div>
+            {dueForReview.map((item) => (
+              <div key={item.title} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px", padding: "8px 0", borderBottom: "1px solid var(--border)" }}>
+                <div>
+                  <p style={{ fontSize: "12px", fontFamily: "var(--font-sans)", color: "var(--text-primary)", marginBottom: "2px", lineHeight: 1.3 }}>{item.title}</p>
+                  <p style={{ fontSize: "10px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{item.type}</p>
+                </div>
+                <span style={{ fontSize: "10px", fontFamily: "var(--font-sans)", color: item.due === "Today" ? "var(--accent)" : "var(--text-muted)", fontWeight: 500, flexShrink: 0, letterSpacing: "0.04em" }}>{item.due}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Learning Path */}
+        <div style={{ marginBottom: "48px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "20px" }}>
+            <div>
+              <p style={{ fontSize: "10px", letterSpacing: "0.1em", color: "var(--accent)", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 500, marginBottom: "4px" }}>AI Recommended</p>
+              <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "26px", fontWeight: 400, color: "var(--text-primary)", lineHeight: 1 }}>Your learning path</h2>
+            </div>
             <Link href="/platform/courses" style={{ fontSize: "11px", letterSpacing: "0.06em", color: "var(--text-muted)", fontFamily: "var(--font-sans)", textTransform: "uppercase" as const, display: "flex", alignItems: "center", gap: "4px" }} className="hover:text-[var(--text-secondary)] transition-colors">
               All courses <ArrowRight size={10} />
             </Link>
           </div>
-          <div className="flex flex-col gap-3">
-            {recentCourses.map((course) => (
+
+          <div className="flex flex-col gap-px" style={{ backgroundColor: "var(--border)" }}>
+            {learningPath.map((item, i) => (
               <div
-                key={course.title}
-                style={{ backgroundColor: "var(--surface)", border: "1px solid var(--border)", padding: "18px 20px", borderRadius: "2px" }}
+                key={item.title}
+                style={{
+                  backgroundColor: item.status === "up-next" ? "var(--accent-dark)" : item.status === "locked" ? "var(--surface)" : "var(--bg)",
+                  padding: "20px 24px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "20px",
+                  opacity: item.status === "locked" ? 0.5 : 1,
+                }}
               >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
-                  <div style={{ flex: 1, marginRight: "12px" }}>
-                    <p style={{ fontSize: "10px", letterSpacing: "0.08em", color: "var(--accent)", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 500, marginBottom: "4px" }}>{course.pillar}</p>
-                    <p style={{ fontSize: "14px", color: "var(--text-primary)", fontFamily: "var(--font-sans)", fontWeight: 500, lineHeight: 1.35 }}>{course.title}</p>
+                <span style={{ fontFamily: "var(--font-serif)", fontSize: "24px", fontWeight: 300, color: item.status === "up-next" ? "rgba(255,255,255,0.2)" : "var(--border-strong)", lineHeight: 1, flexShrink: 0, width: "28px" }}>
+                  {item.step}
+                </span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "6px", flexWrap: "wrap" as const }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "10px", letterSpacing: "0.06em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", color: item.status === "up-next" ? "var(--accent)" : "var(--text-muted)", fontWeight: 500 }}>
+                      {typeIcons[item.type]}{item.type}
+                    </span>
                   </div>
-                  <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", flexShrink: 0 }}>
-                    <Clock size={11} />{course.duration}
-                  </span>
+                  <p style={{ fontSize: "15px", fontFamily: "var(--font-serif)", fontWeight: 400, color: item.status === "up-next" ? "var(--white)" : "var(--text-primary)", lineHeight: 1.25 }}>{item.title}</p>
+                  {item.status === "in-progress" && (
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "10px" }}>
+                      <div style={{ width: "100px", height: "2px", backgroundColor: "var(--border)", borderRadius: "1px", overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: `${item.progress}%`, backgroundColor: "var(--accent-dark)", borderRadius: "1px" }} />
+                      </div>
+                      <span style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{item.progress}% complete</span>
+                    </div>
+                  )}
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <div style={{ flex: 1, height: "3px", backgroundColor: "var(--border)", borderRadius: "2px", overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: `${course.progress}%`, backgroundColor: course.progress === 100 ? "var(--accent)" : "var(--accent-dark)", borderRadius: "2px" }} />
-                  </div>
-                  <span style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", flexShrink: 0 }}>{course.progress}%</span>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
+                  <span style={{ fontSize: "11px", color: item.status === "up-next" ? "rgba(255,255,255,0.4)" : "var(--text-muted)", fontFamily: "var(--font-sans)", display: "flex", alignItems: "center", gap: "4px" }}>
+                    <Clock size={11} />{item.duration}
+                  </span>
+                  {item.status !== "locked" && (
+                    <span style={{ fontSize: "11px", letterSpacing: "0.06em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", color: item.status === "up-next" ? "var(--accent)" : "var(--text-muted)", fontWeight: 500 }}>
+                      {item.status === "in-progress" ? "Continue" : "Start"}
+                    </span>
+                  )}
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Recent editorial */}
+        {/* This week editorial */}
         <div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "24px", fontWeight: 400, color: "var(--text-primary)" }}>Latest editorial</h2>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "20px" }}>
+            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "26px", fontWeight: 400, color: "var(--text-primary)" }}>This week</h2>
             <Link href="/platform/editorial" style={{ fontSize: "11px", letterSpacing: "0.06em", color: "var(--text-muted)", fontFamily: "var(--font-sans)", textTransform: "uppercase" as const, display: "flex", alignItems: "center", gap: "4px" }} className="hover:text-[var(--text-secondary)] transition-colors">
-              All articles <ArrowRight size={10} />
+              All departments <ArrowRight size={10} />
             </Link>
           </div>
-          <div className="flex flex-col">
-            {recentEditorial.map((item, i) => (
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ backgroundColor: "var(--border)" }}>
+            {thisWeek.map((item, i) => (
               <div
-                key={i}
-                style={{
-                  padding: "18px 0",
-                  borderTop: i === 0 ? "1px solid var(--border)" : "none",
-                  borderBottom: "1px solid var(--border)",
-                  cursor: "pointer",
-                }}
-                className="hover:bg-[var(--surface)] transition-colors"
+                key={item.title}
+                style={{ backgroundColor: i === 0 ? "var(--surface)" : "var(--bg)", padding: "24px 28px", cursor: "pointer" }}
+                className="hover:bg-[var(--surface-raised)] transition-colors"
               >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "12px" }}>
-                  <div>
-                    <span style={{ fontSize: "10px", letterSpacing: "0.08em", color: "var(--accent)", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 600, display: "block", marginBottom: "6px" }}>{item.tag}</span>
-                    <p style={{ fontFamily: "var(--font-serif)", fontSize: "17px", fontWeight: 400, color: "var(--text-primary)", lineHeight: 1.3 }}>{item.title}</p>
-                  </div>
-                  <ArrowRight size={14} style={{ color: "var(--text-muted)", flexShrink: 0, marginTop: "4px" }} />
-                </div>
-                <p style={{ fontSize: "12px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", marginTop: "8px" }}>{item.date}</p>
+                <span style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 600, color: deptColours[item.dept] || "var(--text-muted)", display: "block", marginBottom: "10px" }}>
+                  {item.dept}
+                </span>
+                <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "18px", fontWeight: 400, color: "var(--text-primary)", lineHeight: 1.3, marginBottom: "10px" }}>{item.title}</h3>
+                <p style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{item.author} · {item.readTime} read</p>
               </div>
             ))}
           </div>
         </div>
+
       </div>
     </div>
   );
