@@ -46,7 +46,7 @@ export default function AuditForm() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    supabaseBrowser.auth.getUser().then(({ data }) => {
+    supabaseBrowser.auth.getUser().then(({ data }: { data: { user: unknown } }) => {
       setIsLoggedIn(!!data.user);
     });
   }, []);

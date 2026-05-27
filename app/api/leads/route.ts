@@ -20,7 +20,8 @@ export async function POST(request: NextRequest) {
   }
 
   // ── 1. Save lead to Supabase ─────────────────────────────────────────────────
-  const { data: lead, error: leadError } = await supabaseAdmin
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: lead, error: leadError } = await (supabaseAdmin as any)
     .from("leads")
     .insert({ email, audit_id: auditId || null, overall_score: overallScore })
     .select("id")
@@ -31,7 +32,7 @@ export async function POST(request: NextRequest) {
     // Continue — HubSpot sync is best effort
   }
 
-  const leadId = lead?.id;
+  const leadId = (lead as { id: string } | null)?.id;
 
   // ── 2. HubSpot integration ───────────────────────────────────────────────────
   if (!process.env.HUBSPOT_ACCESS_TOKEN) {
@@ -137,12 +138,10 @@ export async function POST(request: NextRequest) {
 
   // ── 3. Update lead with HubSpot IDs ──────────────────────────────────────────
   if (leadId && (contactId || dealId)) {
-    await supabaseAdmin
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (supabaseAdmin as any)
       .from("leads")
-      .update({
-        hubspot_contact_id: contactId,
-        hubspot_deal_id: dealId,
-      })
+      .update({ hubspot_contact_id: contactId, hubspot_deal_id: dealId })
       .eq("id", leadId);
   }
 

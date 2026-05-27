@@ -8,22 +8,25 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = supabaseAdmin as any;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const { data } = await supabaseAdmin
+  const { data } = await db
     .from("audits")
     .select("practice_name")
     .eq("id", id)
     .single();
 
   if (!data) return { title: "Audit — Digital Audit Tool" };
-  return { title: `${data.practice_name} — Digital Audit` };
+  return { title: `${(data as { practice_name: string }).practice_name} — Digital Audit` };
 }
 
 export default async function AuditPage({ params }: Props) {
   const { id } = await params;
 
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await db
     .from("audits")
     .select("*")
     .eq("id", id)
@@ -35,7 +38,7 @@ export default async function AuditPage({ params }: Props) {
 
   return (
     <AuditResultsWrapper
-      result={data.result as AuditResult}
+      result={(data as { result: AuditResult }).result}
       auditId={id}
     />
   );

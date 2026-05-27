@@ -1,22 +1,28 @@
 /**
  * Service-role Supabase client — bypasses RLS entirely.
  * SERVER ONLY — never import this in client components.
- * Use for: inserting audits, reading leads, admin tasks.
+ * Lazily instantiated to avoid build-time errors when env vars are runtime secrets.
  */
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-function getSupabaseAdmin() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) throw new Error("Supabase env vars are not configured.");
-  return createClient(url, key, { auth: { persistSession: false } });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _admin: SupabaseClient<any> | null = null;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function admin(): SupabaseClient<any> {
+  if (!_admin) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!url || !key) throw new Error("Supabase env vars are not configured.");
+    _admin = createClient(url, key, { auth: { persistSession: false } });
+  }
+  return _admin;
 }
 
-let _admin: ReturnType<typeof createClient> | null = null;
-
-export const supabaseAdmin = new Proxy({} as ReturnType<typeof createClient>, {
-  get(_target, prop) {
-    if (!_admin) _admin = getSupabaseAdmin();
-    return (_admin as Record<string | symbol, unknown>)[prop];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const supabaseAdmin: SupabaseClient<any> = new Proxy({} as SupabaseClient<any>, {
+  get(_t, prop) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (admin() as any)[prop];
   },
 });

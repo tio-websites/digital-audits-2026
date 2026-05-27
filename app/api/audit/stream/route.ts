@@ -261,7 +261,8 @@ export async function POST(request: NextRequest) {
         // Step 10 — Save to Supabase (best effort)
         let auditId: string | null = null;
         try {
-          const { data: saved } = await supabaseAdmin
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { data: saved } = await (supabaseAdmin as any)
             .from("audits")
             .insert({
               url,
@@ -272,7 +273,7 @@ export async function POST(request: NextRequest) {
             })
             .select("id")
             .single();
-          auditId = saved?.id ?? null;
+          auditId = (saved as { id: string } | null)?.id ?? null;
         } catch {
           // Non-fatal — audit proceeds even if DB save fails
         }

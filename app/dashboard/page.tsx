@@ -33,11 +33,12 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  const { data: audits } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: audits } = await (supabase as any)
     .from("audits")
     .select("id, created_at, url, practice_name, overall_score")
     .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false }) as { data: { id: string; created_at: string; url: string; practice_name: string; overall_score: number }[] | null };
 
   return (
     <div className="min-h-screen flex flex-col bg-tio-light">
