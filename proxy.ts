@@ -1,16 +1,13 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PROTECTED = ["/dashboard", "/audit", "/pdf", "/"];
-const AUTH_PAGES = ["/login"];
+// Only /login is public — everything else requires auth
+const PUBLIC_PATHS = ["/login"];
 
 export default async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
-  // Only run auth checks on protected + auth pages
-  const isProtected = PROTECTED.some((p) => path.startsWith(p));
-  const isAuthPage = AUTH_PAGES.some((p) => path.startsWith(p));
-  if (!isProtected && !isAuthPage) return NextResponse.next();
+  const isPublic = PUBLIC_PATHS.some((p) => path.startsWith(p));
 
   // Create a mutable response so Supabase SSR can refresh the session cookie
   let response = NextResponse.next({ request });
@@ -36,20 +33,20 @@ export default async function proxy(request: NextRequest) {
     }
   );
 
-  // getUser() is the only safe way to verify auth in proxy
-  // (getSession() can be spoofed by the client)
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (isProtected && !user) {
+  // Logged-in user visiting /login → send to home
+  if (isPublic && user) {
+    return NextResponse.redirect(new URL("/", request.nextUrl));
+  }
+
+  // Unauthenticated user visiting any protected page → send to /login
+  if (!isPublic && !user) {
     const loginUrl = new URL("/login", request.nextUrl);
     loginUrl.searchParams.set("redirect", path);
     return NextResponse.redirect(loginUrl);
-  }
-
-  if (isAuthPage && user) {
-    return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
   }
 
   return response;
