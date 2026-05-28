@@ -93,46 +93,40 @@ export default function HomePage() {
       </div>
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "var(--accent-dark)", position: "relative", overflow: "hidden" }}>
+      <section style={{ backgroundColor: "var(--accent-dark)" }}>
+
+        {/* Mobile: image banner above content */}
+        <div className="md:hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={PHOTOS.cover} alt="Cover" style={{ width: "100%", aspectRatio: "3/2", objectFit: "cover", objectPosition: "center top", display: "block", filter: "brightness(0.6)" }} />
+        </div>
+
+        {/* Desktop: side-by-side grid */}
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div className="grid grid-cols-1 md:grid-cols-2" style={{ minHeight: "88vh" }}>
 
-            {/* Left: cover photo — full-width on mobile, half-col on desktop */}
-            <div className="relative md:block" style={{ borderRight: "1px solid rgba(255,255,255,0.07)" }}>
-              {/* Mobile: landscape crop */}
+            {/* Left col: photo — desktop only */}
+            <div className="hidden md:block relative" style={{ borderRight: "1px solid rgba(255,255,255,0.07)" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={PHOTOS.cover}
-                alt="Cover"
-                className="md:hidden"
-                style={{ width: "100%", aspectRatio: "3/2", objectFit: "cover", objectPosition: "center top", display: "block", filter: "brightness(0.55)" }}
-              />
-              {/* Desktop: fills full column height */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={PHOTOS.cover}
-                alt="Cover"
-                className="hidden md:block"
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: "brightness(0.6)" }}
-              />
-              <div className="hidden md:block" style={{ position: "absolute", bottom: "32px", left: "32px", right: "32px" }}>
+              <img src={PHOTOS.cover} alt="Cover" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: "brightness(0.6)" }} />
+              <div style={{ position: "absolute", bottom: "32px", left: "32px", right: "32px" }}>
                 <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-sans)", letterSpacing: "0.06em" }}>
                   Finn · Principal Clinician · Berlin 2026
                 </p>
               </div>
             </div>
 
-            {/* Right: headline + teasers */}
+            {/* Right col: headline + teasers — always visible */}
             <div className="flex flex-col justify-between px-8 md:px-14 py-12 md:py-16">
               <div>
-                <div className="flex items-center gap-3 mb-10">
+                <div className="flex items-center gap-3 mb-8 md:mb-10">
                   <div style={{ width: "28px", height: "1px", backgroundColor: "var(--accent)" }} />
                   <span style={{ fontSize: "10px", letterSpacing: "0.14em", color: "var(--accent)", fontFamily: "var(--font-sans)", textTransform: "uppercase", fontWeight: 600 }}>
                     Digital Orthodontics Platform
                   </span>
                 </div>
 
-                <h1 style={{ fontFamily: "var(--font-serif)", fontWeight: 300, fontSize: "clamp(44px, 8vw, 80px)", lineHeight: 0.95, color: "var(--white)", letterSpacing: "-0.025em", marginBottom: "36px" }}>
+                <h1 style={{ fontFamily: "var(--font-serif)", fontWeight: 300, fontSize: "clamp(44px, 8vw, 80px)", lineHeight: 0.95, color: "var(--white)", letterSpacing: "-0.025em", marginBottom: "32px" }}>
                   Build elite
                   <br />digital
                   <br /><em style={{ fontStyle: "italic", color: "rgba(255,255,255,0.4)" }}>orthodontic</em>
@@ -150,15 +144,15 @@ export default function HomePage() {
               </div>
 
               {/* In this issue */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "32px", marginTop: "40px" }}>
-                <p style={{ fontSize: "9px", letterSpacing: "0.14em", color: "rgba(255,255,255,0.25)", fontFamily: "var(--font-sans)", textTransform: "uppercase", marginBottom: "20px" }}>
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "28px", marginTop: "36px" }}>
+                <p style={{ fontSize: "9px", letterSpacing: "0.14em", color: "rgba(255,255,255,0.25)", fontFamily: "var(--font-sans)", textTransform: "uppercase", marginBottom: "18px" }}>
                   In this issue
                 </p>
                 {editorial.map((item, i) => (
-                  <div key={item.title} style={{ display: "flex", gap: "16px", alignItems: "flex-start", paddingBottom: i < editorial.length - 1 ? "16px" : "0", marginBottom: i < editorial.length - 1 ? "16px" : "0", borderBottom: i < editorial.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
-                    <span style={{ fontFamily: "var(--font-serif)", fontSize: "20px", color: "rgba(255,255,255,0.12)", lineHeight: 1, flexShrink: 0, width: "20px" }}>{i + 1}</span>
+                  <div key={item.title} style={{ display: "flex", gap: "16px", alignItems: "flex-start", paddingBottom: i < editorial.length - 1 ? "14px" : "0", marginBottom: i < editorial.length - 1 ? "14px" : "0", borderBottom: i < editorial.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
+                    <span style={{ fontFamily: "var(--font-serif)", fontSize: "18px", color: "rgba(255,255,255,0.12)", lineHeight: 1, flexShrink: 0, width: "20px" }}>{i + 1}</span>
                     <div>
-                      <span style={{ fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase", fontFamily: "var(--font-sans)", fontWeight: 600, color: item.accentColour, display: "block", marginBottom: "4px" }}>{item.dept}</span>
+                      <span style={{ fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase", fontFamily: "var(--font-sans)", fontWeight: 600, color: item.accentColour, display: "block", marginBottom: "3px" }}>{item.dept}</span>
                       <p style={{ fontFamily: "var(--font-serif)", fontSize: "14px", fontWeight: 400, color: "rgba(255,255,255,0.65)", lineHeight: 1.4 }}>{item.title}</p>
                     </div>
                   </div>
