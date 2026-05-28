@@ -97,11 +97,25 @@ export default function HomePage() {
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div className="grid grid-cols-1 md:grid-cols-2" style={{ minHeight: "88vh" }}>
 
-            {/* Left: cover photo — hidden on mobile */}
-            <div className="hidden md:block relative" style={{ borderRight: "1px solid rgba(255,255,255,0.07)" }}>
+            {/* Left: cover photo — full-width on mobile, half-col on desktop */}
+            <div className="relative md:block" style={{ borderRight: "1px solid rgba(255,255,255,0.07)" }}>
+              {/* Mobile: landscape crop */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={PHOTOS.cover} alt="Cover" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: "brightness(0.6)" }} />
-              <div style={{ position: "absolute", bottom: "32px", left: "32px", right: "32px" }}>
+              <img
+                src={PHOTOS.cover}
+                alt="Cover"
+                className="md:hidden"
+                style={{ width: "100%", aspectRatio: "3/2", objectFit: "cover", objectPosition: "center top", display: "block", filter: "brightness(0.55)" }}
+              />
+              {/* Desktop: fills full column height */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={PHOTOS.cover}
+                alt="Cover"
+                className="hidden md:block"
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: "brightness(0.6)" }}
+              />
+              <div className="hidden md:block" style={{ position: "absolute", bottom: "32px", left: "32px", right: "32px" }}>
                 <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-sans)", letterSpacing: "0.06em" }}>
                   Finn · Principal Clinician · Berlin 2026
                 </p>
@@ -109,7 +123,7 @@ export default function HomePage() {
             </div>
 
             {/* Right: headline + teasers */}
-            <div className="flex flex-col justify-between px-8 md:px-14 py-16 md:py-16">
+            <div className="flex flex-col justify-between px-8 md:px-14 py-12 md:py-16">
               <div>
                 <div className="flex items-center gap-3 mb-10">
                   <div style={{ width: "28px", height: "1px", backgroundColor: "var(--accent)" }} />
