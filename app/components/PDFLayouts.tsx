@@ -4,7 +4,7 @@ import type { AuditResult } from "../api/audit/types";
 
 const CALENDAR_URL =
   process.env.NEXT_PUBLIC_HUBSPOT_CALENDAR_URL ||
-  "https://meetings.hubspot.com/your-link";
+  "https://meetings.hubspot.com/mary-preston";
 
 const NAVY = "#192845";
 const BLUE = "#bce1eb";
