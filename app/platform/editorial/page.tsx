@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const departments = [
   {
@@ -7,14 +8,14 @@ const departments = [
     description: "Finn's weekly perspective on where digital orthodontics is heading.",
     featured: {
       title: "Why the best practices are building systems, not just using tools",
-      excerpt: "There is a difference between a practice that uses digital tools and a practice that has built a digital system. Only one of them is scalable. Only one of them runs without the principal in the room.",
+      excerpt: "There is a difference between a practice that uses digital tools and a practice that has built a digital system. Only one of them is scalable. Only one of them runs without the principal in the room. The distinction matters more than most practitioners realise, and most find out too late.",
       author: "Finn",
       date: "27 May 2026",
       readTime: "4 min",
     },
     recent: [
-      { title: "On the pressure to adopt AI before understanding it", date: "20 May 2026" },
-      { title: "What 350 orthodontists at a Berlin Saturday told us about demand", date: "13 May 2026" },
+      { title: "On the pressure to adopt AI before understanding it", date: "20 May 2026", readTime: "3 min" },
+      { title: "What 350 orthodontists at a Berlin Saturday told us about demand", date: "13 May 2026", readTime: "5 min" },
     ],
   },
   {
@@ -29,8 +30,8 @@ const departments = [
       readTime: "10 min",
     },
     recent: [
-      { title: "Unexpected root resorption at review: what we changed and why", date: "19 May 2026" },
-      { title: "A relapse case — what the retention protocol missed", date: "12 May 2026" },
+      { title: "Unexpected root resorption at review: what we changed and why", date: "19 May 2026", readTime: "8 min" },
+      { title: "A relapse case — what the retention protocol missed", date: "12 May 2026", readTime: "6 min" },
     ],
   },
   {
@@ -45,8 +46,8 @@ const departments = [
       readTime: "6 min",
     },
     recent: [
-      { title: "Post-cure time and aligner fit: a practical review", date: "18 May 2026" },
-      { title: "Printer calibration drift: how to catch it before it reaches the patient", date: "11 May 2026" },
+      { title: "Post-cure time and aligner fit: a practical review", date: "18 May 2026", readTime: "5 min" },
+      { title: "Printer calibration drift: how to catch it before it reaches the patient", date: "11 May 2026", readTime: "4 min" },
     ],
   },
   {
@@ -61,8 +62,8 @@ const departments = [
       readTime: "4 min",
     },
     recent: [
-      { title: "Treatment planning software: a practical comparison for 2026", date: "17 May 2026" },
-      { title: "When AI triage recommendations differ from your clinical instinct", date: "10 May 2026" },
+      { title: "Treatment planning software: a practical comparison for 2026", date: "17 May 2026", readTime: "7 min" },
+      { title: "When AI triage recommendations differ from your clinical instinct", date: "10 May 2026", readTime: "5 min" },
     ],
   },
   {
@@ -77,8 +78,8 @@ const departments = [
       readTime: "7 min",
     },
     recent: [
-      { title: "Overcorrection protocols: evidence versus convention", date: "16 May 2026" },
-      { title: "Retention: what the long-term data on relapse rates tells us", date: "9 May 2026" },
+      { title: "Overcorrection protocols: evidence versus convention", date: "16 May 2026", readTime: "6 min" },
+      { title: "Retention: what the long-term data on relapse rates tells us", date: "9 May 2026", readTime: "8 min" },
     ],
   },
   {
@@ -93,8 +94,8 @@ const departments = [
       readTime: "5 min",
     },
     recent: [
-      { title: "Pricing digital workflows: what to charge and how to explain it", date: "15 May 2026" },
-      { title: "Building a referral pipeline from digital case outcomes", date: "8 May 2026" },
+      { title: "Pricing digital workflows: what to charge and how to explain it", date: "15 May 2026", readTime: "4 min" },
+      { title: "Building a referral pipeline from digital case outcomes", date: "8 May 2026", readTime: "5 min" },
     ],
   },
 ];
@@ -110,26 +111,46 @@ const deptAccents: Record<string, string> = {
 
 export default function EditorialPage() {
   return (
-    <div style={{ padding: "40px 48px 64px", maxWidth: "1100px" }}>
+    <div style={{ maxWidth: "1100px" }}>
 
-      {/* Masthead */}
-      <div style={{ borderBottom: "1px solid var(--border)", paddingBottom: "28px", marginBottom: "48px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap" as const, gap: "16px" }}>
-          <div>
-            <p style={{ fontSize: "10px", letterSpacing: "0.12em", color: "var(--text-muted)", fontFamily: "var(--font-sans)", textTransform: "uppercase" as const, marginBottom: "8px" }}>
+      {/* ── MASTHEAD ──────────────────────────────────────────────────────── */}
+      <div style={{ padding: "48px 48px 0" }}>
+        <div style={{ borderBottom: "1px solid var(--border)", paddingBottom: "20px", marginBottom: "20px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: "8px" }}>
+            <span style={{ fontSize: "9px", letterSpacing: "0.18em", color: "var(--text-muted)", fontFamily: "var(--font-sans)", textTransform: "uppercase" as const }}>
               The Okklusion Review
-            </p>
-            <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(36px, 4vw, 52px)", fontWeight: 300, color: "var(--text-primary)", letterSpacing: "-0.01em", lineHeight: 1 }}>
+            </span>
+            <span style={{ fontSize: "9px", letterSpacing: "0.1em", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>
+              Vol. 1 · Issue 4 · 27 May 2026
+            </span>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap" as const, gap: "24px", paddingBottom: "40px" }}>
+          <div>
+            <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(52px, 6vw, 80px)", fontWeight: 300, color: "var(--text-primary)", letterSpacing: "-0.025em", lineHeight: 0.9, marginBottom: "16px" }}>
               Editorial
             </h1>
+            <p style={{ fontSize: "13px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.6, maxWidth: "440px" }}>
+              Weekly dispatches from the intersection of clinical practice and digital orthodontics. Every piece written by practitioners, for practitioners.
+            </p>
           </div>
           <div style={{ textAlign: "right" as const }}>
-            <p style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", marginBottom: "2px" }}>Vol. 1 · Issue 4 · May 2026</p>
             <div style={{ display: "flex", gap: "6px", justifyContent: "flex-end", flexWrap: "wrap" as const }}>
               {departments.map((d) => (
                 <span
                   key={d.dept}
-                  style={{ fontSize: "9px", letterSpacing: "0.08em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", color: "var(--text-muted)", padding: "2px 8px", border: "1px solid var(--border)", borderRadius: "1px" }}
+                  style={{
+                    fontSize: "8px",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase" as const,
+                    fontFamily: "var(--font-sans)",
+                    color: deptAccents[d.dept],
+                    padding: "3px 10px",
+                    border: `1px solid ${deptAccents[d.dept]}`,
+                    borderRadius: "1px",
+                    opacity: 0.7,
+                  }}
                 >
                   {d.dept}
                 </span>
@@ -137,111 +158,191 @@ export default function EditorialPage() {
             </div>
           </div>
         </div>
+
+        <div style={{ height: "3px", backgroundColor: "var(--text-primary)", marginBottom: "0" }} />
       </div>
 
-      {/* Featured — Editor's Note */}
-      <div
-        style={{
-          backgroundColor: "var(--accent-dark)",
-          padding: "48px",
-          marginBottom: "4px",
-          cursor: "pointer",
-        }}
-        className="hover:opacity-95 transition-opacity"
-      >
-        <span style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 600, color: "var(--accent)", display: "block", marginBottom: "20px" }}>
-          Editor's Note
-        </span>
-        <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(28px, 3.5vw, 44px)", fontWeight: 300, color: "var(--white)", lineHeight: 1.1, marginBottom: "20px", maxWidth: "680px", letterSpacing: "-0.01em" }}>
-          {departments[0].featured.title}
-        </h2>
-        <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.55)", fontFamily: "var(--font-sans)", lineHeight: 1.75, marginBottom: "28px", maxWidth: "580px" }}>
-          {departments[0].featured.excerpt}
-        </p>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: "12px" }}>
-          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-sans)" }}>
-            {departments[0].featured.author} · {departments[0].featured.date} · {departments[0].featured.readTime} read
-          </p>
-          <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "11px", letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "var(--accent)", fontFamily: "var(--font-sans)", fontWeight: 500 }}>
-            Read <ArrowRight size={11} />
-          </span>
+      {/* ── FEATURED — EDITOR'S NOTE ──────────────────────────────────────── */}
+      <div style={{ padding: "0 48px" }}>
+        <Link
+          href="/signup"
+          style={{ display: "block", textDecoration: "none" }}
+        >
+          <div
+            style={{
+              backgroundColor: "var(--accent-dark)",
+              padding: "56px 64px",
+              marginBottom: "4px",
+              borderBottom: "4px solid var(--accent)",
+            }}
+            className="hover:opacity-95 transition-opacity"
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "28px" }}>
+              <div style={{ width: "36px", height: "2px", backgroundColor: "var(--accent)" }} />
+              <span style={{ fontSize: "9px", letterSpacing: "0.16em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 700, color: "var(--accent)" }}>
+                Editor&rsquo;s Note · Cover Story · Issue 4
+              </span>
+            </div>
+            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(32px, 4vw, 54px)", fontWeight: 300, color: "var(--white)", lineHeight: 1.05, marginBottom: "24px", maxWidth: "720px", letterSpacing: "-0.02em" }}>
+              {departments[0].featured.title}
+            </h2>
+            <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.6)", fontFamily: "var(--font-sans)", lineHeight: 1.8, marginBottom: "36px", maxWidth: "600px" }}>
+              {departments[0].featured.excerpt}
+            </p>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: "16px", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "24px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+                <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", fontFamily: "var(--font-sans)", letterSpacing: "0.02em" }}>
+                  By {departments[0].featured.author}
+                </p>
+                <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.25)", fontFamily: "var(--font-sans)" }}>·</span>
+                <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", fontFamily: "var(--font-sans)" }}>
+                  {departments[0].featured.date}
+                </p>
+                <span style={{ display: "inline-flex", alignItems: "center", padding: "3px 10px", backgroundColor: "rgba(255,255,255,0.07)", fontSize: "10px", color: "rgba(255,255,255,0.4)", fontFamily: "var(--font-sans)", borderRadius: "2px", letterSpacing: "0.04em" }}>
+                  {departments[0].featured.readTime} read
+                </span>
+              </div>
+              <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "var(--accent)", fontFamily: "var(--font-sans)", fontWeight: 600 }}>
+                Read this issue <ArrowRight size={11} />
+              </span>
+            </div>
+          </div>
+        </Link>
+      </div>
+
+      {/* ── DEPARTMENT GRID ───────────────────────────────────────────────── */}
+      <div style={{ padding: "4px 48px 0" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ backgroundColor: "var(--border)" }}>
+          {departments.slice(1).map((dept) => {
+            const accent = deptAccents[dept.dept];
+            return (
+              <div
+                key={dept.dept}
+                style={{ backgroundColor: "var(--bg)", padding: "40px 44px 36px", display: "flex", flexDirection: "column" as const }}
+              >
+                {/* Department header with colored rule */}
+                <div style={{ marginBottom: "28px" }}>
+                  <div style={{ height: "2px", backgroundColor: accent, marginBottom: "14px" }} />
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                    <span style={{ fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 700, color: accent }}>
+                      {dept.dept}
+                    </span>
+                    <span style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", lineHeight: 1.5, maxWidth: "220px", textAlign: "right" as const, fontStyle: "italic" }}>
+                      {dept.description}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Featured piece */}
+                <Link href="/signup" style={{ display: "block", textDecoration: "none", flex: 1 }} className="group">
+                  <div style={{ marginBottom: "24px" }}>
+                    <h3
+                      style={{ fontFamily: "var(--font-serif)", fontSize: "22px", fontWeight: 400, color: "var(--text-primary)", lineHeight: 1.25, marginBottom: "12px", letterSpacing: "-0.005em" }}
+                      className="group-hover:opacity-70 transition-opacity"
+                    >
+                      {dept.featured.title}
+                    </h3>
+                    <p style={{ fontSize: "13px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.7, marginBottom: "14px" }}>
+                      {dept.featured.excerpt}
+                    </p>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                      <p style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>
+                        {dept.featured.author} · {dept.featured.date}
+                      </p>
+                      <span style={{ display: "inline-flex", alignItems: "center", padding: "2px 8px", backgroundColor: "var(--surface)", border: "1px solid var(--border)", fontSize: "10px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", borderRadius: "2px", letterSpacing: "0.04em" }}>
+                        {dept.featured.readTime} read
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+
+                {/* Separator */}
+                <div style={{ borderTop: "1px solid var(--border)", marginBottom: "20px" }} />
+
+                {/* Recent articles */}
+                <div>
+                  {dept.recent.map((item, i) => (
+                    <Link
+                      key={i}
+                      href="/signup"
+                      style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px", padding: "10px 0", borderBottom: i === 0 ? "1px solid var(--border)" : "none", textDecoration: "none" }}
+                      className="hover:opacity-70 transition-opacity group"
+                    >
+                      <p style={{ fontSize: "12px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.5, flex: 1 }}>{item.title}</p>
+                      <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "flex-end", gap: "4px", flexShrink: 0 }}>
+                        <p style={{ fontSize: "10px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{item.date.split(" ")[0]} {item.date.split(" ")[1]}</p>
+                        <span style={{ display: "inline-flex", alignItems: "center", padding: "1px 6px", backgroundColor: "var(--surface)", fontSize: "9px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", borderRadius: "2px" }}>
+                          {item.readTime}
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                  <div style={{ paddingTop: "16px" }}>
+                    <Link
+                      href="/signup"
+                      style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" as const, color: accent, fontFamily: "var(--font-sans)", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: "4px", textDecoration: "none" }}
+                      className="hover:opacity-70 transition-opacity"
+                    >
+                      All {dept.dept} <ArrowRight size={10} />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Department grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ backgroundColor: "var(--border)", marginBottom: "48px" }}>
-        {departments.slice(1).map((dept) => (
-          <div
-            key={dept.dept}
-            style={{ backgroundColor: "var(--bg)", padding: "32px 36px", display: "flex", flexDirection: "column" as const }}
-          >
-            {/* Department header */}
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px", paddingBottom: "16px", borderBottom: `2px solid ${deptAccents[dept.dept]}` }}>
-              <span style={{ fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 600, color: deptAccents[dept.dept] }}>
-                {dept.dept}
-              </span>
-            </div>
-
-            {/* Featured piece */}
-            <div
-              style={{ cursor: "pointer", marginBottom: "20px", flex: 1 }}
-              className="group"
-            >
-              <h3
-                style={{ fontFamily: "var(--font-serif)", fontSize: "20px", fontWeight: 400, color: "var(--text-primary)", lineHeight: 1.3, marginBottom: "10px" }}
-                className="group-hover:opacity-75 transition-opacity"
-              >
-                {dept.featured.title}
-              </h3>
-              <p style={{ fontSize: "13px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.65, marginBottom: "12px" }}>
-                {dept.featured.excerpt}
+      {/* ── LETTERS PAGE — MEMBER QUESTIONS ──────────────────────────────── */}
+      <div style={{ padding: "0 48px 64px" }}>
+        <div style={{ marginTop: "4px", backgroundColor: "var(--surface)", padding: "48px 52px" }}>
+          {/* Letters header */}
+          <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "36px", paddingBottom: "24px", borderBottom: "2px solid var(--text-primary)" }}>
+            <div>
+              <p style={{ fontSize: "9px", letterSpacing: "0.16em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", color: "var(--text-muted)", marginBottom: "4px" }}>
+                Letters · Vol. 1 Issue 4
               </p>
-              <p style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>
-                {dept.featured.author} · {dept.featured.readTime} read
+              <p style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(22px, 2.5vw, 30px)", fontWeight: 300, color: "var(--text-primary)", lineHeight: 1, letterSpacing: "-0.01em" }}>
+                Member Questions
               </p>
             </div>
-
-            {/* Recent from this dept */}
-            <div style={{ borderTop: "1px solid var(--border)", paddingTop: "16px" }}>
-              {dept.recent.map((item, i) => (
-                <div
-                  key={i}
-                  style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "12px", padding: "8px 0", borderBottom: i === 0 ? "1px solid var(--border)" : "none", cursor: "pointer" }}
-                  className="hover:opacity-75 transition-opacity"
-                >
-                  <p style={{ fontSize: "12px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.4 }}>{item.title}</p>
-                  <p style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", flexShrink: 0 }}>{item.date.split(" ")[0]} {item.date.split(" ")[1]}</p>
-                </div>
-              ))}
-              <div style={{ paddingTop: "12px" }}>
-                <span style={{ fontSize: "10px", letterSpacing: "0.08em", textTransform: "uppercase" as const, color: deptAccents[dept.dept], fontFamily: "var(--font-sans)", fontWeight: 500, display: "flex", alignItems: "center", gap: "4px", cursor: "pointer" }}>
-                  All {dept.dept} <ArrowRight size={10} />
-                </span>
-              </div>
-            </div>
+            <div style={{ flex: 1, height: "1px", backgroundColor: "var(--border)" }} />
+            <p style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", fontStyle: "italic", maxWidth: "200px", textAlign: "right" as const, lineHeight: 1.5 }}>
+              Selected questions answered by Finn each issue
+            </p>
           </div>
-        ))}
-      </div>
 
-      {/* Member responses */}
-      <div style={{ borderTop: "2px solid var(--text-primary)", paddingTop: "28px" }}>
-        <p style={{ fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 600, color: "var(--text-primary)", marginBottom: "20px" }}>
-          Member Questions
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: "var(--border)" }}>
-          {[
-            { q: "At what throughput does in-house printing become cost-effective?", resp: "Finn", dept: "Lab Note" },
-            { q: "How should we handle patients who disengage from DM mid-treatment?", resp: "Finn", dept: "Practice Note" },
-            { q: "Is there a standard for how many attachments is too many?", resp: "Finn", dept: "Evidence Note" },
-          ].map((item, i) => (
-            <div key={i} style={{ backgroundColor: "var(--surface)", padding: "24px 28px", cursor: "pointer" }} className="hover:bg-[var(--surface-raised)] transition-colors">
-              <p style={{ fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", color: "var(--text-muted)", marginBottom: "12px" }}>{item.dept}</p>
-              <p style={{ fontFamily: "var(--font-serif)", fontSize: "16px", fontWeight: 400, color: "var(--text-primary)", lineHeight: 1.4, marginBottom: "12px" }}>
-                &ldquo;{item.q}&rdquo;
-              </p>
-              <p style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>Answered by {item.resp}</p>
-            </div>
-          ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: "var(--border)" }}>
+            {[
+              { q: "At what throughput does in-house printing become cost-effective?", resp: "Finn", dept: "Lab Note" },
+              { q: "How should we handle patients who disengage from DM mid-treatment?", resp: "Finn", dept: "Practice Note" },
+              { q: "Is there a standard for how many attachments is too many?", resp: "Finn", dept: "Evidence Note" },
+            ].map((item, i) => (
+              <Link
+                key={i}
+                href="/signup"
+                style={{ display: "block", backgroundColor: "var(--bg)", padding: "32px 36px", textDecoration: "none" }}
+                className="hover:bg-[var(--surface-raised)] transition-colors"
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
+                  <span style={{ fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", color: deptAccents[item.dept] }}>
+                    {item.dept}
+                  </span>
+                </div>
+                <p style={{ fontFamily: "var(--font-serif)", fontSize: "18px", fontWeight: 300, color: "var(--text-primary)", lineHeight: 1.45, marginBottom: "20px", letterSpacing: "-0.005em" }}>
+                  &ldquo;{item.q}&rdquo;
+                </p>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <p style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", fontStyle: "italic" }}>
+                    Answered by {item.resp}
+                  </p>
+                  <span style={{ fontSize: "10px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", display: "flex", alignItems: "center", gap: "4px" }}>
+                    Read <ArrowRight size={9} />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
 

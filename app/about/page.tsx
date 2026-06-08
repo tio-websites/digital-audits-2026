@@ -13,11 +13,11 @@ export default function AboutPage() {
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
             <div style={{ width: "32px", height: "1px", backgroundColor: "var(--accent)" }} />
-            <span style={{ fontSize: "11px", letterSpacing: "0.12em", color: "var(--accent)", fontFamily: "var(--font-sans)", textTransform: "uppercase" as const }}>About</span>
+            <span style={{ fontSize: "11px", letterSpacing: "0.12em", color: "var(--accent)", fontFamily: "var(--font-sans)", textTransform: "uppercase" as const }}>Founder</span>
           </div>
           <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(44px, 6vw, 72px)", fontWeight: 300, color: "var(--white)", letterSpacing: "-0.02em", lineHeight: 1.05, maxWidth: "680px" }}>
-            Built by practitioners,<br />
-            <em style={{ fontStyle: "italic", color: "rgba(255,255,255,0.6)" }}>for practitioners.</em>
+            Dr Finn Geoghagan<br />
+            <em style={{ fontStyle: "italic", color: "rgba(255,255,255,0.6)" }}>Specialist Orthodontist</em>
           </h1>
         </div>
       </section>
@@ -62,41 +62,38 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Partners */}
+      {/* Finn profile */}
       <section style={{ backgroundColor: "var(--surface)", padding: "100px 48px", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
-            <div style={{ width: "32px", height: "1px", backgroundColor: "var(--accent)" }} />
-            <span style={{ fontSize: "11px", letterSpacing: "0.12em", color: "var(--text-muted)", fontFamily: "var(--font-sans)", textTransform: "uppercase" as const }}>The Team</span>
-          </div>
-          <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(32px, 3.5vw, 44px)", fontWeight: 300, color: "var(--text-primary)", lineHeight: 1.1, marginBottom: "64px", letterSpacing: "-0.01em" }}>
-            Three partners. One vision.
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: "var(--border)" }}>
-            {[
-              {
-                name: "Finn",
-                role: "Clinical Lead",
-                description: "Clinical authority, content quality, and educational vision. Finn brings the manufacturing expertise, CPD alignment, and the KOL network that makes Okklusion credible.",
-              },
-              {
-                name: "TIO",
-                role: "Architect & Builder",
-                description: "The Invisible Orthodontist drives the brand, platform, marketing, and project delivery. Community building, innovation, and growth engine.",
-              },
-              {
-                name: "Dental Monitoring",
-                role: "Technology Partner",
-                description: "DM protocol content, platform support, events coordination, and deep-dive integration, bringing the technology layer to life inside the curriculum.",
-              },
-            ].map((partner) => (
-              <div key={partner.name} style={{ backgroundColor: "var(--bg)", padding: "40px 36px" }}>
-                <p style={{ fontFamily: "var(--font-serif)", fontSize: "28px", fontWeight: 400, color: "var(--text-primary)", marginBottom: "6px" }}>{partner.name}</p>
-                <p style={{ fontSize: "11px", letterSpacing: "0.08em", color: "var(--accent)", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 500, marginBottom: "20px" }}>{partner.role}</p>
-                <p style={{ fontSize: "14px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.65 }}>{partner.description}</p>
+          <div className="grid grid-cols-1 md:grid-cols-[400px_1fr] gap-px" style={{ backgroundColor: "var(--border)" }}>
+            <div style={{ backgroundColor: "var(--bg)" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="https://picsum.photos/seed/okk-finn/700/875" alt="Dr Finn Geoghagan" style={{ width: "100%", aspectRatio: "4/5", objectFit: "cover", display: "block" }} />
+            </div>
+            <div style={{ backgroundColor: "var(--bg)", padding: "56px 64px", display: "flex", flexDirection: "column" as const, justifyContent: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
+                <div style={{ width: "32px", height: "1px", backgroundColor: "var(--accent)" }} />
+                <span style={{ fontSize: "11px", letterSpacing: "0.12em", color: "var(--text-muted)", fontFamily: "var(--font-sans)", textTransform: "uppercase" as const }}>Founder & Clinical Lead</span>
               </div>
-            ))}
+              <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(32px, 3.5vw, 48px)", fontWeight: 300, color: "var(--text-primary)", letterSpacing: "-0.01em", lineHeight: 1.05, marginBottom: "8px" }}>
+                Dr Finn Geoghagan
+              </h2>
+              <p style={{ fontSize: "12px", letterSpacing: "0.08em", color: "var(--accent)", fontFamily: "var(--font-sans)", textTransform: "uppercase" as const, fontWeight: 500, marginBottom: "32px" }}>
+                Specialist Orthodontist
+              </p>
+              <p style={{ fontSize: "15px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.8, marginBottom: "20px" }}>
+                Finn is a specialist orthodontist who built one of the UK&rsquo;s first fully in-house digital aligner practices from scratch. He designed the workflows, sourced the equipment, wrote the ISO protocols, and trained the team &mdash; without a roadmap, because one didn&rsquo;t exist.
+              </p>
+              <p style={{ fontSize: "15px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.8, marginBottom: "20px" }}>
+                Okklusion exists because the education Finn needed simply wasn&rsquo;t there when he needed it. He made expensive mistakes, wasted time on bad advice, and learned the hard way what actually works in a real practice under real pressure.
+              </p>
+              <p style={{ fontSize: "15px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.8, marginBottom: "36px" }}>
+                This platform is the resource he would have paid for at every stage of that journey &mdash; built to give other clinicians the shortcut he never had.
+              </p>
+              <blockquote style={{ borderLeft: "2px solid var(--accent)", paddingLeft: "24px", fontFamily: "var(--font-serif)", fontSize: "22px", fontWeight: 300, color: "var(--text-primary)", lineHeight: 1.4, letterSpacing: "-0.01em" }}>
+                &ldquo;I spent years making the mistakes so you don&rsquo;t have to.&rdquo;
+              </blockquote>
+            </div>
           </div>
         </div>
       </section>

@@ -145,7 +145,7 @@ export default function HomePage() {
                 </h1>
 
                 <div className="flex flex-wrap gap-3">
-                  <Link href="/platform/editorial" style={{ display: "inline-flex", alignItems: "center", gap: "10px", backgroundColor: "var(--accent)", color: "var(--accent-dark)", padding: "13px 28px", fontSize: "11px", fontFamily: "var(--font-sans)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", borderRadius: "2px" }} className="hover:opacity-90 transition-opacity">
+                  <Link href="/signup" style={{ display: "inline-flex", alignItems: "center", gap: "10px", backgroundColor: "var(--accent)", color: "var(--accent-dark)", padding: "13px 28px", fontSize: "11px", fontFamily: "var(--font-sans)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", borderRadius: "2px" }} className="hover:opacity-90 transition-opacity">
                     Read this issue <ArrowRight size={12} />
                   </Link>
                   <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", gap: "8px", border: "1px solid rgba(255,255,255,0.14)", color: "rgba(255,255,255,0.5)", padding: "13px 28px", fontSize: "11px", fontFamily: "var(--font-sans)", letterSpacing: "0.1em", textTransform: "uppercase", borderRadius: "2px" }} className="hover:border-white/30 hover:text-white/75 transition-colors">
@@ -188,7 +188,7 @@ export default function HomePage() {
             {departments.map((d, i) => (
               <Link
                 key={d.name}
-                href="/platform/editorial"
+                href="/signup"
                 style={{ fontSize: "11px", fontFamily: "var(--font-sans)", color: d.colour, padding: "14px 20px", flexShrink: 0, borderLeft: "1px solid var(--border)", display: "flex", alignItems: "center", letterSpacing: "0.02em", whiteSpace: "nowrap" as const }}
                 className="hover:bg-[var(--surface-raised)] transition-colors"
               >
@@ -217,7 +217,7 @@ export default function HomePage() {
               </p>
               <div className="flex justify-between items-center">
                 <p style={{ fontSize: "12px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>Finn · 27 May 2026 · 4 min read</p>
-                <Link href="/platform/editorial" style={{ fontSize: "10px", letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "var(--font-sans)", color: "var(--text-secondary)", display: "inline-flex", alignItems: "center", gap: "4px" }} className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/signup" style={{ fontSize: "10px", letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "var(--font-sans)", color: "var(--text-secondary)", display: "inline-flex", alignItems: "center", gap: "4px" }} className="hover:text-[var(--text-primary)] transition-colors">
                   Read <ArrowRight size={10} />
                 </Link>
               </div>
@@ -280,32 +280,35 @@ export default function HomePage() {
 
           {/* Browse all */}
           <div style={{ padding: "20px 28px", borderTop: "1px solid var(--border)", display: "flex", justifyContent: "flex-end" }}>
-            <Link href="/platform/editorial" style={{ fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "var(--font-sans)", color: "var(--text-muted)", display: "inline-flex", alignItems: "center", gap: "4px" }} className="hover:text-[var(--text-secondary)] transition-colors">
+            <Link href="/signup" style={{ fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "var(--font-sans)", color: "var(--text-muted)", display: "inline-flex", alignItems: "center", gap: "4px" }} className="hover:text-[var(--text-secondary)] transition-colors">
               All departments <ArrowRight size={10} />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── PULL QUOTE ───────────────────────────────────────────────────── */}
+      {/* ── FROM THE FOUNDER ─────────────────────────────────────────────── */}
       <section style={{ borderBottom: "1px solid var(--border)" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr]">
             <div className="md:border-r" style={{ borderColor: "var(--border)" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={PHOTOS.portrait} alt="Finn" style={{ width: "100%", aspectRatio: "4/5", objectFit: "cover", display: "block", maxHeight: "480px" }} />
+              <img src={PHOTOS.portrait} alt="Dr Finn Geoghagan" style={{ width: "100%", aspectRatio: "4/5", objectFit: "cover", display: "block", maxHeight: "480px" }} />
             </div>
             <div className="px-8 py-12 md:px-16 md:py-20 flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-8">
                 <div style={{ width: "28px", height: "1px", backgroundColor: "var(--accent)" }} />
                 <span style={{ fontSize: "10px", letterSpacing: "0.12em", color: "var(--text-muted)", fontFamily: "var(--font-sans)", textTransform: "uppercase" }}>From the founder</span>
               </div>
-              <blockquote style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(22px, 3vw, 38px)", fontWeight: 300, color: "var(--text-primary)", lineHeight: 1.25, letterSpacing: "-0.01em", marginBottom: "32px" }}>
-                &ldquo;There is a difference between a practice that uses digital tools and a practice that has built a digital system. Only one of them is scalable.&rdquo;
+              <blockquote style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(22px, 3vw, 38px)", fontWeight: 300, color: "var(--text-primary)", lineHeight: 1.25, letterSpacing: "-0.01em", marginBottom: "24px" }}>
+                &ldquo;I spent years making the mistakes so you don&rsquo;t have to. Okklusion exists because the education I needed simply didn&rsquo;t exist when I needed it.&rdquo;
               </blockquote>
+              <p style={{ fontSize: "14px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.8, marginBottom: "28px", maxWidth: "520px" }}>
+                Dr Finn Geoghagan is a specialist orthodontist who built one of the UK&rsquo;s first fully in-house digital aligner practices. He trained on the tools, lived through the workflow failures, and eventually built the systems that made it work. Okklusion is the platform he wished had existed.
+              </p>
               <div className="flex items-center gap-4">
                 <div style={{ width: "32px", height: "1px", backgroundColor: "var(--border-strong)" }} />
-                <span style={{ fontSize: "12px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)" }}>Finn · Editor's Note · Issue 4</span>
+                <span style={{ fontSize: "12px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)" }}>Dr Finn Geoghagan · Specialist Orthodontist · Founder</span>
               </div>
             </div>
           </div>
