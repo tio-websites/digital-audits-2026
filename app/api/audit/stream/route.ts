@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
           } else if (msg.includes("404") || msg.includes("ENOTFOUND")) {
             send({ step: "error", message: "That URL doesn't appear to exist. Please double-check the address." });
           } else {
-            send({ step: "error", message: `Couldn't reach the site: ${msg}` });
+            send({ step: "error", message: "Couldn't reach the site. This is common with Australian sites that use Cloudflare protection — try entering the URL with 'www.' prefix, or check the address is correct." });
           }
           controller.close();
           return;

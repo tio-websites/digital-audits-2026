@@ -69,32 +69,37 @@ function containsAny(text: string, keywords: string[]): boolean {
   return keywords.some((k) => lower.includes(k));
 }
 
-async function fetchWithTimeout(url: string, timeoutMs = 12000): Promise<string | null> {
-  try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
-    const res = await fetch(url, {
-      signal: controller.signal,
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-        "Accept-Language": "en-AU,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Cache-Control": "no-cache",
-        "Pragma": "no-cache",
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "none",
-        "Upgrade-Insecure-Requests": "1",
-      },
-    });
-    clearTimeout(timer);
-    if (!res.ok) return null;
-    return await res.text();
-  } catch {
-    return null;
+const BROWSER_HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "Accept-Language": "en-AU,en-GB;q=0.9,en;q=0.8",
+  "Accept-Encoding": "gzip, deflate, br",
+  "Connection": "keep-alive",
+  "Upgrade-Insecure-Requests": "1",
+};
+
+async function fetchWithTimeout(url: string, timeoutMs = 15000): Promise<string | null> {
+  for (const headers of [BROWSER_HEADERS, { "User-Agent": BROWSER_HEADERS["User-Agent"] }]) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      const res = await fetch(url, {
+        signal: controller.signal,
+        headers,
+        redirect: "follow",
+      });
+      clearTimeout(timer);
+      if (!res.ok) continue;
+      const text = await res.text();
+      // If Cloudflare challenge page, treat as failure
+      if (text.includes("cf-browser-verification") || text.includes("cf_clearance") || text.includes("jschl-answer")) continue;
+      return text;
+    } catch {
+      continue;
+    }
   }
+  return null;
 }
 
 async function checkExists(url: string): Promise<boolean> {
@@ -104,9 +109,8 @@ async function checkExists(url: string): Promise<boolean> {
     const res = await fetch(url, {
       method: "HEAD",
       signal: controller.signal,
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-      },
+      headers: { "User-Agent": BROWSER_HEADERS["User-Agent"] },
+      redirect: "follow",
     });
     clearTimeout(timer);
     return res.ok;
