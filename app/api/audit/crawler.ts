@@ -69,7 +69,7 @@ function containsAny(text: string, keywords: string[]): boolean {
   return keywords.some((k) => lower.includes(k));
 }
 
-async function fetchWithTimeout(url: string, timeoutMs = 8000): Promise<string | null> {
+async function fetchWithTimeout(url: string, timeoutMs = 12000): Promise<string | null> {
   try {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -77,8 +77,16 @@ async function fetchWithTimeout(url: string, timeoutMs = 8000): Promise<string |
       signal: controller.signal,
       headers: {
         "User-Agent":
-          "Mozilla/5.0 (compatible; AuditBot/1.0; +https://tiointernational.com)",
-        Accept: "text/html,application/xhtml+xml",
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "en-AU,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Upgrade-Insecure-Requests": "1",
       },
     });
     clearTimeout(timer);
@@ -92,11 +100,13 @@ async function fetchWithTimeout(url: string, timeoutMs = 8000): Promise<string |
 async function checkExists(url: string): Promise<boolean> {
   try {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 5000);
+    const timer = setTimeout(() => controller.abort(), 8000);
     const res = await fetch(url, {
       method: "HEAD",
       signal: controller.signal,
-      headers: { "User-Agent": "Mozilla/5.0 (compatible; AuditBot/1.0)" },
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      },
     });
     clearTimeout(timer);
     return res.ok;
