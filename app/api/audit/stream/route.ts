@@ -96,25 +96,40 @@ export async function POST(request: NextRequest) {
         send({ step: "crawl", pct: 5, message: "Crawling your website…" });
 
         let crawlData;
+        let crawlBlocked = false;
+
         try {
           crawlData = await crawlSite(url);
         } catch (crawlErr) {
           const msg = crawlErr instanceof Error ? crawlErr.message : String(crawlErr);
-          // Surface specific errors to the user
-          if (msg.includes("403") || msg.toLowerCase().includes("forbidden")) {
-            send({ step: "error", message: "This site is blocking automated access (403). Try running the audit from a different network or check that the URL is correct." });
-          } else if (msg.includes("timeout") || msg.includes("ETIMEDOUT")) {
-            send({ step: "error", message: "The site timed out — it may be very slow or temporarily offline. Please try again." });
-          } else if (msg.includes("404") || msg.includes("ENOTFOUND")) {
+          if (msg.includes("404") || msg.includes("ENOTFOUND")) {
             send({ step: "error", message: "That URL doesn't appear to exist. Please double-check the address." });
-          } else {
-            send({ step: "error", message: "Couldn't reach the site. This is common with Australian sites that use Cloudflare protection — try entering the URL with 'www.' prefix, or check the address is correct." });
+            controller.close();
+            return;
           }
-          controller.close();
-          return;
+          // Crawl blocked (Cloudflare / WAF) — fall back to partial audit
+          crawlBlocked = true;
+          const hostname = new URL(url).hostname.replace("www.", "");
+          crawlData = {
+            url, html: "", text: "", title: hostname, metaDescription: "",
+            h1s: [], h2s: [], links: [], hasSchema: false, schemaTypes: [],
+            hasSitemap: false, hasRobots: false, hasViewportMeta: false,
+            socialLinks: { facebook: null, instagram: null, tiktok: null },
+            hasBookingForm: false, bookingUrl: null, hasGallery: false, galleryCount: 0,
+            hasPricingPage: false, hasFaqPage: false, hasBlogOrResources: false,
+            hasDoctorProfile: false, hasReferralPage: false, hasTreatmentPages: false,
+            treatmentPages: [], hasWhyChooseUs: false, ctaCount: 0, pageCount: 0,
+            platform: "Unknown", navPages: [], hasLocalKeywords: false, locationMentioned: "",
+            hasNap: false, hasLocalSchema: false, hasImageAlt: false, imagesTotal: 0,
+            imagesWithAlt: 0, hasLazyLoading: false, hasWebpImages: false,
+            isHttps: url.startsWith("https://"), hasMissingPages: [],
+          };
+          send({ step: "crawl", pct: 15, message: "Site is protected — running PageSpeed & AI checks instead…" });
         }
 
-        send({ step: "crawl", pct: 28, message: "Site crawled — calculating scores…" });
+        if (!crawlBlocked) {
+          send({ step: "crawl", pct: 28, message: "Site crawled — calculating scores…" });
+        }
 
         // Step 2 — Score (synchronous)
         const auditResult = scoreAudit(crawlData);
@@ -284,6 +299,7 @@ export async function POST(request: NextRequest) {
           result: finalResult,
           revenueImpact,
           auditId,
+          crawlBlocked,
         });
       } catch (err) {
         const message = err instanceof Error ? err.message : "Audit failed.";

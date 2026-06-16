@@ -17,7 +17,7 @@ interface RevenueImpact {
 type State =
   | { status: "idle" }
   | { status: "streaming"; url: string; step: string; pct: number; message: string }
-  | { status: "done"; result: AuditResult; revenueImpact: RevenueImpact; auditId: string | null }
+  | { status: "done"; result: AuditResult; revenueImpact: RevenueImpact; auditId: string | null; crawlBlocked?: boolean }
   | { status: "error"; message: string };
 
 const STEPS: { key: string; label: string }[] = [
@@ -98,6 +98,7 @@ export default function AuditForm() {
               result: data.result,
               revenueImpact: data.revenueImpact,
               auditId: data.auditId ?? null,
+              crawlBlocked: !!data.crawlBlocked,
             });
             return;
           }
@@ -114,12 +115,19 @@ export default function AuditForm() {
 
   if (state.status === "done") {
     return (
-      <AuditResults
-        result={state.result}
-        revenueImpact={state.revenueImpact}
-        auditId={state.auditId}
-        onReset={() => setState({ status: "idle" })}
-      />
+      <>
+        {state.crawlBlocked && (
+          <div className="bg-amber-50 border-b border-amber-200 px-6 py-3 text-sm text-amber-800 text-center">
+            ⚠️ This site&apos;s security settings blocked the full crawl — content &amp; UX scores show minimums. PageSpeed and AI scores are real.
+          </div>
+        )}
+        <AuditResults
+          result={state.result}
+          revenueImpact={state.revenueImpact}
+          auditId={state.auditId}
+          onReset={() => setState({ status: "idle" })}
+        />
+      </>
     );
   }
 
