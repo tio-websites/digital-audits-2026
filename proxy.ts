@@ -3,6 +3,8 @@ import { NextResponse, type NextRequest } from "next/server";
 
 // Only these paths skip auth — everything else requires login
 const PUBLIC_PATHS = ["/login", "/pdf"];
+// Auth pages redirect logged-in users away (subset of PUBLIC_PATHS)
+const AUTH_PAGES = ["/login"];
 
 export default async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
@@ -38,7 +40,8 @@ export default async function proxy(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   // Logged-in user visiting /login → send to home
-  if (isPublic && user) {
+  const isAuthPage = AUTH_PAGES.some((p) => path.startsWith(p));
+  if (isAuthPage && user) {
     return NextResponse.redirect(new URL("/", request.nextUrl));
   }
 
