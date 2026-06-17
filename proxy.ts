@@ -1,8 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-// Only /login is public — everything else requires auth
-const PUBLIC_PATHS = ["/login"];
+// Only these paths skip auth — everything else requires login
+const PUBLIC_PATHS = ["/login", "/pdf"];
 
 export default async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
