@@ -1,0 +1,37 @@
+// This schema is ready to use — connect DATABASE_URL to activate
+// Recommended: Neon (neon.tech) or Supabase for serverless PostgreSQL
+// Steps: 1) Get connection string  2) Add DATABASE_URL to .env.local  3) npx prisma generate  4) npx prisma db push
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  practice     String?
+  plan         Plan     @default(BASIC)
+  role         Role     @default(USER)
+  mondayId     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum Plan {
+  BASIC
+  PREMIUM
+  SUPER_PREMIUM
+}
+
+enum Role {
+  USER
+  ADMIN
+}
