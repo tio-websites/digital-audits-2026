@@ -49,10 +49,12 @@ const seedAdmin = async () => {
   }
 };
 
-seedAdmin();
+// Await seeding before any lookup so async hash doesn't race login
+const seedReady = seedAdmin();
 
 export async function findUserByEmail(email: string): Promise<User | null> {
   // TODO: return db.user.findUnique({ where: { email } })
+  await seedReady;
   return users.get(email.toLowerCase()) ?? null;
 }
 
