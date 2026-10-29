@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search, ArrowRight, Clock, RotateCcw, BookOpen, Zap } from "lucide-react";
+import { Search, ArrowRight, Clock, RotateCcw, BookOpen, Zap, MessageSquare, TrendingUp } from "lucide-react";
 
 const learningPath = [
   { step: 1, title: "ISO Process Documentation and QC Systems", type: "Clinical Module", duration: "4h 20m", status: "in-progress", progress: 65 },
@@ -17,6 +17,13 @@ const thisWeek = [
   { dept: "Case of the Week", title: "A Class III with severe crowding — the staging decisions that mattered", author: "Finn", readTime: "8 min" },
   { dept: "Lab Note", title: "Resin selection in high-throughput environments: what the data shows", author: "Okklusion Editorial", readTime: "5 min" },
   { dept: "Software Note", title: "DM 4.2 update: what changed in the monitoring algorithm", author: "Okklusion Editorial", readTime: "3 min" },
+];
+
+const trendingThreads = [
+  { title: "Anyone else seeing attachment bond failures with the new Ormco trays?", replies: 34, dept: "Lab Note", time: "2h ago", hot: true },
+  { title: "How are people handling the DM 4.2 compliance score changes with existing patients?", replies: 21, dept: "Software Note", time: "5h ago", hot: true },
+  { title: "Best approach for staging a Class II div 2 with deep bite — share your workflows", replies: 18, dept: "Case of the Week", time: "Yesterday", hot: false },
+  { title: "Pricing for in-house aligners — what are DSO members charging?", replies: 12, dept: "Practice Note", time: "Yesterday", hot: false },
 ];
 
 const deptColours: Record<string, string> = {
@@ -135,6 +142,79 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* This week editorial */}
+        <div style={{ marginBottom: "48px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "20px" }}>
+            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "26px", fontWeight: 400, color: "var(--text-primary)" }}>This week</h2>
+            <Link href="/platform/editorial" style={{ fontSize: "11px", letterSpacing: "0.06em", color: "var(--text-muted)", fontFamily: "var(--font-sans)", textTransform: "uppercase" as const, display: "flex", alignItems: "center", gap: "4px" }} className="hover:text-[var(--text-secondary)] transition-colors">
+              All departments <ArrowRight size={10} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ backgroundColor: "var(--border)" }}>
+            {thisWeek.map((item, i) => (
+              <Link
+                key={item.title}
+                href="/platform/editorial"
+                style={{ backgroundColor: i === 0 ? "var(--surface)" : "var(--bg)", padding: "24px 28px", display: "block", textDecoration: "none" }}
+                className="hover:bg-[var(--surface-raised)] transition-colors"
+              >
+                <span style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 600, color: deptColours[item.dept] || "var(--text-muted)", display: "block", marginBottom: "10px" }}>
+                  {item.dept}
+                </span>
+                <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "18px", fontWeight: 400, color: "var(--text-primary)", lineHeight: 1.3, marginBottom: "10px" }}>{item.title}</h3>
+                <p style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{item.author} · {item.readTime} read</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Trending threads */}
+        <div style={{ marginBottom: "48px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "20px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <TrendingUp size={16} style={{ color: "var(--accent)" }} />
+              <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "26px", fontWeight: 400, color: "var(--text-primary)" }}>Trending this week</h2>
+            </div>
+            <Link href="/platform/community" style={{ fontSize: "11px", letterSpacing: "0.06em", color: "var(--text-muted)", fontFamily: "var(--font-sans)", textTransform: "uppercase" as const, display: "flex", alignItems: "center", gap: "4px" }} className="hover:text-[var(--text-secondary)] transition-colors">
+              All threads <ArrowRight size={10} />
+            </Link>
+          </div>
+
+          <div className="flex flex-col gap-px" style={{ backgroundColor: "var(--border)" }}>
+            {trendingThreads.map((thread, i) => (
+              <Link
+                key={i}
+                href="/platform/community"
+                style={{ backgroundColor: "var(--bg)", padding: "18px 24px", display: "flex", alignItems: "center", gap: "16px", textDecoration: "none" }}
+                className="hover:bg-[var(--surface)] transition-colors group"
+              >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
+                    <span style={{ fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 600, color: deptColours[thread.dept] || "var(--text-muted)" }}>
+                      {thread.dept}
+                    </span>
+                    {thread.hot && (
+                      <span style={{ fontSize: "8px", letterSpacing: "0.08em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", color: "var(--accent)", backgroundColor: "rgba(200,169,106,0.1)", padding: "1px 6px", borderRadius: "2px" }}>
+                        Hot
+                      </span>
+                    )}
+                  </div>
+                  <p style={{ fontSize: "14px", fontFamily: "var(--font-sans)", color: "var(--text-primary)", lineHeight: 1.4 }} className="group-hover:opacity-80 transition-opacity">
+                    {thread.title}
+                  </p>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "flex-end", gap: "4px", flexShrink: 0 }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>
+                    <MessageSquare size={10} /> {thread.replies}
+                  </span>
+                  <span style={{ fontSize: "10px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{thread.time}</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* Learning Path */}
         <div style={{ marginBottom: "48px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "20px" }}>
@@ -160,7 +240,7 @@ export default function DashboardPage() {
                   opacity: item.status === "locked" ? 0.5 : 1,
                 }}
               >
-                <span style={{ fontFamily: "var(--font-serif)", fontSize: "24px", fontWeight: 300, color: item.status === "up-next" ? "rgba(255,255,255,0.2)" : "var(--border-strong)", lineHeight: 1, flexShrink: 0, width: "28px" }}>
+                <span style={{ fontFamily: "var(--font-serif)", fontSize: "24px", fontWeight: 300, color: item.status === "up-next" ? "rgba(250,250,248,0.2)" : "var(--border-strong)", lineHeight: 1, flexShrink: 0, width: "28px" }}>
                   {item.step}
                 </span>
                 <div style={{ flex: 1 }}>
@@ -169,7 +249,7 @@ export default function DashboardPage() {
                       {typeIcons[item.type]}{item.type}
                     </span>
                   </div>
-                  <p style={{ fontSize: "15px", fontFamily: "var(--font-serif)", fontWeight: 400, color: item.status === "up-next" ? "var(--white)" : "var(--text-primary)", lineHeight: 1.25 }}>{item.title}</p>
+                  <p style={{ fontSize: "15px", fontFamily: "var(--font-serif)", fontWeight: 400, color: item.status === "up-next" ? "var(--bg)" : "var(--text-primary)", lineHeight: 1.25 }}>{item.title}</p>
                   {item.status === "in-progress" && (
                     <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "10px" }}>
                       <div style={{ width: "100px", height: "2px", backgroundColor: "var(--border)", borderRadius: "1px", overflow: "hidden" }}>
@@ -180,7 +260,7 @@ export default function DashboardPage() {
                   )}
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
-                  <span style={{ fontSize: "11px", color: item.status === "up-next" ? "rgba(255,255,255,0.4)" : "var(--text-muted)", fontFamily: "var(--font-sans)", display: "flex", alignItems: "center", gap: "4px" }}>
+                  <span style={{ fontSize: "11px", color: item.status === "up-next" ? "rgba(250,250,248,0.4)" : "var(--text-muted)", fontFamily: "var(--font-sans)", display: "flex", alignItems: "center", gap: "4px" }}>
                     <Clock size={11} />{item.duration}
                   </span>
                   {item.status !== "locked" && (
@@ -189,32 +269,6 @@ export default function DashboardPage() {
                     </span>
                   )}
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* This week editorial */}
-        <div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "20px" }}>
-            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "26px", fontWeight: 400, color: "var(--text-primary)" }}>This week</h2>
-            <Link href="/platform/editorial" style={{ fontSize: "11px", letterSpacing: "0.06em", color: "var(--text-muted)", fontFamily: "var(--font-sans)", textTransform: "uppercase" as const, display: "flex", alignItems: "center", gap: "4px" }} className="hover:text-[var(--text-secondary)] transition-colors">
-              All departments <ArrowRight size={10} />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ backgroundColor: "var(--border)" }}>
-            {thisWeek.map((item, i) => (
-              <div
-                key={item.title}
-                style={{ backgroundColor: i === 0 ? "var(--surface)" : "var(--bg)", padding: "24px 28px", cursor: "pointer" }}
-                className="hover:bg-[var(--surface-raised)] transition-colors"
-              >
-                <span style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 600, color: deptColours[item.dept] || "var(--text-muted)", display: "block", marginBottom: "10px" }}>
-                  {item.dept}
-                </span>
-                <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "18px", fontWeight: 400, color: "var(--text-primary)", lineHeight: 1.3, marginBottom: "10px" }}>{item.title}</h3>
-                <p style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{item.author} · {item.readTime} read</p>
               </div>
             ))}
           </div>

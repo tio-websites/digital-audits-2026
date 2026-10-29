@@ -165,7 +165,7 @@ export default function EditorialPage() {
       {/* ── FEATURED — EDITOR'S NOTE ──────────────────────────────────────── */}
       <div style={{ padding: "0 48px" }}>
         <Link
-          href="/signup"
+          href="/platform/editorial"
           style={{ display: "block", textDecoration: "none" }}
         >
           <div
@@ -234,7 +234,7 @@ export default function EditorialPage() {
                 </div>
 
                 {/* Featured piece */}
-                <Link href="/signup" style={{ display: "block", textDecoration: "none", flex: 1 }} className="group">
+                <Link href="/platform/editorial" style={{ display: "block", textDecoration: "none", flex: 1 }} className="group">
                   <div style={{ marginBottom: "24px" }}>
                     <h3
                       style={{ fontFamily: "var(--font-serif)", fontSize: "22px", fontWeight: 400, color: "var(--text-primary)", lineHeight: 1.25, marginBottom: "12px", letterSpacing: "-0.005em" }}
@@ -264,7 +264,7 @@ export default function EditorialPage() {
                   {dept.recent.map((item, i) => (
                     <Link
                       key={i}
-                      href="/signup"
+                      href="/platform/editorial"
                       style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px", padding: "10px 0", borderBottom: i === 0 ? "1px solid var(--border)" : "none", textDecoration: "none" }}
                       className="hover:opacity-70 transition-opacity group"
                     >
@@ -279,7 +279,7 @@ export default function EditorialPage() {
                   ))}
                   <div style={{ paddingTop: "16px" }}>
                     <Link
-                      href="/signup"
+                      href="/platform/editorial"
                       style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" as const, color: accent, fontFamily: "var(--font-sans)", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: "4px", textDecoration: "none" }}
                       className="hover:opacity-70 transition-opacity"
                     >
@@ -320,7 +320,7 @@ export default function EditorialPage() {
             ].map((item, i) => (
               <Link
                 key={i}
-                href="/signup"
+                href="/platform/editorial"
                 style={{ display: "block", backgroundColor: "var(--bg)", padding: "32px 36px", textDecoration: "none" }}
                 className="hover:bg-[var(--surface-raised)] transition-colors"
               >
