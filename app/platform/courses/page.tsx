@@ -279,15 +279,21 @@ export default function CoursesPage() {
             {available.map((course) => {
               const t = typeConfig[course.type];
               const isInteractive = course.type === "Interactive Decision";
+              const courseSlug =
+                course.title === "From Zero to Manufacturing Aligners" ? "from-zero-to-manufacturing" :
+                course.title === "Choose the better trimline" ? "choose-the-better-trimline" :
+                course.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
               return (
-                <div
+                <Link
                   key={course.title}
+                  href={`/platform/courses/${courseSlug}`}
                   style={{
                     backgroundColor: isInteractive ? t.bg : "var(--bg)",
                     padding: "0",
                     display: "flex",
                     flexDirection: "column" as const,
                     position: "relative" as const,
+                    textDecoration: "none",
                   }}
                   className="group hover:opacity-95 transition-opacity cursor-pointer"
                 >
@@ -362,7 +368,7 @@ export default function CoursesPage() {
                       )}
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>
