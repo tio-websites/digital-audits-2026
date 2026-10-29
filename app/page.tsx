@@ -95,10 +95,10 @@ export default function HomePage() {
       {/* ── MASTHEAD ─────────────────────────────────────────────────────── */}
       <div style={{ backgroundColor: "var(--accent-dark)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
         <div className="flex justify-between items-center px-6 md:px-12 py-4" style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <span style={{ fontSize: "10px", letterSpacing: "0.14em", color: "rgba(255,255,255,0.22)", fontFamily: "var(--font-sans)", textTransform: "uppercase" }}>
+          <span style={{ fontSize: "10px", letterSpacing: "0.14em", color: "rgba(250,250,248,0.35)", fontFamily: "var(--font-sans)", textTransform: "uppercase" }}>
             The Okklusion Review
           </span>
-          <span className="hidden sm:block" style={{ fontSize: "10px", letterSpacing: "0.06em", color: "rgba(255,255,255,0.18)", fontFamily: "var(--font-sans)" }}>
+          <span className="hidden sm:block" style={{ fontSize: "10px", letterSpacing: "0.06em", color: "rgba(250,250,248,0.28)", fontFamily: "var(--font-sans)" }}>
             Vol. 1 · Issue 4 · 27 May 2026
           </span>
         </div>
@@ -121,7 +121,7 @@ export default function HomePage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={PHOTOS.cover} alt="Cover" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: "brightness(0.6)" }} />
               <div style={{ position: "absolute", bottom: "32px", left: "32px", right: "32px" }}>
-                <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-sans)", letterSpacing: "0.06em" }}>
+                <p style={{ fontSize: "10px", color: "rgba(250,250,248,0.4)", fontFamily: "var(--font-sans)", letterSpacing: "0.06em" }}>
                   Finn · Principal Clinician · Berlin 2026
                 </p>
               </div>
@@ -137,10 +137,10 @@ export default function HomePage() {
                   </span>
                 </div>
 
-                <h1 style={{ fontFamily: "var(--font-serif)", fontWeight: 300, fontSize: "clamp(44px, 6vw, 80px)", lineHeight: 0.95, color: "var(--white)", letterSpacing: "-0.025em", marginBottom: "32px" }}>
+                <h1 style={{ fontFamily: "var(--font-serif)", fontWeight: 300, fontSize: "clamp(44px, 6vw, 80px)", lineHeight: 0.95, color: "var(--bg)", letterSpacing: "-0.025em", marginBottom: "32px" }}>
                   Build elite
                   <br />digital
-                  <br /><em style={{ fontStyle: "italic", color: "rgba(255,255,255,0.4)" }}>orthodontic</em>
+                  <br /><em style={{ fontStyle: "italic", color: "rgba(250,250,248,0.45)" }}>orthodontic</em>
                   <br />systems.
                 </h1>
 
@@ -148,7 +148,7 @@ export default function HomePage() {
                   <Link href="/signup" style={{ display: "inline-flex", alignItems: "center", gap: "10px", backgroundColor: "var(--accent)", color: "var(--accent-dark)", padding: "13px 28px", fontSize: "11px", fontFamily: "var(--font-sans)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", borderRadius: "2px" }} className="hover:opacity-90 transition-opacity">
                     Read this issue <ArrowRight size={12} />
                   </Link>
-                  <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", gap: "8px", border: "1px solid rgba(255,255,255,0.14)", color: "rgba(255,255,255,0.5)", padding: "13px 28px", fontSize: "11px", fontFamily: "var(--font-sans)", letterSpacing: "0.1em", textTransform: "uppercase", borderRadius: "2px" }} className="hover:border-white/30 hover:text-white/75 transition-colors">
+                  <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", gap: "8px", border: "1px solid rgba(250,250,248,0.2)", color: "rgba(250,250,248,0.6)", padding: "13px 28px", fontSize: "11px", fontFamily: "var(--font-sans)", letterSpacing: "0.1em", textTransform: "uppercase", borderRadius: "2px" }} className="hover:border-[rgba(250,250,248,0.4)] hover:text-[rgba(250,250,248,0.85)] transition-colors">
                     Join from £49
                   </Link>
                 </div>
@@ -156,7 +156,7 @@ export default function HomePage() {
 
               {/* In this issue */}
               <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "28px", marginTop: "36px" }}>
-                <p style={{ fontSize: "9px", letterSpacing: "0.14em", color: "rgba(255,255,255,0.25)", fontFamily: "var(--font-sans)", textTransform: "uppercase", marginBottom: "18px" }}>
+                <p style={{ fontSize: "9px", letterSpacing: "0.14em", color: "rgba(250,250,248,0.35)", fontFamily: "var(--font-sans)", textTransform: "uppercase", marginBottom: "18px" }}>
                   In this issue
                 </p>
                 {[
@@ -165,10 +165,10 @@ export default function HomePage() {
                   { dept: "Lab Note", colour: "#7A8C84", title: "Resin selection in high-throughput environments: what the data shows" },
                 ].map((item, i) => (
                   <div key={item.title} style={{ display: "flex", gap: "16px", alignItems: "flex-start", paddingBottom: i < 2 ? "14px" : "0", marginBottom: i < 2 ? "14px" : "0", borderBottom: i < 2 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
-                    <span style={{ fontFamily: "var(--font-serif)", fontSize: "18px", color: "rgba(255,255,255,0.12)", lineHeight: 1, flexShrink: 0, width: "20px" }}>{i + 1}</span>
+                    <span style={{ fontFamily: "var(--font-serif)", fontSize: "18px", color: "rgba(250,250,248,0.15)", lineHeight: 1, flexShrink: 0, width: "20px" }}>{i + 1}</span>
                     <div>
                       <span style={{ fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase", fontFamily: "var(--font-sans)", fontWeight: 600, color: item.colour, display: "block", marginBottom: "3px" }}>{item.dept}</span>
-                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "14px", fontWeight: 400, color: "rgba(255,255,255,0.65)", lineHeight: 1.4 }}>{item.title}</p>
+                      <p style={{ fontFamily: "var(--font-serif)", fontSize: "14px", fontWeight: 400, color: "rgba(250,250,248,0.7)", lineHeight: 1.4 }}>{item.title}</p>
                     </div>
                   </div>
                 ))}
@@ -368,14 +368,14 @@ export default function HomePage() {
       <section style={{ backgroundColor: "var(--accent-dark)", padding: "48px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
           <div>
-            <p style={{ fontSize: "10px", letterSpacing: "0.12em", color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-sans)", textTransform: "uppercase", marginBottom: "8px" }}>
+            <p style={{ fontSize: "10px", letterSpacing: "0.12em", color: "rgba(250,250,248,0.4)", fontFamily: "var(--font-sans)", textTransform: "uppercase", marginBottom: "8px" }}>
               Membership · CPD accredited · University of York
             </p>
-            <p style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(18px, 2.5vw, 26px)", fontWeight: 300, color: "var(--white)", lineHeight: 1.3 }}>
-              Basic £49 · Premium £99 · Super Premium £199 <span style={{ color: "rgba(255,255,255,0.3)" }}>per month</span>
+            <p style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(18px, 2.5vw, 26px)", fontWeight: 300, color: "var(--bg)", lineHeight: 1.3 }}>
+              Basic £49 · Premium £99 · Super Premium £199 <span style={{ color: "rgba(250,250,248,0.4)" }}>per month</span>
             </p>
           </div>
-          <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", gap: "8px", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.7)", padding: "12px 24px", fontSize: "11px", fontFamily: "var(--font-sans)", letterSpacing: "0.1em", textTransform: "uppercase", borderRadius: "2px" }} className="hover:border-white/50 hover:text-white transition-colors">
+          <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", gap: "8px", border: "1px solid rgba(250,250,248,0.25)", color: "rgba(250,250,248,0.75)", padding: "12px 24px", fontSize: "11px", fontFamily: "var(--font-sans)", letterSpacing: "0.1em", textTransform: "uppercase", borderRadius: "2px" }} className="hover:border-[rgba(250,250,248,0.5)] hover:text-[var(--bg)] transition-colors">
             See plans <ArrowRight size={11} />
           </Link>
         </div>

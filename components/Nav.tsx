@@ -41,9 +41,9 @@ export default function Nav() {
           <span
             style={{
               fontFamily: "var(--font-serif)",
-              fontSize: "22px",
+              fontSize: "28px",
               fontWeight: 400,
-              letterSpacing: "0.12em",
+              letterSpacing: "0.16em",
               color: "var(--text-primary)",
             }}
           >
@@ -52,8 +52,8 @@ export default function Nav() {
           <span
             style={{
               fontSize: "9px",
-              letterSpacing: "0.05em",
-              color: "var(--text-muted)",
+              letterSpacing: "0.08em",
+              color: "var(--accent)",
               fontFamily: "var(--font-sans)",
             }}
           >
