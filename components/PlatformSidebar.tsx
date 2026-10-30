@@ -19,7 +19,7 @@ const nav = [
   { href: "/platform/courses", icon: <BookOpen size={16} />, label: "Courses" },
   { href: "/platform/editorial", icon: <FileText size={16} />, label: "Editorial" },
   { href: "/platform/experiential", icon: <Video size={16} />, label: "Show & Tells" },
-  { href: "/platform/community", icon: <Users size={16} />, label: "Community" },
+  { href: "/platform/community", icon: <Users size={16} />, label: "Forum" },
 ];
 
 const secondary = [
