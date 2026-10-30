@@ -271,22 +271,26 @@ export default function EditorialPage() {
 
                 {/* Recent articles */}
                 <div>
-                  {dept.recent.map((item, i) => (
-                    <Link
-                      key={i}
-                      href={`/platform/editorial/${articleSlugs[dept.slug]?.recent[i] ?? ""}`}
-                      style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px", padding: "10px 0", borderBottom: i === 0 ? "1px solid var(--border)" : "none", textDecoration: "none" }}
-                      className="hover:opacity-70 transition-opacity group"
-                    >
-                      <p style={{ fontSize: "12px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.5, flex: 1 }}>{item.title}</p>
-                      <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "flex-end", gap: "4px", flexShrink: 0 }}>
-                        <p style={{ fontSize: "10px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{item.date.split(" ")[0]} {item.date.split(" ")[1]}</p>
-                        <span style={{ display: "inline-flex", alignItems: "center", padding: "1px 6px", backgroundColor: "var(--surface)", fontSize: "9px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", borderRadius: "2px" }}>
-                          {item.readTime}
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
+                  {dept.recent.map((item, i) => {
+                    const recentSlug = articleSlugs[dept.slug]?.recent[i];
+                    if (!recentSlug) return null;
+                    return (
+                      <Link
+                        key={i}
+                        href={`/platform/editorial/${recentSlug}`}
+                        style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px", padding: "10px 0", borderBottom: i === 0 ? "1px solid var(--border)" : "none", textDecoration: "none" }}
+                        className="hover:opacity-70 transition-opacity group"
+                      >
+                        <p style={{ fontSize: "12px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", lineHeight: 1.5, flex: 1 }}>{item.title}</p>
+                        <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "flex-end", gap: "4px", flexShrink: 0 }}>
+                          <p style={{ fontSize: "10px", color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}>{item.date.split(" ")[0]} {item.date.split(" ")[1]}</p>
+                          <span style={{ display: "inline-flex", alignItems: "center", padding: "1px 6px", backgroundColor: "var(--surface)", fontSize: "9px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", borderRadius: "2px" }}>
+                            {item.readTime}
+                          </span>
+                        </div>
+                      </Link>
+                    );
+                  })}
                   <div style={{ paddingTop: "16px" }}>
                     <Link
                       href={`/platform/editorial/${articleSlugs[dept.slug]?.featured ?? ""}`}
