@@ -9,8 +9,9 @@ const typeColour: Record<string, string> = {
   interactive: "var(--accent)",
 };
 
-export default function LessonPage({ params }: { params: { slug: string; lesson: string } }) {
-  const result = getLesson(params.slug, params.lesson);
+export default async function LessonPage({ params }: { params: Promise<{ slug: string; lesson: string }> }) {
+  const { slug, lesson: lessonId } = await params;
+  const result = getLesson(slug, lessonId);
   if (!result) notFound();
 
   const { course, lesson, module: mod } = result;

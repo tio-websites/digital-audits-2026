@@ -33,14 +33,13 @@ function Ring({ pct, size = 64 }: { pct: number; size?: number }) {
   );
 }
 
-export default function CourseOverviewPage({ params }: { params: { slug: string } }) {
-  const course = getCourse(params.slug);
+export default async function CourseOverviewPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const course = getCourse(slug);
   if (!course) notFound();
 
   const allLessons = getAllLessons(course);
   const completedCount = allLessons.filter(l => l.completed).length;
-
-  // Find the first incomplete lesson for the CTA
   const nextLesson = allLessons.find(l => !l.completed) ?? allLessons[0];
 
   return (
