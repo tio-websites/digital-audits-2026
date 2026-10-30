@@ -1,6 +1,16 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
+// Article slugs — must match lib/articles.ts
+const articleSlugs: Record<string, { featured: string; recent: string[] }> = {
+  "editors-note":     { featured: "building-systems-not-tools",       recent: ["ai-adoption-pressure"] },
+  "case-of-the-week": { featured: "class-iii-severe-crowding-staging", recent: ["unexpected-root-resorption"] },
+  "lab-note":         { featured: "resin-selection-high-throughput",   recent: ["post-cure-time-aligner-fit"] },
+  "software-note":    { featured: "dm-42-monitoring-algorithm",        recent: [] },
+  "evidence-note":    { featured: "root-resorption-evidence-review",   recent: [] },
+  "practice-note":    { featured: "onboarding-treatment-coordinator-dm", recent: ["pricing-digital-workflows"] },
+};
+
 const departments = [
   {
     dept: "Editor's Note",
@@ -165,7 +175,7 @@ export default function EditorialPage() {
       {/* ── FEATURED — EDITOR'S NOTE ──────────────────────────────────────── */}
       <div style={{ padding: "0 48px" }}>
         <Link
-          href="/platform/editorial"
+          href={`/platform/editorial/${articleSlugs["editors-note"].featured}`}
           style={{ display: "block", textDecoration: "none" }}
         >
           <div
@@ -234,7 +244,7 @@ export default function EditorialPage() {
                 </div>
 
                 {/* Featured piece */}
-                <Link href="/platform/editorial" style={{ display: "block", textDecoration: "none", flex: 1 }} className="group">
+                <Link href={`/platform/editorial/${articleSlugs[dept.slug]?.featured ?? ""}`} style={{ display: "block", textDecoration: "none", flex: 1 }} className="group">
                   <div style={{ marginBottom: "24px" }}>
                     <h3
                       style={{ fontFamily: "var(--font-serif)", fontSize: "22px", fontWeight: 400, color: "var(--text-primary)", lineHeight: 1.25, marginBottom: "12px", letterSpacing: "-0.005em" }}
@@ -264,7 +274,7 @@ export default function EditorialPage() {
                   {dept.recent.map((item, i) => (
                     <Link
                       key={i}
-                      href="/platform/editorial"
+                      href={`/platform/editorial/${articleSlugs[dept.slug]?.recent[i] ?? ""}`}
                       style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px", padding: "10px 0", borderBottom: i === 0 ? "1px solid var(--border)" : "none", textDecoration: "none" }}
                       className="hover:opacity-70 transition-opacity group"
                     >
@@ -279,7 +289,7 @@ export default function EditorialPage() {
                   ))}
                   <div style={{ paddingTop: "16px" }}>
                     <Link
-                      href="/platform/editorial"
+                      href={`/platform/editorial/${articleSlugs[dept.slug]?.featured ?? ""}`}
                       style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" as const, color: accent, fontFamily: "var(--font-sans)", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: "4px", textDecoration: "none" }}
                       className="hover:opacity-70 transition-opacity"
                     >
@@ -314,13 +324,13 @@ export default function EditorialPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: "var(--border)" }}>
             {[
-              { q: "At what throughput does in-house printing become cost-effective?", resp: "Finn", dept: "Lab Note" },
-              { q: "How should we handle patients who disengage from DM mid-treatment?", resp: "Finn", dept: "Practice Note" },
-              { q: "Is there a standard for how many attachments is too many?", resp: "Finn", dept: "Evidence Note" },
+              { q: "At what throughput does in-house printing become cost-effective?", resp: "Finn", dept: "Lab Note", slug: "resin-selection-high-throughput" },
+              { q: "How should we handle patients who disengage from DM mid-treatment?", resp: "Finn", dept: "Practice Note", slug: "onboarding-treatment-coordinator-dm" },
+              { q: "Is there a standard for how many attachments is too many?", resp: "Finn", dept: "Evidence Note", slug: "root-resorption-evidence-review" },
             ].map((item, i) => (
               <Link
                 key={i}
-                href="/platform/editorial"
+                href={`/platform/editorial/${item.slug}`}
                 style={{ display: "block", backgroundColor: "var(--bg)", padding: "32px 36px", textDecoration: "none" }}
                 className="hover:bg-[var(--surface-raised)] transition-colors"
               >
