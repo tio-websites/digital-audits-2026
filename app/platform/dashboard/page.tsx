@@ -305,15 +305,22 @@ export default function DashboardPage() {
                     <Clock size={11} /> {item.duration}
                   </span>
                   {item.status !== "locked" && (
-                    <span style={{
-                      fontSize: "10px", letterSpacing: "0.08em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 600,
-                      color: item.status === "up-next" ? "var(--accent-dark)" : "var(--text-primary)",
-                      backgroundColor: item.status === "up-next" ? "var(--accent)" : "var(--surface)",
-                      border: item.status === "up-next" ? "none" : "1px solid var(--border)",
-                      padding: "5px 14px", borderRadius: "2px",
-                    }}>
+                    <Link
+                      href={
+                        item.status === "in-progress"
+                          ? "/platform/courses/from-zero-to-manufacturing/what-iso-13485-means"
+                          : "/platform/courses/from-zero-to-manufacturing/post-cure-protocols"
+                      }
+                      style={{
+                        fontSize: "10px", letterSpacing: "0.08em", textTransform: "uppercase" as const, fontFamily: "var(--font-sans)", fontWeight: 600,
+                        color: item.status === "up-next" ? "var(--accent-dark)" : "var(--text-primary)",
+                        backgroundColor: item.status === "up-next" ? "var(--accent)" : "var(--surface)",
+                        border: item.status === "up-next" ? "none" : "1px solid var(--border)",
+                        padding: "5px 14px", borderRadius: "2px", textDecoration: "none",
+                      }}
+                    >
                       {item.status === "in-progress" ? "Continue" : "Start"}
-                    </span>
+                    </Link>
                   )}
                 </div>
               </div>
