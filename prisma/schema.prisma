@@ -1,15 +1,17 @@
-// This schema is ready to use — connect DATABASE_URL to activate
-// Recommended: Neon (neon.tech) or Supabase for serverless PostgreSQL
-// Steps: 1) Get connection string  2) Add DATABASE_URL to .env.local  3) npx prisma generate  4) npx prisma db push
+// SQLite for local dev — to switch to PostgreSQL for production:
+// 1) Change provider to "postgresql"
+// 2) Add DATABASE_URL to .env.local (get one free at neon.tech)
+// 3) Run: npx prisma generate && npx prisma db push
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
 }
+
+// ── Platform members ───────────────────────────────────────────────────────
 
 model User {
   id           String   @id @default(cuid())
@@ -18,20 +20,42 @@ model User {
   firstName    String
   lastName     String
   practice     String?
-  plan         Plan     @default(BASIC)
-  role         Role     @default(USER)
+  plan         String   @default("BASIC")
+  role         String   @default("USER")
   mondayId     String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
 
-enum Plan {
-  BASIC
-  PREMIUM
-  SUPER_PREMIUM
+// ── CMS admin users (separate from platform members) ──────────────────────
+
+model CmsUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         String    @default("editor")  // "super_admin" | "editor"
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  lastLoginAt  DateTime?
 }
 
-enum Role {
-  USER
-  ADMIN
+// ── Editorial content ─────────────────────────────────────────────────────
+
+model Article {
+  id         String   @id @default(cuid())
+  slug       String   @unique
+  dept       String
+  deptSlug   String
+  title      String
+  excerpt    String
+  author     String
+  authorRole String?
+  date       String
+  readTime   String
+  issue      String
+  body       String   // JSON-encoded Section[]
+  published  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
